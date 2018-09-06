@@ -1,0 +1,148 @@
+﻿using LanStatusCheck.Classes;
+using LanStatusCheck.Contract;
+using mm;
+using msg;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
+
+namespace LanStatusCheck.Models
+{
+    public class ModelDataLan
+    {
+        #region local variable
+
+        List<NetworkInterface> _collectionInterface;
+
+        
+
+        int _periondTestLanSpeed = 1000; //Интервал подсчёта скорости обмена по сети
+
+        Timer _timerTestSpeed;
+
+        private IMessenger _messenger;
+
+        #endregion
+
+        #region public
+
+        public List<NetworkInterfaceData> CollectionDataInterface;
+
+        #endregion
+
+
+        #region ctor
+
+        public ModelDataLan()
+        {
+
+            _messenger = IoC.Get<IMessenger>().Abonent(Abonent.ModelNetworkAdapters).AddHandler(HandleMessage);
+
+            _collectionInterface = new List<NetworkInterface>(GetAllUpLanInterface());
+
+            CollectionDataInterface = new List<NetworkInterfaceData>(_collectionInterface.Select(a => new NetworkInterfaceData(a)));
+
+            _timerTestSpeed = new Timer();
+
+            CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.InitNetInterFinished, null);
+
+            _timerTestSpeed.Interval = _periondTestLanSpeed;
+
+            _timerTestSpeed.Elapsed += _timerTestSpeed_Elapsed;
+
+            _timerTestSpeed.Start();
+
+        }
+
+        #endregion
+
+        #region HandleMessage
+
+        private void HandleMessage(IMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+
+        #region Local Methods
+
+        private void _timerTestSpeed_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            foreach (var inter in CollectionDataInterface)
+            {
+                inter.CulcCurrentSpeed(_periondTestLanSpeed / 1000);
+            }
+
+            CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.UpdateDataModelNetInter);
+        }
+
+        private List<NetworkInterface> GetAllUpLanInterface()
+        {
+            var listInterface = NetworkInterface.GetAllNetworkInterfaces().ToList();
+
+            var onlyUpInterface = listInterface.Where(a => a.OperationalStatus == OperationalStatus.Up).ToList();
+
+            return onlyUpInterface;
+        }
+
+        private void GetInformationFromAdapter(NetworkInterface adapter)
+        {
+            Console.WriteLine("\nDescription: {0} \nId: {1} \nIsReceiveOnly: {2} \nName: {3} \nNetworkInterfaceType: {4} " +
+                    "\nOperationalStatus: {5} " +
+                    "\nSpeed (bits per second): {6} " +
+                    "\nSpeed (kilobits per second): {7} " +
+                    "\nSpeed (megabits per second): {8} " +
+                    "\nSpeed (gigabits per second): {9} " +
+                    "\nSupportsMulticast: {10}",
+                    adapter.Description,
+                    adapter.Id,
+                    adapter.IsReceiveOnly,
+                    adapter.Name,
+                    adapter.NetworkInterfaceType,
+                    adapter.OperationalStatus,
+                    adapter.Speed,
+                    adapter.Speed / 1000,
+                    adapter.Speed / 1000 / 1000,
+                    adapter.Speed / 1000 / 1000 / 1000,
+                    adapter.SupportsMulticast);
+
+            var ipv4Info = adapter.GetIPv4Statistics();
+            Console.WriteLine("OutputQueueLength: {0}", ipv4Info.OutputQueueLength);
+            Console.WriteLine("BytesReceived: {0}", ipv4Info.BytesReceived);
+            Console.WriteLine("BytesSent: {0}", ipv4Info.BytesSent);
+
+        }
+
+
+        /// <summary>Собрать и отправить сообщение через службу сообщений</summary>
+        /// <param name="abonent">Абонент для которого предназначено сообщение</param>
+        /// <param name="type">Тип сообщения</param>
+        /// <param name="args">Данные, которые необходимо передать</param>
+        private void CreateAndSendMessage(Abonent abonent, MsgType type, IEnumerable<object> args = null)
+        {
+            var msg = IoC.Get<IMessage>().To(abonent).IsType(type);
+
+            if (args != null)
+                foreach (var argument in args)
+                {
+                    msg.Add(argument);
+                }
+
+            _messenger.Add(msg);
+        }
+
+        #endregion
+
+
+
+
+
+    }
+}

@@ -1,0 +1,7 @@
+syntax: glob
+LanStatusCheck/obj
+LanStatusCheck/bin/
+mm/bin
+mm/obj
+packages/
+.vs/
