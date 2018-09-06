@@ -64,16 +64,16 @@
                        TextAlignment="Left" 
                        Margin="1,1,1,1"/>
 
-            <Border Grid.Column="0"
-                    Grid.Row="1"  
-                    CornerRadius="6" 
-                    HorizontalAlignment="Stretch" 
-                    VerticalAlignment="Stretch"
-                    BorderBrush="Gray"
-                    BorderThickness="1">
-                <oxy:Plot PlotAreaBorderThickness ="0" PlotAreaBorderColor="Gray" Height="70" IsLegendVisible="False" Background="Transparent">
+                <oxy:Plot Grid.Column="0" 
+                          Grid.Row="1"   
+                          PlotAreaBorderThickness ="1" 
+                          PlotAreaBorderColor="Gray" 
+                          Height="70" 
+                          IsLegendVisible="False" 
+                          Background="Transparent" 
+                          >
                     <oxy:Plot.Axes>
-                        <oxy:LinearAxis Position="Left" TickStyle="None" MajorGridlineStyle="Solid"  MinorGridlineStyle="None" IsAxisVisible="False" Minimum="0"/>
+                        <oxy:LinearAxis Position="Left" TickStyle="None" MajorGridlineStyle="Solid"  MinorGridlineStyle="None" IsAxisVisible="True" Minimum="0"/>
                         <oxy:DateTimeAxis Position="Bottom" 
                                       TickStyle="None" 
                                       MajorGridlineStyle="None" 
@@ -100,8 +100,6 @@
                 </oxy:Plot>
 
 
-            </Border>
-            
             
             <Grid x:Name="AtivityNetInterData"
                   Grid.Row="1" 
