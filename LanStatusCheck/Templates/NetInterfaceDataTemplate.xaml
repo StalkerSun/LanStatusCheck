@@ -73,7 +73,7 @@
                           Background="Transparent" 
                           >
                     <oxy:Plot.Axes>
-                        <oxy:LinearAxis Position="Left" TickStyle="None" MajorGridlineStyle="Solid"  MinorGridlineStyle="None" IsAxisVisible="True" Minimum="0"/>
+                    <oxy:LinearAxis Position="Left" TickStyle="None" MajorGridlineStyle="Solid"  MinorGridlineStyle="None" IsAxisVisible="True" Minimum="0" Maximum="{Binding MaxSpeedForChart}" />
                         <oxy:DateTimeAxis Position="Bottom" 
                                       TickStyle="None" 
                                       MajorGridlineStyle="None" 
@@ -88,7 +88,7 @@
                                     ItemsSource="{Binding ActivityDataForChart}"
                                     StrokeThickness="1" 
                                     LineStyle="Dash"
-                                    Color="Blue" 
+                                    Color="Blue"
                                     />
 
                         <oxy:LineSeries Title="Down" DataFieldX="Time"

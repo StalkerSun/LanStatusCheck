@@ -20,6 +20,12 @@ namespace LanStatusCheck.Classes
 
         private double _downSpeed;
 
+        private double _minTimeForChart;
+
+        private double _maxTimeForChart;
+
+        private double _maxSpeedForChart;
+
         private int _maxCountNodeInChartMin = 50;
 
         #endregion
@@ -60,8 +66,6 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        private double _minTimeForChart;
-
         public double MinTimeForChart
         {
             get { return _minTimeForChart; }
@@ -72,8 +76,6 @@ namespace LanStatusCheck.Classes
                 OnPropertyChanged();
             }
         }
-
-        private double _maxTimeForChart;
 
         public double  MaxTimeForChart
         {
@@ -86,7 +88,18 @@ namespace LanStatusCheck.Classes
             }
         }
 
+        
 
+        public double MaxSpeedForChart
+        {
+            get { return _maxSpeedForChart; }
+            set
+            {
+                _maxSpeedForChart = value;
+
+                OnPropertyChanged();
+            }
+        }
 
 
         #endregion
@@ -103,6 +116,8 @@ namespace LanStatusCheck.Classes
         public NetAdapterDataView()
         {
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
+
+            MaxSpeedForChart = 100;
         }
 
         public NetAdapterDataView(NetAdapterDataView data)
@@ -146,6 +161,9 @@ namespace LanStatusCheck.Classes
 
 
             MaxTimeForChart = DateTimeAxis.ToDouble(ActivityDataForChart.Last().Time);
+
+            var listClear = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.DownSpeed).ToList());
+
         }
 
 

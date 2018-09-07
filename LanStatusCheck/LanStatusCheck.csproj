@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\HelpersDataTransform.cs" />
     <Compile Include="Contract\IoC.cs" />
     <Compile Include="Classes\NetAdapterDataView.cs" />
     <Compile Include="Classes\NetworkInterfaceData.cs" />

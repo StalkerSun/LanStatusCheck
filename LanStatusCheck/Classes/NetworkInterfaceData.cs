@@ -9,26 +9,45 @@ namespace LanStatusCheck.Classes
 {
     public class NetworkInterfaceData
     {
+        #region Fields
+
+        /// <summary>Объект интерфейса</summary>
         public NetworkInterface Interface;
 
+        /// <summary>Имя интерфейса</summary>
         public string NameInterface;
 
+        /// <summary>Скорость отдачи</summary>
         public double UploadSpeedKBitS;
 
+        /// <summary>Скорость загрузки</summary>
         public double DownloadSpeedKBitS;
+
+        /// <summary>Ip адреса интерфейса</summary>
+        public List<string> InterfaceIPAdresses;
+
+        #endregion
+
+        #region Variable
 
         private long _oldReceivedBytes = -1;
 
         private long _oldSentBytes = -1;
 
+        #endregion
 
+
+        #region ctor
         public NetworkInterfaceData(NetworkInterface inter)
         {
             Interface = inter;
 
             NameInterface = Interface.Description;
 
+            InterfaceIPAdresses = new List<string>(GetIpAddresses(inter));
         }
+
+        #endregion
 
         /// <summary>
         /// Посчитать текущуюю скорость на интерфейсе
@@ -61,6 +80,17 @@ namespace LanStatusCheck.Classes
 
             _oldSentBytes = totalSentB;
         }
+
+        private List<string> GetIpAddresses(NetworkInterface inter)
+        {
+            var ipCollection = inter.GetIPProperties().UnicastAddresses.Where(a=>a.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
+
+            var listStr = ipCollection.Select(a => a.Address.ToString()).ToList();
+
+            return listStr;
+        }
+
+
 
 
 
