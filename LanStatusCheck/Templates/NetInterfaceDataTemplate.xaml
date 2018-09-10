@@ -73,30 +73,40 @@
                           Background="Transparent" 
                           >
                     <oxy:Plot.Axes>
-                    <oxy:LinearAxis Position="Left" TickStyle="None" MajorGridlineStyle="Solid"  MinorGridlineStyle="None" IsAxisVisible="True" Minimum="0" Maximum="{Binding MaxSpeedForChart}" />
-                        <oxy:DateTimeAxis Position="Bottom" 
-                                      TickStyle="None" 
-                                      MajorGridlineStyle="None" 
-                                      MinorGridlineStyle="None" 
-                                      IsAxisVisible="False" 
-                                      Minimum="{Binding MinTimeForChart}" 
-                                      Maximum="{Binding MaxTimeForChart}"/>
+                    <oxy:LinearAxis Position="Left" 
+                                    TickStyle="None" 
+                                    MajorGridlineStyle="Solid"  
+                                    MinorGridlineStyle="None" 
+                                    IsAxisVisible="True" 
+                                    Minimum="0" 
+                                    Maximum="{Binding MaxSpeedForChart}" />
+                        
+                    <oxy:DateTimeAxis Position="Bottom" 
+                                  TickStyle="None" 
+                                  MajorGridlineStyle="None" 
+                                  MinorGridlineStyle="None" 
+                                  IsAxisVisible="False" 
+                                  Minimum="{Binding MinTimeForChart}" 
+                                  Maximum="{Binding MaxTimeForChart}"/>
+                        
                     </oxy:Plot.Axes>
                     <oxy:Plot.Series>
                         <oxy:LineSeries Title="Up" DataFieldX="Time" 
-                                    DataFieldY="UpSpeed"
-                                    ItemsSource="{Binding ActivityDataForChart}"
-                                    StrokeThickness="1" 
-                                    LineStyle="Dash"
-                                    Color="Blue"
+                                        DataFieldY="UpSpeed"
+                                        ItemsSource="{Binding ActivityDataForChart}"
+                                        StrokeThickness="1" 
+                                        LineStyle="Dash"
+                                        Color="Blue"
                                     />
 
-                        <oxy:LineSeries Title="Down" DataFieldX="Time"
+                    <oxy:AreaSeries Title="Down" DataFieldX="Time"
                                     DataFieldY="DownSpeed"
                                     ItemsSource="{Binding ActivityDataForChart}"
                                     StrokeThickness="1" 
-                                    Color="Red" />
-                    </oxy:Plot.Series>
+                                    Color="Red"
+                                    />
+
+                </oxy:Plot.Series>
                 </oxy:Plot>
 
 
