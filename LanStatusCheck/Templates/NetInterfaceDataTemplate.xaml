@@ -91,19 +91,21 @@
                         
                     </oxy:Plot.Axes>
                     <oxy:Plot.Series>
-                        <oxy:LineSeries Title="Up" DataFieldX="Time" 
-                                        DataFieldY="UpSpeed"
-                                        ItemsSource="{Binding ActivityDataForChart}"
-                                        StrokeThickness="1" 
-                                        LineStyle="Dash"
-                                        Color="Blue"
-                                    />
+                        
 
                     <oxy:AreaSeries Title="Down" DataFieldX="Time"
                                     DataFieldY="DownSpeed"
                                     ItemsSource="{Binding ActivityDataForChart}"
                                     StrokeThickness="1" 
                                     Color="Red"
+                                    />
+                        
+                    <oxy:LineSeries Title="Up" DataFieldX="Time" 
+                                        DataFieldY="UpSpeed"
+                                        ItemsSource="{Binding ActivityDataForChart}"
+                                        StrokeThickness="1" 
+                                        LineStyle="Dash"
+                                        Color="Blue"
                                     />
 
                 </oxy:Plot.Series>
