@@ -9,6 +9,8 @@ namespace LanStatusCheck.Classes
 {
     public static class HelpersDataTransform
     {
+        public static int MinNodeInSequence = 6;
+
         #region public
 
         /// <summary>Определение выбросов в последовательности данных</summary>
@@ -20,7 +22,7 @@ namespace LanStatusCheck.Classes
         {
             minVal = maxVal = 0;
 
-            if (sequens == null || sequens.Count < 6) return false;
+            if (sequens == null || sequens.Count < MinNodeInSequence) return false;
 
             var localSeq = new List<double>(sequens).OrderBy(i => i).ToList();
 
@@ -36,20 +38,20 @@ namespace LanStatusCheck.Classes
             {
 
                 //вычисляем нижний квартиль
-                res = GetValueAndIndexMedianSequence(localSeq.GetRange(0, q2Index[0]), out q1);
+                res = GetValueMedianSequence(localSeq.GetRange(0, q2Index[0]), out q1);
 
                 //вычисляем верхний квартиль
                 if (res)
-                    res = GetValueAndIndexMedianSequence(localSeq.GetRange(q2Index[0]+1, q2Index[0]), out q3);
+                    res = GetValueMedianSequence(localSeq.GetRange(q2Index[0]+1, q2Index[0]), out q3);
             }
             else
             {
                 //вычисляем нижний квартиль
-                res = GetValueAndIndexMedianSequence(localSeq.GetRange(0, q2Index[1]), out q1);
+                res = GetValueMedianSequence(localSeq.GetRange(0, q2Index[1]), out q1);
 
                 //вычисляем верхний квартиль
                 if (res)
-                    res = GetValueAndIndexMedianSequence(localSeq.GetRange(q2Index[1], q2Index[1]), out q3);
+                    res = GetValueMedianSequence(localSeq.GetRange(q2Index[1], q2Index[1]), out q3);
             }
 
             if (!res) return false;
@@ -72,7 +74,7 @@ namespace LanStatusCheck.Classes
 
         public static List<double> DeleteEmissinsFromSequence(List<double> sequens)
         {
-            if (sequens == null || sequens.Count < 6)
+            if (sequens == null || sequens.Count < MinNodeInSequence)
                 return new List<double>();
 
             if (!DetectEmissinsFromSequence(sequens, out double min, out double max))
@@ -127,7 +129,7 @@ namespace LanStatusCheck.Classes
             return true;
         }
 
-        private static bool GetValueAndIndexMedianSequence(List<double> seq, out double valMedian)
+        private static bool GetValueMedianSequence(List<double> seq, out double valMedian)
         {
             valMedian = double.NaN;
 

@@ -14,6 +14,8 @@ namespace LanStatusCheck.Classes
     {
         #region local variable
 
+        private int _minSpeed = 60;
+
         private string _nameNetInter;
 
         private double _upSpeed;
@@ -24,9 +26,14 @@ namespace LanStatusCheck.Classes
 
         private double _maxTimeForChart;
 
-        private double _maxSpeedForChart;
+        private double _maxSpeedForChart = 60;
+
+        private Func<double, string> _formatter = (a) => ConvertData(a);
+
 
         private int _maxCountNodeInChartMin = 50;
+
+        
 
         #endregion
         
@@ -102,6 +109,20 @@ namespace LanStatusCheck.Classes
         }
 
 
+        
+
+        public Func<double, string> Formatter
+        {
+            get { return _formatter; }
+            set
+            {
+                _formatter = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+
         #endregion
 
         #region collections
@@ -117,7 +138,7 @@ namespace LanStatusCheck.Classes
         {
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
 
-            MaxSpeedForChart = 100;
+
         }
 
         public NetAdapterDataView(NetAdapterDataView data)
@@ -137,6 +158,8 @@ namespace LanStatusCheck.Classes
 
         public void SetParamData(double upSpeed, double downSpeed)
         {
+            
+
             UpSpeed = upSpeed;
 
             DownSpeed = downSpeed;
@@ -162,22 +185,41 @@ namespace LanStatusCheck.Classes
 
             MaxTimeForChart = DateTimeAxis.ToDouble(ActivityDataForChart.Last().Time);
 
-            var listClear = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.DownSpeed).ToList());
+            if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence) return;
+
+            var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.DownSpeed).ToList()).Max();
+
+            var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.UpSpeed).ToList()).Max();
+
+            var max = Math.Max(maxDownSpeed, maxUpSpeed);
+
+            MaxSpeedForChart = max > _minSpeed ? max : _minSpeed;
 
         }
 
 
         #endregion
 
+        #region private methods
+
+        private static string ConvertData(double val)
+        {
+            var gbS = val / 1024;
+
+            return gbS < 1 ? String.Format("{0} Kbit\\s", val) : String.Format("{0:F2} Mbit\\s", gbS);
+        }
+
+        #endregion
 
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = "")
         {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
     }
 
     public class NodeActiveNetInterface

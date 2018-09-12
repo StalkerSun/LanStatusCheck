@@ -19,8 +19,6 @@ namespace LanStatusCheck.Models
 
         List<NetworkInterface> _collectionInterface;
 
-        
-
         int _periondTestLanSpeed = 1000; //Интервал подсчёта скорости обмена по сети
 
         Timer _timerTestSpeed;
@@ -87,14 +85,19 @@ namespace LanStatusCheck.Models
         {
             var listInterface = NetworkInterface.GetAllNetworkInterfaces().ToList();
 
-            var onlyUpInterface = listInterface.Where(a => a.OperationalStatus == OperationalStatus.Up).ToList();
+            var onlyUpInterface = listInterface.Where(a => (a.OperationalStatus == OperationalStatus.Up)).ToList();
+
+            //foreach(var node in onlyUpInterface)
+            //{
+            //    GetInformationFromAdapter(node);
+            //}
 
             return onlyUpInterface;
         }
 
         private void GetInformationFromAdapter(NetworkInterface adapter)
         {
-            Console.WriteLine("\nDescription: {0} \nId: {1} \nIsReceiveOnly: {2} \nName: {3} \nNetworkInterfaceType: {4} " +
+            Debug.WriteLine("\nDescription: {0} \nId: {1} \nIsReceiveOnly: {2} \nName: {3} \nNetworkInterfaceType: {4} " +
                     "\nOperationalStatus: {5} " +
                     "\nSpeed (bits per second): {6} " +
                     "\nSpeed (kilobits per second): {7} " +

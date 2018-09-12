@@ -79,7 +79,11 @@
                                     MinorGridlineStyle="None" 
                                     IsAxisVisible="True" 
                                     Minimum="0" 
-                                    Maximum="{Binding MaxSpeedForChart}" />
+                                    Maximum="{Binding MaxSpeedForChart}"
+                                    MajorGridlineThickness="1"
+                                    MajorTickSize="100"
+                                    LabelFormatter="{Binding Formatter}"
+                                    />
                         
                     <oxy:DateTimeAxis Position="Bottom" 
                                   TickStyle="None" 
@@ -87,7 +91,8 @@
                                   MinorGridlineStyle="None" 
                                   IsAxisVisible="False" 
                                   Minimum="{Binding MinTimeForChart}" 
-                                  Maximum="{Binding MaxTimeForChart}"/>
+                                  Maximum="{Binding MaxTimeForChart}"
+                                      />
                         
                     </oxy:Plot.Axes>
                     <oxy:Plot.Series>
