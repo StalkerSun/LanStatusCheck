@@ -75,9 +75,10 @@ namespace LanStatusCheck.ViewModels
         {
             var tmpList = new List<NetAdapterDataView>(_model.CollectionDataInterface.Select(a => new NetAdapterDataView()
             {
-                NameInter = a.NameInterface,
                 DownSpeed = a.DownloadSpeedKBitS,
-                UpSpeed = a.UploadSpeedKBitS
+                UpSpeed = a.UploadSpeedKBitS,
+                DataInterface = a
+                
             }));
 
             foreach(var data in tmpList)
@@ -90,7 +91,7 @@ namespace LanStatusCheck.ViewModels
         {
             foreach (var node in CollectionNetInter)
             {
-                var res = _model.CollectionDataInterface.First(a => a.NameInterface == node.NameInter);
+                var res = _model.CollectionDataInterface.First(a => a.Interface.Name == node.NameInter);
 
                 node.SetParamData(res.UploadSpeedKBitS, res.DownloadSpeedKBitS);
             }

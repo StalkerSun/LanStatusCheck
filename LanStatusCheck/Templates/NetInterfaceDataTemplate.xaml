@@ -126,15 +126,17 @@
                     <ColumnDefinition Width="0.6*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.4*"/>
+                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="0.3*"/>
                     <RowDefinition Height="0.3*"/>
                     <RowDefinition Height="0.3*"/>
                 </Grid.RowDefinitions>
-
-                <TextBlock Text="Up:" Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="1,1,1,1"/>
-                <TextBlock Text="{Binding UpSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" Grid.Column="1" Grid.Row="1" TextAlignment="Left" Margin="1,1,1,1"/>
-                <TextBlock Text="Down:" Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="1,1,1,1"/>
-                <TextBlock Text="{Binding DownSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" Grid.Column="1" Grid.Row="2" TextAlignment="Left" Margin="1,1,1,1"/>
+                <TextBlock Text="Load:" Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="1,1,1,1"/>
+                <TextBlock Text="{Binding LoadOnInterface, StringFormat={}{0:P}}" Grid.Column="1" Grid.Row="1" TextAlignment="Left" Margin="1,1,1,1"/>
+                <TextBlock Text="Up:" Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="1,1,1,1"/>
+                <TextBlock Text="{Binding UpSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" Grid.Column="1" Grid.Row="2" TextAlignment="Left" Margin="1,1,1,1"/>
+                <TextBlock Text="Down:" Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="1,1,1,1"/>
+                <TextBlock Text="{Binding DownSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" Grid.Column="1" Grid.Row="3" TextAlignment="Left" Margin="1,1,1,1"/>
 
             </Grid>
 

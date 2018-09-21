@@ -86,7 +86,7 @@ namespace LanStatusCheck.Classes
 
             Debug.WriteLineIf(resSeq > 0, "Delete: "+ resSeq);
 
-            return sequens;
+            return localList;
         }
 
         #endregion

@@ -14,9 +14,6 @@ namespace LanStatusCheck.Classes
         /// <summary>Объект интерфейса</summary>
         public NetworkInterface Interface;
 
-        /// <summary>Имя интерфейса</summary>
-        public string NameInterface;
-
         /// <summary>Скорость отдачи</summary>
         public double UploadSpeedKBitS;
 
@@ -35,14 +32,11 @@ namespace LanStatusCheck.Classes
         private long _oldSentBytes = -1;
 
         #endregion
-
-
+        
         #region ctor
         public NetworkInterfaceData(NetworkInterface inter)
         {
             Interface = inter;
-
-            NameInterface = Interface.Description;
 
             InterfaceIPAdresses = new List<string>(GetIpAddresses(inter));
         }

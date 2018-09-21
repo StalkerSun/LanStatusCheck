@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -33,45 +34,46 @@ namespace LanStatusCheck.Classes
 
         private int _maxCountNodeInChartMin = 50;
 
-        
+
 
         #endregion
-        
+
         #region Property
 
-        public string NameInter
-        {
-            get { return _nameNetInter; }
-            set
-            {
-                _nameNetInter = value;
+        public string NameInter { get { return DataInterface.Interface.Name; } }
 
-                OnPropertyChanged();
-            }
+        public string DescInter { get { return DataInterface.Interface.Description; } }
 
-        }
+        public NetworkInterfaceData DataInterface { get; set; }
 
-        public double UpSpeed
-        {
-            get { return _upSpeed; }
-            set
-            {
-                _upSpeed = value;
+        public double UpSpeed{ get; set; }
 
-                OnPropertyChanged();
-            }
-        }
+        public double DownSpeed { get; set; }
 
-        public double DownSpeed
-        {
-            get { return _downSpeed; }
-            set
-            {
-                _downSpeed = value;
+        //public double UpSpeed
+        //{
+        //    get { return _upSpeed; }
+        //    set
+        //    {
+        //        _upSpeed = value;
 
-                OnPropertyChanged();
-            }
-        }
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        //public double DownSpeed
+        //{
+        //    get { return _downSpeed; }
+        //    set
+        //    {
+        //        _downSpeed = value;
+
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        public int LoadOnInterface { get; set; }
+
 
         public double MinTimeForChart
         {
@@ -95,8 +97,6 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        
-
         public double MaxSpeedForChart
         {
             get { return _maxSpeedForChart; }
@@ -107,9 +107,6 @@ namespace LanStatusCheck.Classes
                 OnPropertyChanged();
             }
         }
-
-
-        
 
         public Func<double, string> Formatter
         {
@@ -145,11 +142,11 @@ namespace LanStatusCheck.Classes
         {
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
 
-            NameInter = data.NameInter;
-
             UpSpeed = data.UpSpeed;
 
             DownSpeed = data.DownSpeed;
+
+            DataInterface = data.DataInterface;
         }
 
         #endregion
@@ -158,18 +155,14 @@ namespace LanStatusCheck.Classes
 
         public void SetParamData(double upSpeed, double downSpeed)
         {
-            
-
             UpSpeed = upSpeed;
 
             DownSpeed = downSpeed;
-
             
             if (ActivityDataForChart.Count > _maxCountNodeInChartMin)
                 ActivityDataForChart.RemoveAt(0);
 
             ActivityDataForChart.Add(new NodeActiveNetInterface { DownSpeed = downSpeed, UpSpeed = upSpeed, Time = DateTime.Now });
-
 
             if(ActivityDataForChart.Count< _maxCountNodeInChartMin)
             {
@@ -195,6 +188,8 @@ namespace LanStatusCheck.Classes
 
             MaxSpeedForChart = max > _minSpeed ? max : _minSpeed;
 
+            LoadOnInterface = GetPercentLoadOnInterface(upSpeed, downSpeed, DataInterface.Interface.Speed / 1024.0);
+
         }
 
 
@@ -209,8 +204,18 @@ namespace LanStatusCheck.Classes
             return gbS < 1 ? String.Format("{0} Kbit\\s", val) : String.Format("{0:F2} Mbit\\s", gbS);
         }
 
-        #endregion
+        private int GetPercentLoadOnInterface(double upSpeedkbS, double downSpeedKbS, double maxSpeedInterfaceKbS)
+        {
+            var totalLoad = upSpeedkbS + downSpeedKbS;
 
+            var currentLoad = (totalLoad * 100.0) / maxSpeedInterfaceKbS;
+
+            Debug.WriteLine(currentLoad);
+
+            return Convert.ToInt32(currentLoad);
+        }
+
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

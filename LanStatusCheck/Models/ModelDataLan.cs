@@ -32,8 +32,7 @@ namespace LanStatusCheck.Models
         public List<NetworkInterfaceData> CollectionDataInterface;
 
         #endregion
-
-
+        
         #region ctor
 
         public ModelDataLan()
@@ -87,10 +86,10 @@ namespace LanStatusCheck.Models
 
             var onlyUpInterface = listInterface.Where(a => (a.OperationalStatus == OperationalStatus.Up)).ToList();
 
-            //foreach(var node in onlyUpInterface)
-            //{
-            //    GetInformationFromAdapter(node);
-            //}
+            foreach (var node in onlyUpInterface)
+            {
+                GetInformationFromAdapter(node);
+            }
 
             return onlyUpInterface;
         }
