@@ -92,6 +92,7 @@
                                   IsAxisVisible="False" 
                                   Minimum="{Binding MinTimeForChart}" 
                                   Maximum="{Binding MaxTimeForChart}"
+                                      
                                       />
                         
                     </oxy:Plot.Axes>

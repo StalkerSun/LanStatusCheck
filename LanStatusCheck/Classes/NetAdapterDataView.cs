@@ -46,33 +46,43 @@ namespace LanStatusCheck.Classes
 
         public NetworkInterfaceData DataInterface { get; set; }
 
-        public double UpSpeed{ get; set; }
+        public double UpSpeed
+        {
+            get { return _upSpeed; }
+            set
+            {
+                _upSpeed = value;
 
-        public double DownSpeed { get; set; }
+                OnPropertyChanged();
+            }
+        }
 
-        //public double UpSpeed
-        //{
-        //    get { return _upSpeed; }
-        //    set
-        //    {
-        //        _upSpeed = value;
+        public double DownSpeed
+        {
+            get { return _downSpeed; }
+            set
+            {
+                _downSpeed = value;
 
-        //        OnPropertyChanged();
-        //    }
-        //}
+                OnPropertyChanged();
+            }
+        }
 
-        //public double DownSpeed
-        //{
-        //    get { return _downSpeed; }
-        //    set
-        //    {
-        //        _downSpeed = value;
+        private int _loadOnInterface;
 
-        //        OnPropertyChanged();
-        //    }
-        //}
+        public int LoadOnInterface
+        {
+            get { return _loadOnInterface; }
+            set
+            {
+                _loadOnInterface = value;
 
-        public int LoadOnInterface { get; set; }
+                OnPropertyChanged();
+            }
+        }
+
+
+        //public int LoadOnInterface { get; set; }
 
 
         public double MinTimeForChart
