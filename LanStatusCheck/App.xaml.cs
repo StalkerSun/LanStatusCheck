@@ -35,9 +35,7 @@ namespace LanStatusCheck
             // при передаче сообщения между адресатами
             Configuration.OnLog = m =>
             {
-                // Не отображаем сообщения в Output Visual Studio
-                // при появлении подсказок и новых данных для мониторинга
-                // иначе засоряет весь Output
+                
 
                 // при обмене сообщениями отображаем информацию в Output
                 Debug.WriteLine(m);
