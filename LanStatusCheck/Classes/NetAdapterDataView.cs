@@ -15,7 +15,7 @@ namespace LanStatusCheck.Classes
     {
         #region local variable
 
-        private int _minSpeed = 60;
+        private readonly int _minSpeed = 60;
 
         private string _nameNetInter;
 
@@ -28,6 +28,8 @@ namespace LanStatusCheck.Classes
         private double _maxTimeForChart;
 
         private double _maxSpeedForChart = 60;
+
+        private int _tickMajorStepGridLineChart = 30;
 
         private Func<double, string> _formatter = (a) => ConvertData(a);
 
@@ -130,6 +132,21 @@ namespace LanStatusCheck.Classes
         }
 
 
+        
+
+        public int TickMajorStepGridLineChart
+        {
+            get { return _tickMajorStepGridLineChart; }
+            set
+            {
+                _tickMajorStepGridLineChart = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+
+
         #endregion
 
         #region collections
@@ -139,10 +156,11 @@ namespace LanStatusCheck.Classes
 
         #endregion
 
-        #region ctor
+        #region ctors
 
         public NetAdapterDataView()
         {
+
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
 
 
@@ -172,7 +190,9 @@ namespace LanStatusCheck.Classes
             if (ActivityDataForChart.Count > _maxCountNodeInChartMin)
                 ActivityDataForChart.RemoveAt(0);
 
-            ActivityDataForChart.Add(new NodeActiveNetInterface { DownSpeed = downSpeed, UpSpeed = upSpeed, Time = DateTime.Now });
+            LoadOnInterface = GetPercentLoadOnInterface(upSpeed, downSpeed, DataInterface.Interface.Speed / 1024.0);
+
+            ActivityDataForChart.Add(new NodeActiveNetInterface { DownSpeed = downSpeed, UpSpeed = upSpeed, Time = DateTime.Now, LoadPerInSec = LoadOnInterface });
 
             if(ActivityDataForChart.Count< _maxCountNodeInChartMin)
             {
@@ -198,8 +218,7 @@ namespace LanStatusCheck.Classes
 
             MaxSpeedForChart = max > _minSpeed ? max : _minSpeed;
 
-            LoadOnInterface = GetPercentLoadOnInterface(upSpeed, downSpeed, DataInterface.Interface.Speed / 1024.0);
-
+            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart/3);
         }
 
 
@@ -211,7 +230,7 @@ namespace LanStatusCheck.Classes
         {
             var gbS = val / 1024;
 
-            return gbS < 1 ? String.Format("{0} Kbit\\s", val) : String.Format("{0:F2} Mbit\\s", gbS);
+            return gbS < 1 ? String.Format("{0} Kb\\s", val) : String.Format("{0:F2} Mb\\s", gbS);
         }
 
         private int GetPercentLoadOnInterface(double upSpeedkbS, double downSpeedKbS, double maxSpeedInterfaceKbS)
@@ -244,6 +263,8 @@ namespace LanStatusCheck.Classes
         public double DownSpeed { get; set; }
 
         public DateTime Time { get; set; }
+
+        public int LoadPerInSec { get; set; }
 
         public NodeActiveNetInterface()
         {

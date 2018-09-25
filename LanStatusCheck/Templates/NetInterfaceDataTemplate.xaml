@@ -81,8 +81,8 @@
                                     Minimum="0" 
                                     Maximum="{Binding MaxSpeedForChart}"
                                     MajorGridlineThickness="1"
-                                    MajorTickSize="100"
                                     LabelFormatter="{Binding Formatter}"
+                                    MajorStep="{Binding TickMajorStepGridLineChart}"
                                     />
                         
                     <oxy:DateTimeAxis Position="Bottom" 
