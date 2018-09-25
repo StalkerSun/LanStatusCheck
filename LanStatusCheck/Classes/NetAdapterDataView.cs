@@ -186,7 +186,7 @@ namespace LanStatusCheck.Classes
             UpSpeed = upSpeed;
 
             DownSpeed = downSpeed;
-            
+
             if (ActivityDataForChart.Count > _maxCountNodeInChartMin)
                 ActivityDataForChart.RemoveAt(0);
 
@@ -194,7 +194,7 @@ namespace LanStatusCheck.Classes
 
             ActivityDataForChart.Add(new NodeActiveNetInterface { DownSpeed = downSpeed, UpSpeed = upSpeed, Time = DateTime.Now, LoadPerInSec = LoadOnInterface });
 
-            if(ActivityDataForChart.Count< _maxCountNodeInChartMin)
+            if (ActivityDataForChart.Count < _maxCountNodeInChartMin)
             {
                 var tmpMinTime = ActivityDataForChart[0].Time.Add(-(new TimeSpan(0, 0, _maxCountNodeInChartMin - ActivityDataForChart.Count)));
 
@@ -210,16 +210,12 @@ namespace LanStatusCheck.Classes
 
             if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence) return;
 
-            var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.DownSpeed).ToList()).Max();
+            MaxSpeedForChart = GetMaxSpeedForChart(ActivityDataForChart);
 
-            var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.UpSpeed).ToList()).Max();
-
-            var max = Math.Max(maxDownSpeed, maxUpSpeed);
-
-            MaxSpeedForChart = max > _minSpeed ? max : _minSpeed;
-
-            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart/3);
+            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 2);
         }
+
+        
 
 
         #endregion
@@ -242,6 +238,17 @@ namespace LanStatusCheck.Classes
             Debug.WriteLine(currentLoad);
 
             return Convert.ToInt32(currentLoad);
+        }
+
+        private double GetMaxSpeedForChart(IEnumerable<NodeActiveNetInterface> interActivity)
+        {
+            var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.DownSpeed).ToList()).Max();
+
+            var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.UpSpeed).ToList()).Max();
+
+            var max = Math.Max(maxDownSpeed, maxUpSpeed);
+
+            return max > _minSpeed ? max : _minSpeed;
         }
 
         #endregion
