@@ -272,7 +272,11 @@ namespace LanStatusCheck.Classes
 
             var max = Math.Max(maxDownSpeed, maxUpSpeed);
 
-            return max > _minSpeed ? max : _minSpeed;
+            var maxWith10Per = (max * 15) / 100 + max;
+
+            //eturn max > _minSpeed ? max : _minSpeed;
+            return maxWith10Per > _minSpeed ? maxWith10Per : _minSpeed;
+
         }
 
         #endregion

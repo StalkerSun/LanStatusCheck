@@ -84,7 +84,7 @@
                                     LabelFormatter="{Binding Formatter}"
                                     MajorStep="{Binding TickMajorStepGridLineChart}"
                                     FontSize="8"
-                                    MaximumPadding="0.1"
+                                    
                                     IsZoomEnabled="False"
                                     IsPanEnabled="False"
                                     />
