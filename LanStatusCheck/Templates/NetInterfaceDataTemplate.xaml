@@ -83,6 +83,7 @@
                                     MajorGridlineThickness="1"
                                     LabelFormatter="{Binding Formatter}"
                                     MajorStep="{Binding TickMajorStepGridLineChart}"
+                                    FontSize="8"
                                     />
                         
                     <oxy:DateTimeAxis Position="Bottom" 
@@ -132,6 +133,50 @@
                     <RowDefinition Height="0.3*"/>
                     <RowDefinition Height="0.3*"/>
                 </Grid.RowDefinitions>
+
+                <oxy:Plot Grid.Column="0" 
+                          Grid.Row="0"
+                          Grid.RowSpan="2"
+                          Grid.ColumnSpan="2"
+                          PlotAreaBorderThickness ="0" 
+                          IsLegendVisible="False" 
+                          Background="Transparent"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          >
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left" 
+                                    TickStyle="None" 
+                                    MajorGridlineStyle="Solid"  
+                                    MinorGridlineStyle="None" 
+                                    IsAxisVisible="False" 
+                                    Minimum="0" 
+                                    Maximum="100"
+                                    />
+
+                        <oxy:DateTimeAxis Position="Bottom" 
+                                  TickStyle="None" 
+                                  MajorGridlineStyle="None" 
+                                  MinorGridlineStyle="None" 
+                                  IsAxisVisible="False" 
+                                  Minimum="{Binding MinTimeForChart}" 
+                                  Maximum="{Binding MaxTimeForChart}"
+                                      
+                                      />
+
+                    </oxy:Plot.Axes>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries Title="Down" 
+                                        DataFieldX="Time"
+                                    DataFieldY="LoadPerInSec"
+                                    ItemsSource="{Binding ActivityDataForChart}"
+                                    StrokeThickness="1" 
+                                    Color="Red"
+                                    />
+
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+
                 <TextBlock Text="Load:" Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="1,1,1,1"/>
                 <TextBlock Text="{Binding LoadOnInterface, StringFormat={}{0}%}" Grid.Column="1" Grid.Row="1" TextAlignment="Left" Margin="1,1,1,1"/>
                 <TextBlock Text="Up:" Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="1,1,1,1"/>
