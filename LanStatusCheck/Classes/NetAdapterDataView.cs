@@ -31,6 +31,8 @@ namespace LanStatusCheck.Classes
 
         private int _tickMajorStepGridLineChart = 30;
 
+        private double _maxSpeedInterfaceDelEmission = 30;
+
         private Func<double, string> _formatter = (a) => ConvertData(a);
 
 
@@ -131,9 +133,6 @@ namespace LanStatusCheck.Classes
             }
         }
 
-
-        
-
         public int TickMajorStepGridLineChart
         {
             get { return _tickMajorStepGridLineChart; }
@@ -144,6 +143,18 @@ namespace LanStatusCheck.Classes
                 OnPropertyChanged();
             }
         }
+
+        public double MaxSpeedInterfaceDelEmission
+        {
+            get { return _maxSpeedInterfaceDelEmission; }
+            set
+            {
+                _maxSpeedInterfaceDelEmission = value;
+
+                OnPropertyChanged();
+            }
+        }
+
 
 
 
@@ -212,6 +223,8 @@ namespace LanStatusCheck.Classes
 
             MaxSpeedForChart = GetMaxSpeedForChart(ActivityDataForChart);
 
+            MaxSpeedInterfaceDelEmission = GetMaxSpeedForChartDelEmissions(ActivityDataForChart);
+
             TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 2);
         }
 
@@ -235,16 +248,27 @@ namespace LanStatusCheck.Classes
 
             var currentLoad = (totalLoad * 100.0) / maxSpeedInterfaceKbS;
 
-            Debug.WriteLine(currentLoad);
-
             return Convert.ToInt32(currentLoad);
         }
 
-        private double GetMaxSpeedForChart(IEnumerable<NodeActiveNetInterface> interActivity)
+        private double GetMaxSpeedForChartDelEmissions(IEnumerable<NodeActiveNetInterface> interActivity)
         {
             var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.DownSpeed).ToList()).Max();
 
             var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.UpSpeed).ToList()).Max();
+
+            var max = Math.Max(maxDownSpeed, maxUpSpeed);
+
+            Debug.WriteLine(max);
+
+            return max;
+        }
+
+        private double GetMaxSpeedForChart(IEnumerable<NodeActiveNetInterface> interActivity)
+        {
+            var maxDownSpeed = interActivity.Select(a => a.DownSpeed).ToList().Max();
+
+            var maxUpSpeed = interActivity.Select(a => a.UpSpeed).ToList().Max();
 
             var max = Math.Max(maxDownSpeed, maxUpSpeed);
 

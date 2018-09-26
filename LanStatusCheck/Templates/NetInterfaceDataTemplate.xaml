@@ -84,6 +84,9 @@
                                     LabelFormatter="{Binding Formatter}"
                                     MajorStep="{Binding TickMajorStepGridLineChart}"
                                     FontSize="8"
+                                    MaximumPadding="0.1"
+                                    IsZoomEnabled="False"
+                                    IsPanEnabled="False"
                                     />
                         
                     <oxy:DateTimeAxis Position="Bottom" 
@@ -93,10 +96,24 @@
                                   IsAxisVisible="False" 
                                   Minimum="{Binding MinTimeForChart}" 
                                   Maximum="{Binding MaxTimeForChart}"
+                                      IsZoomEnabled="False"
+                                      IsPanEnabled="False"
                                       
                                       />
                         
                     </oxy:Plot.Axes>
+                <oxy:Plot.Annotations>
+                    <oxy:LineAnnotation Intercept="1"
+                                        Slope="0"
+                                        TextOrientation="Horizontal"
+                                        Type="Horizontal"
+                                        Y="{Binding MaxSpeedInterfaceDelEmission}"
+                                        Color="Gray"
+                                        TextVerticalAlignment="Bottom"
+                                        Text="{Binding MaxSpeedInterfaceDelEmission, Converter={StaticResource ConverterAdaptivSpeedChannel}}"
+                                        
+                                        />
+                </oxy:Plot.Annotations>
                     <oxy:Plot.Series>
                         
 

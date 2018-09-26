@@ -66,7 +66,6 @@ namespace LanStatusCheck.Classes
 
             maxVal = q3 + (deltaQ * 1.5);
 
-            Debug.WriteLine("Min: {0}  Max: {1}", minVal, maxVal);
 
             return true;
         }
