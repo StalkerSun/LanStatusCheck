@@ -1,9 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:LanStatusCheck.Templates"
-                     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+                    xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
                     xmlns:conv="clr-namespace:LanStatusCheck.Converters"
                     >
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Templates/MaxTemplateDataInterface.xaml" />
+        <ResourceDictionary Source="../Templates/MinTemplateDataInterface.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <conv:ConverterAdaptivSpeedChannel x:Key="ConverterAdaptivSpeedChannel"/>
 
     <ControlTemplate x:Key="NetInterfaceDataTemplate" TargetType="Control">
@@ -45,177 +50,7 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Background" Value="#FF858585"/>
     </Style>
-    
-    <ControlTemplate x:Key="MinTemplateDataInterface" TargetType="Control">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"/>
-                <RowDefinition Height="0.8*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.7*"/>
-                <ColumnDefinition Width="0.3*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding NameInter}" 
-                       Grid.Row="0" 
-                       Grid.Column="0" 
-                       Grid.ColumnSpan="2" 
-                       TextAlignment="Left" 
-                       Margin="1,1,1,1"/>
-
-                <oxy:Plot Grid.Column="0" 
-                          Grid.Row="1"   
-                          PlotAreaBorderThickness ="1" 
-                          PlotAreaBorderColor="Gray" 
-                          Height="70" 
-                          IsLegendVisible="False" 
-                          Background="Transparent" 
-                          >
-                    <oxy:Plot.Axes>
-                    <oxy:LinearAxis Position="Left" 
-                                    TickStyle="None" 
-                                    MajorGridlineStyle="Solid"  
-                                    MinorGridlineStyle="None" 
-                                    IsAxisVisible="True" 
-                                    Minimum="0" 
-                                    Maximum="{Binding MaxSpeedForChart}"
-                                    MajorGridlineThickness="1"
-                                    LabelFormatter="{Binding Formatter}"
-                                    MajorStep="{Binding TickMajorStepGridLineChart}"
-                                    FontSize="8"
-                                    
-                                    IsZoomEnabled="False"
-                                    IsPanEnabled="False"
-                                    />
-                        
-                    <oxy:DateTimeAxis Position="Bottom" 
-                                  TickStyle="None" 
-                                  MajorGridlineStyle="None" 
-                                  MinorGridlineStyle="None" 
-                                  IsAxisVisible="False" 
-                                  Minimum="{Binding MinTimeForChart}" 
-                                  Maximum="{Binding MaxTimeForChart}"
-                                      IsZoomEnabled="False"
-                                      IsPanEnabled="False"
-                                      
-                                      />
-                        
-                    </oxy:Plot.Axes>
-                <oxy:Plot.Annotations>
-                    <oxy:LineAnnotation Intercept="1"
-                                        Slope="0"
-                                        TextOrientation="Horizontal"
-                                        Type="Horizontal"
-                                        Y="{Binding MaxSpeedInterfaceDelEmission}"
-                                        Color="Gray"
-                                        TextVerticalAlignment="Bottom"
-                                        Text="{Binding MaxSpeedInterfaceDelEmission, Converter={StaticResource ConverterAdaptivSpeedChannel}}"
-                                        
-                                        />
-                </oxy:Plot.Annotations>
-                    <oxy:Plot.Series>
-                        
-
-                    <oxy:AreaSeries Title="Down" DataFieldX="Time"
-                                    DataFieldY="DownSpeed"
-                                    ItemsSource="{Binding ActivityDataForChart}"
-                                    StrokeThickness="1" 
-                                    Color="Red"
-                                    />
-                        
-                    <oxy:LineSeries Title="Up" DataFieldX="Time" 
-                                        DataFieldY="UpSpeed"
-                                        ItemsSource="{Binding ActivityDataForChart}"
-                                        StrokeThickness="1" 
-                                        LineStyle="Dash"
-                                        Color="Blue"
-                                    />
-
-                </oxy:Plot.Series>
-                </oxy:Plot>
-
-
-            
-            <Grid x:Name="AtivityNetInterData"
-                  Grid.Row="1" 
-                  Grid.Column="1"  >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.4*"/>
-                    <ColumnDefinition Width="0.6*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.3*"/>
-                    <RowDefinition Height="0.3*"/>
-                    <RowDefinition Height="0.3*"/>
-                </Grid.RowDefinitions>
-
-                <oxy:Plot Grid.Column="0" 
-                          Grid.Row="0"
-                          Grid.RowSpan="2"
-                          Grid.ColumnSpan="2"
-                          PlotAreaBorderThickness ="0" 
-                          IsLegendVisible="False" 
-                          Background="Transparent"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          >
-                    <oxy:Plot.Axes>
-                        <oxy:LinearAxis Position="Left" 
-                                    TickStyle="None" 
-                                    MajorGridlineStyle="Solid"  
-                                    MinorGridlineStyle="None" 
-                                    IsAxisVisible="False" 
-                                    Minimum="0" 
-                                    Maximum="100"
-                                    />
-
-                        <oxy:DateTimeAxis Position="Bottom" 
-                                  TickStyle="None" 
-                                  MajorGridlineStyle="None" 
-                                  MinorGridlineStyle="None" 
-                                  IsAxisVisible="False" 
-                                  Minimum="{Binding MinTimeForChart}" 
-                                  Maximum="{Binding MaxTimeForChart}"
-                                      
-                                      />
-
-                    </oxy:Plot.Axes>
-                    <oxy:Plot.Series>
-                        <oxy:LineSeries Title="Down" 
-                                        DataFieldX="Time"
-                                    DataFieldY="LoadPerInSec"
-                                    ItemsSource="{Binding ActivityDataForChart}"
-                                    StrokeThickness="1" 
-                                    Color="Red"
-                                    />
-
-                    </oxy:Plot.Series>
-                </oxy:Plot>
-
-                <TextBlock Text="Load:" Grid.Column="0" Grid.Row="1" TextAlignment="Right" Margin="1,1,1,1"/>
-                <TextBlock Text="{Binding LoadOnInterface, StringFormat={}{0}%}" Grid.Column="1" Grid.Row="1" TextAlignment="Left" Margin="1,1,1,1"/>
-                <TextBlock Text="Up:" Grid.Column="0" Grid.Row="2" TextAlignment="Right" Margin="1,1,1,1"/>
-                <TextBlock Text="{Binding UpSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" Grid.Column="1" Grid.Row="2" TextAlignment="Left" Margin="1,1,1,1"/>
-                <TextBlock Text="Down:" Grid.Column="0" Grid.Row="3" TextAlignment="Right" Margin="1,1,1,1"/>
-                <TextBlock Text="{Binding DownSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" Grid.Column="1" Grid.Row="3" TextAlignment="Left" Margin="1,1,1,1"/>
-
-            </Grid>
-
-            
-            
-            
-        </Grid>
-    </ControlTemplate>
-
-    <ControlTemplate x:Key="MaxTemplateDataInterface" TargetType="Control">
-        <Grid>
-            <TextBlock Text="Select"/>
-        </Grid>
-    </ControlTemplate>
-
-
-
 </ResourceDictionary>
     

@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace LanStatusCheck.ViewModels
 {
@@ -37,7 +38,8 @@ namespace LanStatusCheck.ViewModels
 
             CollectionNetInter = new ObservableCollection<NetAdapterDataView>();
 
-            _messenger = IoC.Get<IMessenger>().Abonent(Abonent.VModelNetworkAdapters).AddHandler(HandleMessage);
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()) == false)
+                _messenger = IoC.Get<IMessenger>().Abonent(Abonent.VModelNetworkAdapters).AddHandler(HandleMessage);
 
             _model = new ModelDataLan();
 

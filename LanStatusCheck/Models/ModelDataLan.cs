@@ -4,12 +4,14 @@ using mm;
 using msg;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 
 namespace LanStatusCheck.Models
 {
@@ -37,8 +39,8 @@ namespace LanStatusCheck.Models
 
         public ModelDataLan()
         {
-
-            _messenger = IoC.Get<IMessenger>().Abonent(Abonent.ModelNetworkAdapters).AddHandler(HandleMessage);
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()) == false)
+                _messenger = IoC.Get<IMessenger>().Abonent(Abonent.ModelNetworkAdapters).AddHandler(HandleMessage);
 
             _collectionInterface = new List<NetworkInterface>(GetAllUpLanInterface());
 

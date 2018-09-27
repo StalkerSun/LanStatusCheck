@@ -17,8 +17,6 @@ namespace LanStatusCheck.Classes
 
         private readonly int _minSpeed = 60;
 
-        private string _nameNetInter;
-
         private double _upSpeed;
 
         private double _downSpeed;
@@ -26,6 +24,8 @@ namespace LanStatusCheck.Classes
         private double _minTimeForChart;
 
         private double _maxTimeForChart;
+
+        private bool _isUpTextOnAnatation = false;
 
         private double _maxSpeedForChart = 60;
 
@@ -35,6 +35,7 @@ namespace LanStatusCheck.Classes
 
         private Func<double, string> _formatter = (a) => ConvertData(a);
 
+        private int _loadOnInterface;
 
         private int _maxCountNodeInChartMin = 50;
 
@@ -72,7 +73,7 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        private int _loadOnInterface;
+        
 
         public int LoadOnInterface
         {
@@ -155,6 +156,16 @@ namespace LanStatusCheck.Classes
             }
         }
 
+        public bool IsUpTextOnAnatation 
+        {
+            get { return _isUpTextOnAnatation; }
+            set
+            {
+                _isUpTextOnAnatation = value;
+
+                OnPropertyChanged();
+            }
+        }
 
 
 
@@ -225,7 +236,9 @@ namespace LanStatusCheck.Classes
 
             MaxSpeedInterfaceDelEmission = GetMaxSpeedForChartDelEmissions(ActivityDataForChart);
 
-            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 2);
+            IsUpTextOnAnatation = ((MaxSpeedForChart - MaxSpeedInterfaceDelEmission) > ((MaxSpeedForChart * 25) / 100));
+
+            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 3);
         }
 
         
