@@ -22,7 +22,7 @@
                 <ListBox ItemsSource="{Binding CollectionNetInter}" 
                          Style="{DynamicResource ListBoxNetInterfaceDataStyle}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         HorizontalContentAlignment="Stretch"/>
+                         HorizontalContentAlignment="Stretch" Background="#FFCBCBCB"/>
                 
             </Border>
         </Grid>   
