@@ -21,7 +21,7 @@
     
     <SolidColorBrush x:Key="ColorTextHeader" Color="#FFCFD1D1"/>
 
-    <Color x:Key="ColorSeriesDataUp">Blue</Color>
+    <Color x:Key="ColorSeriesDataUp">#FF0099FF</Color>
 
     <Color x:Key="ColorSeriesDataDown">Red</Color>
 

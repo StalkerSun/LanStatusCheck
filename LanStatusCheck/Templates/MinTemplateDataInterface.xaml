@@ -166,7 +166,7 @@
                                       />
 
                             </oxy:Plot.Axes>
-                            <oxy:LineSeries Title="Down" 
+                            <oxy:AreaSeries Title="Down" 
                                 DataFieldX="Time"
                                 DataFieldY="LoadPerInSec"
                                 ItemsSource="{Binding ActivityDataForChart}"
