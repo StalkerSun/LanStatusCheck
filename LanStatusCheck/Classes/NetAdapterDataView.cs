@@ -257,6 +257,8 @@ namespace LanStatusCheck.Classes
 
         private int GetPercentLoadOnInterface(double upSpeedkbS, double downSpeedKbS, double maxSpeedInterfaceKbS)
         {
+            if (maxSpeedInterfaceKbS == 0) return 0;
+
             var totalLoad = upSpeedkbS + downSpeedKbS;
 
             var currentLoad = (totalLoad * 100.0) / maxSpeedInterfaceKbS;
