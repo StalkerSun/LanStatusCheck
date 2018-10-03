@@ -23,14 +23,19 @@ namespace LanStatusCheck.Classes
         /// <summary>Ip адреса интерфейса</summary>
         public List<string> InterfaceIPAdresses;
 
+        /// <summary>Данные по истории измеения сосояния</summary> //TODO:Назвал как-то хреново, при рефакторинге ПЕРЕИМЕНОВАТЬ
+        public List<NodeActiveNetInterface> HistoryDataActivity; 
+
         #endregion
 
         #region Variable
 
-        private long _oldReceivedBytes = -1;
+        private long _oldReceivedBytes = int.MinValue;
 
-        private long _oldSentBytes = -1;
+        private long _oldSentBytes = int.MinValue;
 
+        private int _countPointInHistory = 600;
+        
         #endregion
         
         #region ctor
@@ -39,9 +44,49 @@ namespace LanStatusCheck.Classes
             Interface = inter;
 
             InterfaceIPAdresses = new List<string>(GetIpAddresses(inter));
+
+            HistoryDataActivity = new List<NodeActiveNetInterface>();
         }
 
         #endregion
+
+        public void CulculateParameters( int interval)
+        {
+            var totalReceived = Interface.GetIPv4Statistics().BytesReceived;
+
+            var totalSent = Interface.GetIPv4Statistics().BytesReceived;
+
+            if(_oldReceivedBytes == int.MinValue || _oldSentBytes == int.MinValue)
+            {
+                _oldReceivedBytes = totalReceived;
+
+                _oldSentBytes = totalSent;
+
+                return;
+            }
+
+            var speedUpKBitS = GetSpeedKBitS(interval, _oldSentBytes, totalSent);
+
+            var speedDownKBitS = GetSpeedKBitS(interval, _oldReceivedBytes, totalReceived);
+
+            var loadUp = GetPercentLoadOnInterface(speedUpKBitS, Interface.Speed / 1024);
+
+            var loadDown = GetPercentLoadOnInterface(speedDownKBitS, Interface.Speed / 1024);
+
+            if (HistoryDataActivity.Count > _countPointInHistory)
+                HistoryDataActivity.RemoveAt(0);
+
+            HistoryDataActivity.Add(new NodeActiveNetInterface()
+            {
+                DownSpeedKBitSec = speedDownKBitS,
+                UpSpeedKBitSec = speedUpKBitS,
+                LoadPerSecDown = loadDown,
+                LoadPerSecUp = loadUp,
+                TotalRecivedBytes = totalReceived,
+                TotalTransmiteBytes = totalSent
+
+            });
+        }
 
         /// <summary>
         /// Посчитать текущуюю скорость на интерфейсе
@@ -75,6 +120,14 @@ namespace LanStatusCheck.Classes
             _oldSentBytes = totalSentB;
         }
 
+        private double GetSpeedKBitS(int interval, long oldTotalBytes, long newTotalBytes)
+        {
+            var delta = newTotalBytes - oldTotalBytes;
+
+            return ((delta * 8) / 1024) / interval;
+        }
+
+
         private List<string> GetIpAddresses(NetworkInterface inter)
         {
             var ipCollection = inter.GetIPProperties().UnicastAddresses.Where(a=>a.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
@@ -84,6 +137,12 @@ namespace LanStatusCheck.Classes
             return listStr;
         }
 
+        private int GetPercentLoadOnInterface(double speedkbS, double maxSpeedInterfaceKbS)
+        {
+            var currentLoad = (speedkbS * 100.0) / maxSpeedInterfaceKbS;
+
+            return Convert.ToInt32(currentLoad);
+        }
 
 
 

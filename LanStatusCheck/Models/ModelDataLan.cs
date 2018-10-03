@@ -33,6 +33,7 @@ namespace LanStatusCheck.Models
 
         public List<NetworkInterfaceData> CollectionDataInterface;
 
+
         #endregion
         
         #region ctor

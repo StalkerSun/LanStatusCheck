@@ -255,14 +255,7 @@ namespace LanStatusCheck.Classes
             return gbS < 1 ? String.Format("{0} Kb\\s", val) : String.Format("{0:F2} Mb\\s", gbS);
         }
 
-        private int GetPercentLoadOnInterface(double upSpeedkbS, double downSpeedKbS, double maxSpeedInterfaceKbS)
-        {
-            var totalLoad = upSpeedkbS + downSpeedKbS;
-
-            var currentLoad = (totalLoad * 100.0) / maxSpeedInterfaceKbS;
-
-            return Convert.ToInt32(currentLoad);
-        }
+        
 
         private double GetMaxSpeedForChartDelEmissions(IEnumerable<NodeActiveNetInterface> interActivity)
         {
@@ -302,21 +295,5 @@ namespace LanStatusCheck.Classes
         }
 
 
-    }
-
-    public class NodeActiveNetInterface
-    {
-        public double UpSpeed { get; set; }
-
-        public double DownSpeed { get; set; }
-
-        public DateTime Time { get; set; }
-
-        public int LoadPerInSec { get; set; }
-
-        public NodeActiveNetInterface()
-        {
-
-        }
     }
 }
