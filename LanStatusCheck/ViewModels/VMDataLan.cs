@@ -55,7 +55,7 @@ namespace LanStatusCheck.ViewModels
             {
                 case MsgType.UpdateDataModelNetInter:
 
-                    UpdateDataNetworkInter();
+                    //UpdateDataNetworkInter();
 
                     break;
                 case MsgType.InitNetInterFinished:
@@ -75,30 +75,11 @@ namespace LanStatusCheck.ViewModels
 
         private void InitInterface()
         {
-            var tmpList = new List<NetAdapterDataView>(_model.CollectionDataInterface.Select(a => new NetAdapterDataView()
+            foreach(var inter in _model.CollectionDataInterface)
             {
-                DownSpeed = a.DownloadSpeedKBitS,
-                UpSpeed = a.UploadSpeedKBitS,
-                DataInterface = a
-                
-            }));
-
-            foreach(var data in tmpList)
-            {
-                CollectionNetInter.Add(new NetAdapterDataView(data));
+                CollectionNetInter.Add(new NetAdapterDataView { DataInterfaceModel = inter });
             }
         }
-
-        private void UpdateDataNetworkInter()
-        {
-            foreach (var node in CollectionNetInter)
-            {
-                var res = _model.CollectionDataInterface.First(a => a.Interface.Name == node.NameInter);
-
-                node.SetParamData(res.UploadSpeedKBitS, res.DownloadSpeedKBitS);
-            }
-        }
-
 
         #endregion
 

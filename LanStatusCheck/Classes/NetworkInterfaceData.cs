@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LanStatusCheck.Classes
@@ -24,7 +25,9 @@ namespace LanStatusCheck.Classes
         public List<string> InterfaceIPAdresses;
 
         /// <summary>Данные по истории измеения сосояния</summary> //TODO:Назвал как-то хреново, при рефакторинге ПЕРЕИМЕНОВАТЬ
-        public List<NodeActiveNetInterface> HistoryDataActivity; 
+        public readonly List<NodeActiveNetInterface> HistoryDataActivity;
+
+        public event Action UpdateData = delegate { };
 
         #endregion
 
@@ -35,12 +38,16 @@ namespace LanStatusCheck.Classes
         private long _oldSentBytes = int.MinValue;
 
         private int _countPointInHistory = 600;
+
+        private SynchronizationContext _context;
         
         #endregion
         
         #region ctor
         public NetworkInterfaceData(NetworkInterface inter)
         {
+            _context = SynchronizationContext.Current;
+
             Interface = inter;
 
             InterfaceIPAdresses = new List<string>(GetIpAddresses(inter));
@@ -54,7 +61,7 @@ namespace LanStatusCheck.Classes
         {
             var totalReceived = Interface.GetIPv4Statistics().BytesReceived;
 
-            var totalSent = Interface.GetIPv4Statistics().BytesReceived;
+            var totalSent = Interface.GetIPv4Statistics().BytesSent;
 
             if(_oldReceivedBytes == int.MinValue || _oldSentBytes == int.MinValue)
             {
@@ -68,6 +75,10 @@ namespace LanStatusCheck.Classes
             var speedUpKBitS = GetSpeedKBitS(interval, _oldSentBytes, totalSent);
 
             var speedDownKBitS = GetSpeedKBitS(interval, _oldReceivedBytes, totalReceived);
+
+            _oldReceivedBytes = totalReceived;
+
+            _oldSentBytes = totalSent;
 
             var loadUp = GetPercentLoadOnInterface(speedUpKBitS, Interface.Speed / 1024);
 
@@ -83,9 +94,13 @@ namespace LanStatusCheck.Classes
                 LoadPerSecDown = loadDown,
                 LoadPerSecUp = loadUp,
                 TotalRecivedBytes = totalReceived,
-                TotalTransmiteBytes = totalSent
+                TotalTransmiteBytes = totalSent,
+                Time = DateTime.Now
+
 
             });
+
+            _context.Post(d=>UpdateData(), null);
         }
 
         /// <summary>

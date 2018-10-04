@@ -29,5 +29,11 @@ namespace LanStatusCheck.Classes
         {
 
         }
+
+        public override string ToString()
+        {
+            return string.Format("UpSpeedKBitSec = {0}, DownSpeedKBitSec = {1}, LoadPerSecUp = {2}, LoadPerSecDown = {3}, TotalRecivedBytes = {4}, TotalTransmiteBytes = {5}, Time = {6}",
+                UpSpeedKBitSec, DownSpeedKBitSec, LoadPerSecUp, LoadPerSecDown, TotalRecivedBytes, TotalTransmiteBytes, Time);
+        }
     }
 }
