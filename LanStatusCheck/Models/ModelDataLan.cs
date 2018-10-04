@@ -31,7 +31,7 @@ namespace LanStatusCheck.Models
 
         #region public
 
-        public List<NetworkInterfaceData> CollectionDataInterface;
+        public readonly List<NetworkInterfaceData> CollectionDataInterface;
 
 
         #endregion
@@ -77,10 +77,10 @@ namespace LanStatusCheck.Models
         {
             foreach (var inter in CollectionDataInterface)
             {
-                inter.CulcCurrentSpeed(_periondTestLanSpeed / 1000);
+                inter.CulculateParameters(_periondTestLanSpeed / 1000);
             }
 
-            CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.UpdateDataModelNetInter);
+            //CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.UpdateDataModelNetInter);
         }
 
         private List<NetworkInterface> GetAllUpLanInterface()

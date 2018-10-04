@@ -83,8 +83,6 @@ namespace LanStatusCheck.Classes
 
             var resSeq = localList.RemoveAll(a => (a < min || a > max));
 
-            Debug.WriteLineIf(resSeq > 0, "Delete: "+ resSeq);
-
             return localList;
         }
 

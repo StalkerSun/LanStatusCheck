@@ -35,9 +35,13 @@ namespace LanStatusCheck.Classes
 
         private Func<double, string> _formatter = (a) => ConvertData(a);
 
-        private int _loadOnInterface;
+        private int _loadOnInterUp;
 
         private int _maxCountNodeInChartMin = 50;
+
+        private int _loadOnInterDown;
+
+        private NetworkInterfaceData _dataInterfaceModel;
 
 
 
@@ -45,11 +49,20 @@ namespace LanStatusCheck.Classes
 
         #region Property
 
-        public string NameInter { get { return DataInterface.Interface.Name; } }
+        public string NameInter { get { return DataInterfaceModel.Interface.Name; } }
 
-        public string DescInter { get { return DataInterface.Interface.Description; } }
+        public string DescInter { get { return DataInterfaceModel.Interface.Description; } }
 
-        public NetworkInterfaceData DataInterface { get; set; }
+        public NetworkInterfaceData DataInterfaceModel
+        {
+            get { return _dataInterfaceModel; }
+            set
+            {
+                _dataInterfaceModel = value;
+
+                _dataInterfaceModel.UpdateData += () => SetParamData(); 
+            }
+        }
 
         public double UpSpeed
         {
@@ -75,16 +88,25 @@ namespace LanStatusCheck.Classes
 
         
 
-        public int LoadOnInterface
+        public int LoadOnInterUp
         {
-            get { return _loadOnInterface; }
+            get { return _loadOnInterUp; }
             set
             {
-                _loadOnInterface = value;
+                _loadOnInterUp = value;
 
                 OnPropertyChanged();
             }
         }
+
+        
+
+        public int LoadOnInterDown
+        {
+            get { return _loadOnInterDown; }
+            set { _loadOnInterDown = value; }
+        }
+
 
 
         //public int LoadOnInterface { get; set; }
@@ -192,29 +214,40 @@ namespace LanStatusCheck.Classes
         {
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
 
+            DataInterfaceModel = data.DataInterfaceModel;
+
             UpSpeed = data.UpSpeed;
 
             DownSpeed = data.DownSpeed;
 
-            DataInterface = data.DataInterface;
+            
         }
 
         #endregion
 
         #region public methods 
 
-        public void SetParamData(double upSpeed, double downSpeed)
+        public void SetParamData()
         {
-            UpSpeed = upSpeed;
+            var currentData = _dataInterfaceModel.HistoryDataActivity.Last();
 
-            DownSpeed = downSpeed;
+            //Debug.WriteLineIf(NameInter.IndexOf("Локалка") != -1, currentData.ToString());
+
+            LoadOnInterUp = currentData.LoadPerSecUp;
+
+            LoadOnInterDown = currentData.LoadPerSecDown;
+
+            UpSpeed = currentData.UpSpeedKBitSec;
+
+            DownSpeed = currentData.DownSpeedKBitSec;
+
 
             if (ActivityDataForChart.Count > _maxCountNodeInChartMin)
                 ActivityDataForChart.RemoveAt(0);
 
-            LoadOnInterface = GetPercentLoadOnInterface(upSpeed, downSpeed, DataInterface.Interface.Speed / 1024.0);
+            ActivityDataForChart.Add(currentData);
 
-            ActivityDataForChart.Add(new NodeActiveNetInterface { DownSpeed = downSpeed, UpSpeed = upSpeed, Time = DateTime.Now, LoadPerInSec = LoadOnInterface });
+            //Создание эффекта заполнения справо налево
 
             if (ActivityDataForChart.Count < _maxCountNodeInChartMin)
             {
@@ -230,15 +263,15 @@ namespace LanStatusCheck.Classes
 
             MaxTimeForChart = DateTimeAxis.ToDouble(ActivityDataForChart.Last().Time);
 
-            if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence) return;
-
             MaxSpeedForChart = GetMaxSpeedForChart(ActivityDataForChart);
+
+            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 3);
+
+            if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence) return;
 
             MaxSpeedInterfaceDelEmission = GetMaxSpeedForChartDelEmissions(ActivityDataForChart);
 
             IsUpTextOnAnatation = ((MaxSpeedForChart - MaxSpeedInterfaceDelEmission) > ((MaxSpeedForChart * 25) / 100));
-
-            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 3);
         }
 
         
@@ -259,22 +292,20 @@ namespace LanStatusCheck.Classes
 
         private double GetMaxSpeedForChartDelEmissions(IEnumerable<NodeActiveNetInterface> interActivity)
         {
-            var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.DownSpeed).ToList()).Max();
+            var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.DownSpeedKBitSec).ToList()).Max();
 
-            var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.UpSpeed).ToList()).Max();
+            var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.UpSpeedKBitSec).ToList()).Max();
 
             var max = Math.Max(maxDownSpeed, maxUpSpeed);
-
-            Debug.WriteLine(max);
 
             return max;
         }
 
         private double GetMaxSpeedForChart(IEnumerable<NodeActiveNetInterface> interActivity)
         {
-            var maxDownSpeed = interActivity.Select(a => a.DownSpeed).ToList().Max();
+            var maxDownSpeed = interActivity.Select(a => a.DownSpeedKBitSec).ToList().Max();
 
-            var maxUpSpeed = interActivity.Select(a => a.UpSpeed).ToList().Max();
+            var maxUpSpeed = interActivity.Select(a => a.UpSpeedKBitSec).ToList().Max();
 
             var max = Math.Max(maxDownSpeed, maxUpSpeed);
 

@@ -104,14 +104,14 @@
 
 
                         <oxy:AreaSeries Title="Down" DataFieldX="Time"
-                            DataFieldY="DownSpeed"
+                            DataFieldY="DownSpeedKBitSec"
                             ItemsSource="{Binding ActivityDataForChart}"
                             StrokeThickness="1" 
                             Color="{DynamicResource ColorSeriesDataDown}"
                                     />
 
                         <oxy:LineSeries Title="Up" DataFieldX="Time" 
-                            DataFieldY="UpSpeed"
+                            DataFieldY="UpSpeedKBitSec"
                             ItemsSource="{Binding ActivityDataForChart}"
                             StrokeThickness="1" 
                             LineStyle="Dash"
@@ -176,18 +176,25 @@
 
                         </oxy:Plot>
 
-                        <TextBlock Text="Load:" 
+                        <TextBlock Text="U/D:" 
                                    Grid.Column="0" 
                                    Grid.Row="1" 
                                    TextAlignment="Right" 
                                    Margin="1,1,1,1" 
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
-                        
-                        <TextBlock Text="{Binding LoadOnInterface, StringFormat=\{0\}%}" 
+
+                        <TextBlock  
                                    Grid.Column="1" Grid.Row="1" 
                                    TextAlignment="Left" 
                                    Margin="1,1,1,1"
-                                   Foreground="{DynamicResource ColorTextHeader}"/>
+                                   Foreground="{DynamicResource ColorTextHeader}">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}|{1}">
+                                    <Binding Path="LoadOnInterUp"/>
+                                    <Binding Path="LoadOnInterDown"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                         
                         <TextBlock 
                             Text="Up:" 
