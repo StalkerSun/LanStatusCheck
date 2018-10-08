@@ -35,11 +35,11 @@
                         <ColumnDefinition Width="0.3*"/>
                     </Grid.ColumnDefinitions>
                     <oxy:Plot Grid.Column="0" 
-                        Grid.Row="0"   
-                        PlotAreaBorderThickness ="1" 
-                        PlotAreaBorderColor="{DynamicResource BorderBrushforPlotAreaChartColor}" 
-                        Height="70" 
-                        IsLegendVisible="False" 
+                            Grid.Row="0"   
+                            PlotAreaBorderThickness ="1" 
+                            PlotAreaBorderColor="{DynamicResource BorderBrushforPlotAreaChartColor}" 
+                            Height="70" 
+                            IsLegendVisible="False" 
                               DefaultFontSize="9" 
                               IsManipulationEnabled="False" 
                               IsMouseWheelEnabled="False" 
@@ -125,14 +125,14 @@
                         Grid.Row="0" 
                         Grid.Column="1" >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.4*"/>
-                            <ColumnDefinition Width="0.6*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0.1*"/>
-                            <RowDefinition Height="0.3*"/>
-                            <RowDefinition Height="0.3*"/>
-                            <RowDefinition Height="0.3*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
+                            <RowDefinition Height="0.25*"/>
                         </Grid.RowDefinitions>
 
                         <oxy:Plot Grid.Column="0" 
@@ -176,26 +176,33 @@
 
                         </oxy:Plot>
 
-                        <TextBlock Text="U/D:" 
+                        <TextBlock Text="L Down:" 
+                                   Grid.Column="0" 
+                                   Grid.Row="0" 
+                                   TextAlignment="Right" 
+                                   Margin="1,1,1,1" 
+                                   Foreground="{DynamicResource ColorTextSecondary}"/>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="0" 
+                                   TextAlignment="Left" 
+                                   Margin="1,1,1,1"
+                                   Foreground="{DynamicResource ColorTextHeader}"
+                                   Text="{Binding LoadOnInterDown ,StringFormat={}{0}%}"/>
+
+                        <TextBlock Text="L Up:" 
                                    Grid.Column="0" 
                                    Grid.Row="1" 
                                    TextAlignment="Right" 
                                    Margin="1,1,1,1" 
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
 
-                        <TextBlock  
-                                   Grid.Column="1" Grid.Row="1" 
+                        <TextBlock Grid.Column="1" Grid.Row="1" 
                                    TextAlignment="Left" 
                                    Margin="1,1,1,1"
-                                   Foreground="{DynamicResource ColorTextHeader}">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}|{1}">
-                                    <Binding Path="LoadOnInterUp"/>
-                                    <Binding Path="LoadOnInterDown"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                        
+                                   Foreground="{DynamicResource ColorTextHeader}"
+                                   Text="{Binding LoadOnInterUp ,StringFormat={}{0}%}"/>
+
                         <TextBlock 
                             Text="Up:" 
                             Grid.Column="0" 

@@ -39,9 +39,13 @@ namespace LanStatusCheck.ViewModels
             CollectionNetInter = new ObservableCollection<NetAdapterDataView>();
 
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()) == false)
+            {
                 _messenger = IoC.Get<IMessenger>().Abonent(Abonent.VModelNetworkAdapters).AddHandler(HandleMessage);
 
-            _model = new ModelDataLan();
+                _model = new ModelDataLan();
+            }
+
+            
 
         }
 

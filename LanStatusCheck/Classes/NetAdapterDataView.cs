@@ -104,7 +104,12 @@ namespace LanStatusCheck.Classes
         public int LoadOnInterDown
         {
             get { return _loadOnInterDown; }
-            set { _loadOnInterDown = value; }
+            set
+            {
+                _loadOnInterDown = value;
+
+                OnPropertyChanged();
+            }
         }
 
 

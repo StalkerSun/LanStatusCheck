@@ -10,7 +10,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Templates/NetInterfaceDataTemplate.xaml" />
+                <ResourceDictionary Source="Templates/NetInterfaceDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <vm:VMDataLan x:Key="vmDataTemplate"/>
         </ResourceDictionary>
