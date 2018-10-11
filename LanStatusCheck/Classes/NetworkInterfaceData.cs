@@ -80,9 +80,9 @@ namespace LanStatusCheck.Classes
 
             _oldSentBytes = totalSent;
 
-            var loadUp = GetPercentLoadOnInterface(speedUpKBitS, Interface.Speed / 1024);
+            var loadUp = GetPercentLoadOnInterface(speedUpKBitS, Interface.Speed / 1000);
 
-            var loadDown = GetPercentLoadOnInterface(speedDownKBitS, Interface.Speed / 1024);
+            var loadDown = GetPercentLoadOnInterface(speedDownKBitS, Interface.Speed / 1000);
 
             if (HistoryDataActivity.Count > _countPointInHistory)
                 HistoryDataActivity.RemoveAt(0);
@@ -126,9 +126,9 @@ namespace LanStatusCheck.Classes
 
             var currentSentB = totalSentB - _oldSentBytes;
 
-            DownloadSpeedKBitS = ((currentReceivedB * 8) / 1024) / interval;
+            DownloadSpeedKBitS = ((currentReceivedB * 8) / 1000) / interval;
 
-            UploadSpeedKBitS = ((currentSentB * 8) / 1024) / interval;
+            UploadSpeedKBitS = ((currentSentB * 8) / 1000) / interval;
 
             _oldReceivedBytes = totalReceivedB;
 
@@ -139,7 +139,7 @@ namespace LanStatusCheck.Classes
         {
             var delta = newTotalBytes - oldTotalBytes;
 
-            return ((delta * 8) / 1024) / interval;
+            return ((delta * 8) / 1000) / interval;
         }
 
 

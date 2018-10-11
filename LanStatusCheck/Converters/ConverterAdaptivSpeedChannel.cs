@@ -16,7 +16,7 @@ namespace LanStatusCheck.Converters
 
             if (value is double val)
             {
-                var gbS = val / 1024;
+                var gbS = val / 1000;
 
                 return gbS < 1 ? String.Format("{0} Kbit\\s", val) : String.Format("{0:F2} Mbit\\s", gbS);
             }

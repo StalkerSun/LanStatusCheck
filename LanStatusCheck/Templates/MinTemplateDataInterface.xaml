@@ -4,7 +4,7 @@
                     xmlns:conv="clr-namespace:LanStatusCheck.Converters"
                     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Templates/ThemeResourсes.xaml"/>
+        <ResourceDictionary Source="../Templates/DarkThemeResourсes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <conv:ConverterAdaptivSpeedChannel x:Key="ConverterAdaptivSpeedChannel"/>

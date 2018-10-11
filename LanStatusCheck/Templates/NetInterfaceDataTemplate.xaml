@@ -51,6 +51,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="Background" Value="#FF858585"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
     </Style>
 </ResourceDictionary>
     
