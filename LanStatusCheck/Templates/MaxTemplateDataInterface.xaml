@@ -8,8 +8,9 @@
     </ResourceDictionary.MergedDictionaries>
 
     <conv:ConverterAdaptivSpeedChannel x:Key="ConverterAdaptivSpeedChannel"/>
+    <conv:ConverterLevelDataSize x:Key="ConverterLevelDataSize"/>
 
-    <LinearGradientBrush x:Key="OpacityMaskForChart" >
+        <LinearGradientBrush x:Key="OpacityMaskForChart" >
         <GradientStop Color="Transparent" Offset="0"/>
         <GradientStop Color="Black" Offset="1"/>
     </LinearGradientBrush>
@@ -152,7 +153,7 @@
                                    Grid.Row="0" 
                                    TextAlignment="Left" 
                                    Margin="1,1,1,1"
-                                   Foreground="{DynamicResource ColorTextHeader}"/>
+                                   Foreground="{DynamicResource ColorTextPrimary}"/>
 
                         <TextBlock Text="Down:" 
                                    Grid.Column="0" 
@@ -166,7 +167,7 @@
                                    Grid.Row="1" 
                                    TextAlignment="Left" 
                                    Margin="1,1,1,1"
-                                   Foreground="{DynamicResource ColorTextHeader}"/>
+                                   Foreground="{DynamicResource ColorTextPrimary}"/>
 
                     </Grid>
 
@@ -283,7 +284,7 @@
                                    Grid.Row="0" 
                                    TextAlignment="Left" 
                                    Margin="2,1,1,1"
-                                   Foreground="{DynamicResource ColorTextHeader}"
+                                   Foreground="{DynamicResource ColorTextPrimary}"
                                    Text="{Binding LoadOnInterDown ,StringFormat={}{0}%}"/>
 
                         <TextBlock Text="Load Up:" 
@@ -296,7 +297,7 @@
                         <TextBlock Grid.Column="1" Grid.Row="1" 
                                    TextAlignment="Left" 
                                    Margin="2,1,1,1"
-                                   Foreground="{DynamicResource ColorTextHeader}"
+                                   Foreground="{DynamicResource ColorTextPrimary}"
                                    Text="{Binding LoadOnInterUp ,StringFormat={}{0}%}"/>
 
 
@@ -319,13 +320,28 @@
                                    TextAlignment="Right" 
                                    Margin="1,1,1,1" 
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
+
+                        <TextBlock Text="{Binding TotalRecivedData, Converter={StaticResource ConverterLevelDataSize}}"
+                                   Grid.Column="1"
+                                   Grid.Row="0"
+                                   TextAlignment="Left" 
+                                   Margin="1,1,1,1" 
+                                   Foreground="{DynamicResource ColorTextPrimary}"/>
+
                         <TextBlock Text="Total Up:"
                                    Grid.Column="0"
                                    Grid.Row="1"
                                    TextAlignment="Right" 
                                    Margin="1,1,1,1" 
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
-                        
+
+                        <TextBlock Text="{Binding TotalTransmiteData, Converter={StaticResource ConverterLevelDataSize}}"
+                                   Grid.Column="1"
+                                   Grid.Row="1"
+                                   TextAlignment="Left" 
+                                   Margin="1,1,1,1" 
+                                   Foreground="{DynamicResource ColorTextPrimary}"/>
+
 
                     </Grid>
 

@@ -21,6 +21,8 @@
     
     <SolidColorBrush x:Key="ColorTextHeader" Color="#FFCFD1D1"/>
 
+    <SolidColorBrush x:Key="ColorTextPrimary" Color="#FFCFD1D1"/>
+
     <Color x:Key="ColorSeriesDataUp">#FF0099FF</Color>
 
     <Color x:Key="ColorSeriesDataDown">Red</Color>
@@ -28,6 +30,7 @@
     <Color x:Key="ColorSeriesLoadInterface">Yellow</Color>
 
     <Color x:Key="BorderBrushforPlotAreaChartColor">#758F8F8F</Color>
+    
     
 
 </ResourceDictionary>

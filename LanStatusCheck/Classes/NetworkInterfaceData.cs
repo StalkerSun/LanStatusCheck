@@ -13,21 +13,23 @@ namespace LanStatusCheck.Classes
         #region Fields
 
         /// <summary>Объект интерфейса</summary>
-        public NetworkInterface Interface;
+        public NetworkInterface Interface { get; private set; }
 
         /// <summary>Скорость отдачи</summary>
-        public double UploadSpeedKBitS;
+        public double UploadSpeedKBitS { get; private set; }
 
         /// <summary>Скорость загрузки</summary>
-        public double DownloadSpeedKBitS;
+        public double DownloadSpeedKBitS { get; private set; }
 
         /// <summary>Ip адреса интерфейса</summary>
-        public List<string> InterfaceIPAdresses;
+        public List<string> InterfaceIPAdresses { get; private set; }
 
         /// <summary>Данные по истории измеения сосояния</summary> //TODO:Назвал как-то хреново, при рефакторинге ПЕРЕИМЕНОВАТЬ
         public readonly List<NodeActiveNetInterface> HistoryDataActivity;
 
         public event Action UpdateData = delegate { };
+
+
 
         #endregion
 

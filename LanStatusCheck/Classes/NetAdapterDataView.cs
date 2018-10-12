@@ -41,6 +41,10 @@ namespace LanStatusCheck.Classes
 
         private int _loadOnInterDown;
 
+        private long _totalTransmiteData;
+
+        private long _totalRecivedData;
+
         private NetworkInterfaceData _dataInterfaceModel;
 
 
@@ -48,6 +52,8 @@ namespace LanStatusCheck.Classes
         #endregion
 
         #region Property
+
+        #region Prop data interface
 
         public string NameInter { get { return DataInterfaceModel.Interface.Name; } }
 
@@ -60,7 +66,7 @@ namespace LanStatusCheck.Classes
             {
                 _dataInterfaceModel = value;
 
-                _dataInterfaceModel.UpdateData += () => SetParamData(); 
+                _dataInterfaceModel.UpdateData += () => SetParamData();
             }
         }
 
@@ -86,7 +92,7 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        
+
 
         public int LoadOnInterUp
         {
@@ -99,7 +105,7 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        
+
 
         public int LoadOnInterDown
         {
@@ -112,10 +118,31 @@ namespace LanStatusCheck.Classes
             }
         }
 
+        public long TotalRecivedData
+        {
+            get { return _totalRecivedData; }
+            set
+            {
+                _totalRecivedData = value;
 
+                OnPropertyChanged();
+            }
+        }
 
-        //public int LoadOnInterface { get; set; }
+        public long TotalTransmiteData
+        {
+            get { return _totalTransmiteData; }
+            set
+            {
+                _totalTransmiteData = value;
 
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Prop For Charts
 
         public double MinTimeForChart
         {
@@ -128,7 +155,7 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        public double  MaxTimeForChart
+        public double MaxTimeForChart
         {
             get { return _maxTimeForChart; }
             set
@@ -183,7 +210,7 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        public bool IsUpTextOnAnatation 
+        public bool IsUpTextOnAnatation
         {
             get { return _isUpTextOnAnatation; }
             set
@@ -194,7 +221,7 @@ namespace LanStatusCheck.Classes
             }
         }
 
-
+        #endregion
 
         #endregion
 
@@ -225,6 +252,10 @@ namespace LanStatusCheck.Classes
 
             DownSpeed = data.DownSpeed;
 
+            TotalRecivedData = data.TotalRecivedData;
+
+            TotalTransmiteData = data.TotalTransmiteData;
+
             
         }
 
@@ -246,6 +277,9 @@ namespace LanStatusCheck.Classes
 
             DownSpeed = currentData.DownSpeedKBitSec;
 
+            TotalRecivedData = currentData.TotalRecivedBytes;
+
+            TotalTransmiteData = currentData.TotalTransmiteBytes;
 
             if (ActivityDataForChart.Count > _maxCountNodeInChartMin)
                 ActivityDataForChart.RemoveAt(0);

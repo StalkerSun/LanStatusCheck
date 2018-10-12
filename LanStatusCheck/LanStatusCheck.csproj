@@ -70,6 +70,7 @@
     <Compile Include="Classes\NetAdapterDataView.cs" />
     <Compile Include="Classes\NetworkInterfaceData.cs" />
     <Compile Include="Converters\ConverterAdaptivSpeedChannel.cs" />
+    <Compile Include="Converters\ConverterLevelDataSize.cs" />
     <Compile Include="Enums\Abonent.cs" />
     <Compile Include="Enums\MsgType.cs" />
     <Compile Include="ViewModels\VMDataLan.cs" />
