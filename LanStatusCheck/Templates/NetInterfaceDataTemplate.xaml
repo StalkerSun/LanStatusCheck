@@ -20,38 +20,38 @@
                     BorderThickness="1"
                     CornerRadius="3">
                 <ListBox ItemsSource="{Binding CollectionNetInter}" 
-                         Style="{DynamicResource ListBoxNetInterfaceDataStyle}"
+                         ItemTemplate="{DynamicResource ItemTemplateDataNetInterface}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         HorizontalContentAlignment="Stretch" Background="#FFCBCBCB"/>
+                         HorizontalContentAlignment="Stretch" Background="#FF858585"
+                         ScrollViewer.CanContentScroll="False"/>
                 
             </Border>
         </Grid>   
     </ControlTemplate>
-    <Style x:Key="ListBoxNetInterfaceDataStyle" TargetType="ListBox">
-        <Setter Property="ItemTemplate" >
-            <Setter.Value>
-                <DataTemplate>
-                    <Control>
-                        <Control.Style>
-                            <Style TargetType="Control">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="False">
-                                        <Setter Property="Template" Value="{DynamicResource MinTemplateDataInterface}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
-                                        <Setter Property="Template" Value="{DynamicResource MaxTemplateDataInterface}"/>
-                                    </DataTrigger>
-                                    
-                                </Style.Triggers>
-                            </Style>
-                            
-                        </Control.Style>
-                    </Control>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="Background" Value="#FF858585"/>
-        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
-    </Style>
+    
+
+    <DataTemplate x:Key="ItemTemplateDataNetInterface">
+        <Grid x:Name="Body"
+              HorizontalAlignment="Stretch" 
+              VerticalAlignment="Stretch">
+            <Control>
+                <Control.Style>
+                    <Style TargetType="Control">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="False">
+                                <Setter Property="Template" Value="{DynamicResource MinTemplateDataInterface}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                <Setter Property="Template" Value="{DynamicResource MaxTemplateDataInterface}"/>
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+
+                </Control.Style>
+            </Control>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Content="Test"/>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>
     
