@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -101,6 +102,11 @@ namespace LanStatusCheck.Classes
 
 
             });
+
+            Debug.WriteLineIf(Interface.Name.Contains("Интернет"), String.Format("Rx-{0}, Tx-{1}", totalReceived, totalSent), "Интерфейс Интернет");
+
+            if(Interface.Name.Contains("Интернет"))
+            { }
 
             _context.Post(d=>UpdateData(), null);
         }

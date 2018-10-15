@@ -16,15 +16,15 @@ namespace LanStatusCheck.Converters
 
             if (value is long val)
             {
-                var kbytes = val / 1000;
+                var kbytes = val / 1000.0;
 
-                if (kbytes < 1000)
-                    return String.Format("{0} Kb", kbytes);
+                if (kbytes < 1000.0)
+                    return String.Format("{0:F1} Kb", kbytes);
 
                 var mbytes = kbytes / 1000;
 
-                if (mbytes<1000)
-                    return String.Format("{0} Mb", mbytes);
+                if (mbytes < 1000.0)
+                    return String.Format("{0:F1} Mb", mbytes);
 
                 var gbytes = mbytes / 1000.0;
 
