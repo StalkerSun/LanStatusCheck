@@ -223,6 +223,24 @@ namespace LanStatusCheck.Classes
 
         #endregion
 
+        #region prop from navi panel
+
+        private bool _isOpen = false;
+
+        public bool IsOpen
+        {
+            get { return _isOpen; }
+            set
+            {
+                _isOpen = value;
+
+                Debug.WriteLine(value);
+            }
+        }
+
+
+        #endregion
+
         #endregion
 
         #region collections
