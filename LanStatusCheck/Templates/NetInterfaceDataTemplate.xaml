@@ -7,6 +7,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Templates/MaxTemplateDataInterface.xaml" />
         <ResourceDictionary Source="../Templates/MinTemplateDataInterface.xaml" />
+        <ResourceDictionary Source="../Templates/NaviPanelTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <conv:ConverterAdaptivSpeedChannel x:Key="ConverterAdaptivSpeedChannel"/>
@@ -51,49 +52,7 @@
         </Grid>
     </DataTemplate>
 
-    <ControlTemplate x:Key="TemplateNaviPanel">
-        <ControlTemplate.Resources>
-            <Storyboard x:Key="OpenPanelStorybord">
-                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="25" Duration="0:0:.3"/>
-            </Storyboard>
-            <Storyboard x:Key="ClosePanelStorybord">
-                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="10" Duration="0:0:.3">
-                    <DoubleAnimation.EasingFunction>
-                        <BackEase EasingMode="EaseOut"/>
-                    </DoubleAnimation.EasingFunction>
-                </DoubleAnimation>
-            </Storyboard>
-
-        </ControlTemplate.Resources>
-
-        <Grid x:Name="BodyGrid" Width="5">
-
-            <ToggleButton x:Name="ButtonOpenClose" 
-                    Content="Test"
-                          IsChecked="{Binding IsOpen}"
-                          >
-                <ToggleButton.Template>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border CornerRadius="3" Background="{TemplateBinding Background}">
-                            <ContentPresenter Margin="3" 
-                                              HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </ToggleButton.Template>
-                
-            </ToggleButton>
-            
-        </Grid>
-        <ControlTemplate.Triggers>
-            <EventTrigger SourceName="ButtonOpenClose" RoutedEvent="ToggleButton.Checked" >
-                <BeginStoryboard Storyboard="{StaticResource OpenPanelStorybord}"/> 
-            </EventTrigger>
-            <EventTrigger SourceName="ButtonOpenClose" RoutedEvent="ToggleButton.Unchecked">
-                <BeginStoryboard Storyboard="{StaticResource ClosePanelStorybord}"/> 
-            </EventTrigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
+    
 
     
 
