@@ -31,6 +31,16 @@
 
     <Color x:Key="BorderBrushforPlotAreaChartColor">#758F8F8F</Color>
     
+    <!--Colors for navi panel-->
+
+    <SolidColorBrush x:Key="NaviPanelBackgroundColor" Color="#A5424242"/>
     
+    <SolidColorBrush x:Key="ChangeStateNaviPanelButtonBackground" Color="#FF575757"/>
+
+    <SolidColorBrush x:Key="MouseOverColor" Color="#FF424242"/>
+
+    <SolidColorBrush x:Key="MouseNotOverColor" Color="#FFACACAC"/>
+
+
 
 </ResourceDictionary>
