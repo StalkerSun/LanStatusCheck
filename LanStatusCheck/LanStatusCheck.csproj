@@ -66,6 +66,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\HelpersDataTransform.cs" />
+    <Compile Include="Classes\NaviItemBase.cs" />
     <Compile Include="Classes\NodeActiveNetInterface.cs" />
     <Compile Include="Classes\RelayCommands.cs" />
     <Compile Include="Contract\IoC.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Converters\ConverterLevelDataSize.cs" />
     <Compile Include="Enums\Abonent.cs" />
     <Compile Include="Enums\MsgType.cs" />
+    <Compile Include="Interfaces\INaviItemInList.cs" />
     <Compile Include="ViewModels\VMDataLan.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

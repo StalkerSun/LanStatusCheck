@@ -1,12 +1,16 @@
-﻿using System;
+﻿using LanStatusCheck.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace LanStatusCheck.Interfaces
 {
-    interface INaviItemInList
+    public interface INaviItemInList
     {
+        RelayCommand UpItemCommand { get; }
+        RelayCommand DownItemCommand { get; }
     }
 }
