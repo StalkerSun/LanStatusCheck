@@ -102,7 +102,6 @@ namespace LanStatusCheck.ViewModels
 
             Debug.WriteLine("{0}-{1}", name, oper);
 
-            MessageBox.Show(name, oper, MessageBoxButton.OK, MessageBoxImage.Hand);
         }
 
 
