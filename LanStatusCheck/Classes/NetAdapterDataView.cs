@@ -1,4 +1,5 @@
-﻿using OxyPlot.Axes;
+﻿using LanStatusCheck.Enums;
+using OxyPlot.Axes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LanStatusCheck.Classes
 {
-    public class NetAdapterDataView : INotifyPropertyChanged
+    public class NetAdapterDataView :NaviItemBase, INotifyPropertyChanged
     {
         #region local variable
 
@@ -67,6 +68,8 @@ namespace LanStatusCheck.Classes
                 _dataInterfaceModel = value;
 
                 _dataInterfaceModel.UpdateData += () => SetParamData();
+
+                SetIdInterface(_dataInterfaceModel.Interface.Id);
             }
         }
 
@@ -250,17 +253,17 @@ namespace LanStatusCheck.Classes
 
         #endregion
 
+
+
         #region ctors
 
-        public NetAdapterDataView()
+        public NetAdapterDataView() : base()
         {
 
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
-
-
         }
 
-        public NetAdapterDataView(NetAdapterDataView data)
+        public NetAdapterDataView(NetAdapterDataView data) : base()
         {
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
 
@@ -273,6 +276,8 @@ namespace LanStatusCheck.Classes
             TotalRecivedData = data.TotalRecivedData;
 
             TotalTransmiteData = data.TotalTransmiteData;
+
+            SetIdInterface(data.DataInterfaceModel.Interface.Id);
 
             
         }

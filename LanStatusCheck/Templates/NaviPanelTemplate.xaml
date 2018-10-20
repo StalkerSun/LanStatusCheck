@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:LanStatusCheck.Templates" 
-                    xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+                    xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="DarkThemeResourсes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -34,23 +36,28 @@
 
                     <Button x:Name="ItemUpButton"
                             Template="{DynamicResource ItemUpNaviPanelButtonTemplate}"
-                            Padding="1"/>
+                            Padding="1"
+                            Command="{Binding UpItemCommand}"/>
 
                     <Button x:Name="ItemDownButton"
                             Template="{DynamicResource ItemDownNaviPanelButtonTemplate}"
-                            Padding="1"/>
+                            Padding="1"
+                            Command="{Binding DownItemCommand}"/>
 
                     <Button x:Name="ItemFavoritButton"
                             Template="{DynamicResource ItemFavoriteNaviPanelButtonTemplate}"
-                            Padding="1"/>
+                            Padding="1"
+                            Command="{Binding FavoritItemCommand}"/>
 
                     <Button x:Name="ItemDeleteButton"
                             Template="{DynamicResource ItemDeleteNaviPanelButtonTemplate}"
-                            Padding="1"/>
+                            Padding="1"
+                            Command="{Binding DeleteItemCommand}"/>
 
                     <Button x:Name="ItemPlayButton"
                             Template="{DynamicResource PlayNaviPanelButtonTemplate}"
-                            Padding="1"/>
+                            Padding="1"
+                            Command="{Binding PlayItemCommand}"/>
 
 
                 </StackPanel>

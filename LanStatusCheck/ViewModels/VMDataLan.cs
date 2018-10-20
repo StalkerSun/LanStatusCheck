@@ -1,5 +1,6 @@
 ﻿using LanStatusCheck.Classes;
 using LanStatusCheck.Contract;
+using LanStatusCheck.Enums;
 using LanStatusCheck.Models;
 using mm;
 using msg;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,14 +83,31 @@ namespace LanStatusCheck.ViewModels
         {
             foreach(var inter in _model.CollectionDataInterface)
             {
-                CollectionNetInter.Add(new NetAdapterDataView { DataInterfaceModel = inter });
+
+                var data = new NetAdapterDataView { DataInterfaceModel = inter };
+
+                data.ItemAction += VMDataLan_ItemAction;
+
+                CollectionNetInter.Add(data);
             }
         }
 
+        private void VMDataLan_ItemAction(string id, EnumTypeOperationNaviPanel operation)
+        {
+            
+
+            var name = CollectionNetInter.Where(a => a.DataInterfaceModel.Interface.Id == id).First().NameInter;
+
+            string oper = operation.ToString();
+
+            Debug.WriteLine("{0}-{1}", name, oper);
+
+            MessageBox.Show(name, oper, MessageBoxButton.OK, MessageBoxImage.Hand);
+        }
+
+
+
         #endregion
-
-
-
 
 
         public event PropertyChangedEventHandler PropertyChanged;
