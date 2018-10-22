@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LanStatusCheck.Classes
 {
-    public class NetAdapterDataView :NaviItemBase, INotifyPropertyChanged
+    public class NetAdapterDataView :NaviItemBase
     {
         #region local variable
 
@@ -253,8 +253,6 @@ namespace LanStatusCheck.Classes
 
         #endregion
 
-
-
         #region ctors
 
         public NetAdapterDataView() : base()
@@ -379,14 +377,6 @@ namespace LanStatusCheck.Classes
         }
 
         #endregion
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
 
     }
 }

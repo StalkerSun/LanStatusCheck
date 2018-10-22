@@ -12,14 +12,14 @@
     <ControlTemplate x:Key="TemplateNaviPanel">
         <ControlTemplate.Resources>
             <Storyboard x:Key="OpenPanelStorybord">
-                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="120" Duration="0:0:.3">
+                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="120" From="8" Duration="0:0:.3">
                     <DoubleAnimation.EasingFunction>
                         <CircleEase EasingMode="EaseOut"/>
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
             </Storyboard>
             <Storyboard x:Key="ClosePanelStorybord">
-                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="8" Duration="0:0:.3">
+                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="8" From="120" Duration="0:0:.3">
                     <DoubleAnimation.EasingFunction>
                         <CircleEase EasingMode="EaseOut"/>
                     </DoubleAnimation.EasingFunction>
@@ -37,12 +37,12 @@
                     <Button x:Name="ItemUpButton"
                             Template="{DynamicResource ItemUpNaviPanelButtonTemplate}"
                             Padding="1"
-                            Command="{Binding UpItemCommand}"/>
+                            Command="{Binding DownItemCommand}"/>
 
                     <Button x:Name="ItemDownButton"
                             Template="{DynamicResource ItemDownNaviPanelButtonTemplate}"
                             Padding="1"
-                            Command="{Binding DownItemCommand}"/>
+                            Command="{Binding UpItemCommand}"/>
 
                     <Button x:Name="ItemFavoritButton"
                             Template="{DynamicResource ItemFavoriteNaviPanelButtonTemplate}"
@@ -156,14 +156,21 @@
         </Viewbox>
 
         <ControlTemplate.Triggers>
+            
+            <DataTrigger Binding="{Binding IsElementFavorite, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding IsElementFavorite, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                <Setter TargetName="Star" Property="Fill" Value="Yellow"/>
+            </DataTrigger>
+
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
                 <Setter TargetName="Star" Property="Stroke" Value="{DynamicResource MouseNotOverColor}"/>
                 <Setter TargetName="Star" Property="StrokeThickness" Value="1"/>
             </Trigger>
-            <Trigger Property="IsMouseOver" Value="False">
-                <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
-            </Trigger>
+
         </ControlTemplate.Triggers>
 
     </ControlTemplate>

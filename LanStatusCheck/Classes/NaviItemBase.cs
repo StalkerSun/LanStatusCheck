@@ -2,50 +2,93 @@
 using LanStatusCheck.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LanStatusCheck.Classes
 {
-    public class NaviItemBase : INaviItemInList
+    public class NaviItemBase : INaviItemInList, INotifyPropertyChanged
     {
         private string _childId;
 
-        public  event Action<string, EnumTypeOperationNaviPanel> ItemAction = delegate { };
+        private bool _isElementFavorite;
+
+        #region events
+
+        public event Action<string, EnumTypeOperationNaviPanel> ItemAction = delegate { };
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Prop
+
+        public bool IsUpButtonEnabled { get; set; }
+
+        public bool IsDownButtonEnabled { get; set; }
+
+        public bool IsFavoriteButtonEnabled { get; set; }
+
+        public bool IsDeleteButtonEnabled { get; set; }
+
+        public bool IsPlayButtonEnabled { get; set; }
+
+        public bool IsElementFavorite
+        {
+            get { return _isElementFavorite; }
+            set
+            {
+                _isElementFavorite = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
 
         public void SetIdInterface(string id)
         {
             _childId = id;
+
+            
         }
+
+
 
         public RelayCommand UpItemCommand
         {
-            get { return new RelayCommand(()=> { ItemAction(_childId, EnumTypeOperationNaviPanel.Up); }, () => true); }
+            get { return new RelayCommand(()=> { ItemAction(_childId, EnumTypeOperationNaviPanel.Up); }, () => IsUpButtonEnabled); }
         }
-
 
         public RelayCommand DownItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Down); }, () => true); }
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Down); }, () => IsDownButtonEnabled); }
         }
 
         public RelayCommand FavoritItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Favorite); }, () => true); }
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Favorite); }, () => IsFavoriteButtonEnabled); }
         }
 
         public RelayCommand DeleteItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Delete); }, () => true); }
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Delete); }, () => IsDeleteButtonEnabled); }
         }
 
         public RelayCommand PlayItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Play); }, () => true); }
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Play); }, () => IsPlayButtonEnabled); }
         }
 
-        
+
+        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
