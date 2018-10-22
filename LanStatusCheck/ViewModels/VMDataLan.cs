@@ -176,6 +176,11 @@ namespace LanStatusCheck.ViewModels
             {
                 var elemInSourceCollect = _model.CollectionDataInterface.IndexOf(elem.DataInterfaceModel);
 
+                var positionElement = CollectionNetInter.IndexOf(elem);
+
+                UpDownElement(elem, -positionElement);
+                elem.IsElementFavorite = true;
+
             }
             else
             {
