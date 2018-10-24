@@ -17,6 +17,8 @@ namespace LanStatusCheck.Classes
 
         private bool _isElementFavorite;
 
+        public EnumStatusItem _statusItem;
+
         #region events
 
         public event Action<string, EnumTypeOperationNaviPanel> ItemAction = delegate { };
@@ -47,6 +49,19 @@ namespace LanStatusCheck.Classes
                 OnPropertyChanged();
             }
         }
+
+        public EnumStatusItem StatusItem
+        {
+            get { return _statusItem; }
+            set
+            {
+                _statusItem = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+
 
         #endregion
 

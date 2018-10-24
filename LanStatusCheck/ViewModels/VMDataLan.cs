@@ -91,7 +91,8 @@ namespace LanStatusCheck.ViewModels
                     IsFavoriteButtonEnabled = true,
                     IsDeleteButtonEnabled = true,
                     IsPlayButtonEnabled = true,
-                    IsElementFavorite = false
+                    IsElementFavorite = false,
+                    StatusItem = EnumStatusItem.Normal
                 };
 
                 data.ItemAction += VMDataLan_ItemAction;
@@ -172,27 +173,75 @@ namespace LanStatusCheck.ViewModels
         {
             if (elem == null) throw new NullReferenceException(elem.ToString());
 
-            if(elem.IsElementFavorite)
+            if(elem.StatusItem==EnumStatusItem.Favorite)
             {
-                var elemInSourceCollect = _model.CollectionDataInterface.IndexOf(elem.DataInterfaceModel);
+                var newIndex = GetNewIndex(elem, EnumStatusItem.Normal, CollectionNetInter, _model.CollectionDataInterface);
 
-                var positionElement = CollectionNetInter.IndexOf(elem);
+                var oldIndex = CollectionNetInter.IndexOf(elem);
 
-                UpDownElement(elem, -positionElement);
-                elem.IsElementFavorite = true;
+
+                UpDownElement(elem, newIndex - oldIndex);
+                elem.StatusItem = EnumStatusItem.Normal;
 
             }
             else
             {
-                var positionElement = CollectionNetInter.IndexOf(elem);
-                UpDownElement(elem, -positionElement);
-                elem.IsElementFavorite = true;
+                var newIndex = GetNewIndex(elem, EnumStatusItem.Favorite, CollectionNetInter, _model.CollectionDataInterface);
+
+                var oldIndex = CollectionNetInter.IndexOf(elem);
+
+                UpDownElement(elem, newIndex - oldIndex);
+
+                elem.StatusItem=EnumStatusItem.Favorite;
             }
-
-            
-
-            
         }
+
+        private int GetNewIndex(NetAdapterDataView elem, EnumStatusItem status, IEnumerable<NetAdapterDataView> viewList, IEnumerable<NetworkInterfaceData> sourceList)
+        {
+
+            var list = viewList.Where(a => a.StatusItem == status).ToList();
+
+            switch (status)
+            {
+                case EnumStatusItem.Favorite:
+                    {
+
+                        if (list.Count == 0) return 0;
+
+                        var newIndex = viewList.ToList().IndexOf(list.Last()) + 1;
+
+                        return newIndex;
+                    }
+                    
+                case EnumStatusItem.Deleted:
+                    {
+                        return viewList.Count()-1;
+                    }
+
+                case EnumStatusItem.Normal:
+                    {
+                        var listFavorite = viewList.Where(a => a.StatusItem == EnumStatusItem.Favorite).ToList();
+
+                        var listDeleted = viewList.Where(a => a.StatusItem == EnumStatusItem.Deleted).ToList();
+
+                        var downIndex = listFavorite.Count() == 0 ? 0 : viewList.ToList().IndexOf(listFavorite.Last());
+
+                        var upIndex = listDeleted.Count() == 0 ? 0 : viewList.ToList().IndexOf(listDeleted.First());
+
+                        var indexElemInSource = sourceList.ToList().IndexOf(elem.DataInterfaceModel);
+
+                        if (indexElemInSource > downIndex && indexElemInSource < upIndex)
+                            return indexElemInSource;
+                        else
+                            return upIndex - 1;
+                    }
+
+                default:
+                    return -1;
+
+            }
+        }
+
 
 
         #endregion
