@@ -169,6 +169,9 @@ namespace LanStatusCheck.ViewModels
 
         }
 
+
+
+
         private void SetFavorite(NetAdapterDataView elem)
         {
             if (elem == null) throw new NullReferenceException(elem.ToString());

@@ -76,17 +76,34 @@ namespace LanStatusCheck.Classes
 
         public RelayCommand UpItemCommand
         {
-            get { return new RelayCommand(()=> { ItemAction(_childId, EnumTypeOperationNaviPanel.Up); }, () => IsUpButtonEnabled); }
+            get { return new RelayCommand(()=> { ItemAction(_childId, EnumTypeOperationNaviPanel.Up); }, () => IsUpButtonActive()); }
+        }
+
+        private bool IsUpButtonActive()
+        {
+            if (StatusItem == EnumStatusItem.Favorite || StatusItem == EnumStatusItem.Deleted)
+                return false;
+
+            return IsUpButtonEnabled;
         }
 
         public RelayCommand DownItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Down); }, () => IsDownButtonEnabled); }
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Down); }, () => IsDownButtonActive()); }
         }
+
+        private bool IsDownButtonActive()
+        {
+            if (StatusItem == EnumStatusItem.Favorite || StatusItem == EnumStatusItem.Deleted)
+                return false;
+
+            return IsDownButtonEnabled;
+        }
+
 
         public RelayCommand FavoritItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Favorite); }, () => IsFavoriteButtonEnabled); }
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Favorite); }, () => true); }
         }
 
         public RelayCommand DeleteItemCommand
