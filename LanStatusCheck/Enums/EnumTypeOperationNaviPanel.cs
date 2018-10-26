@@ -11,7 +11,6 @@ namespace LanStatusCheck.Enums
         Up,
         Down,
         Favorite,
-        Delete,
-        Play
+        PlayDelete
     }
 }

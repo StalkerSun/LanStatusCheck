@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace LanStatusCheck.Classes
 {
-    public class NaviItemBase : INaviItemInList, INotifyPropertyChanged
+    public class NaviItemBase : NotifyPropertyBase, INaviItemInList, INotifyPropertyChanged
     {
         private string _childId;
 
@@ -22,8 +22,6 @@ namespace LanStatusCheck.Classes
         #region events
 
         public event Action<string, EnumTypeOperationNaviPanel> ItemAction = delegate { };
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
@@ -100,26 +98,14 @@ namespace LanStatusCheck.Classes
             return IsDownButtonEnabled;
         }
 
-
         public RelayCommand FavoritItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Favorite); }, () => true); }
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Favorite); }, () => StatusItem!=EnumStatusItem.Deleted); }
         }
 
-        public RelayCommand DeleteItemCommand
+        public RelayCommand PlayDelItemCommand
         {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Delete); }, () => IsDeleteButtonEnabled); }
-        }
-
-        public RelayCommand PlayItemCommand
-        {
-            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.Play); }, () => IsPlayButtonEnabled); }
-        }
-
-
-        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get { return new RelayCommand(() => { ItemAction(_childId, EnumTypeOperationNaviPanel.PlayDelete); }, () => true); }
         }
 
     }

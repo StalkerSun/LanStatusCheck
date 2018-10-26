@@ -16,7 +16,7 @@ using System.Windows;
 
 namespace LanStatusCheck.ViewModels
 {
-    public class VMDataLan : INotifyPropertyChanged
+    public class VMDataLan : NotifyPropertyBase
     {
         #region local
 
@@ -116,9 +116,8 @@ namespace LanStatusCheck.ViewModels
                 case EnumTypeOperationNaviPanel.Favorite:
                     SetFavorite(element);
                     break;
-                case EnumTypeOperationNaviPanel.Delete:
-                    break;
-                case EnumTypeOperationNaviPanel.Play:
+                case EnumTypeOperationNaviPanel.PlayDelete:
+                    SetPlayDelete(element);
                     break;
                 default:
                     break;
@@ -143,33 +142,40 @@ namespace LanStatusCheck.ViewModels
                 throw new IndexOutOfRangeException("Индекс за пределами диапозона. Проверьте правильность смещения");
             }
 
-
             CollectionNetInter.Move(positionElement, newPositionElement);
 
-            for (int i = 0; i < CollectionNetInter.Count; i++)
-            {
-                if(i==0)
-                {
-                    CollectionNetInter[i].IsUpButtonEnabled = true;
-                    CollectionNetInter[i].IsDownButtonEnabled = false;
-                    continue;
-                }
-
-                if (i == CollectionNetInter.Count-1)
-                {
-                    CollectionNetInter[i].IsUpButtonEnabled = false;
-                    CollectionNetInter[i].IsDownButtonEnabled = true;
-                    continue;
-                }
-
-                CollectionNetInter[i].IsUpButtonEnabled = true;
-
-                CollectionNetInter[i].IsDownButtonEnabled = true;
-            }
+            SetStateUpDownArrow();
 
         }
 
+        private void SetStateUpDownArrow()
+        {
+            var tmpCol = CollectionNetInter.Where(a => a.StatusItem == EnumStatusItem.Normal).ToList();
 
+            for (int i = 0; i < tmpCol.Count; i++)
+            {
+
+                var indexInSource = CollectionNetInter.IndexOf(tmpCol[i]);
+
+                if (i == 0)
+                {
+                    CollectionNetInter[indexInSource].IsUpButtonEnabled = true;
+                    CollectionNetInter[indexInSource].IsDownButtonEnabled = false;
+                    continue;
+                }
+
+                if (i == tmpCol.Count - 1)
+                {
+                    CollectionNetInter[indexInSource].IsUpButtonEnabled = false;
+                    CollectionNetInter[indexInSource].IsDownButtonEnabled = true;
+                    continue;
+                }
+
+                CollectionNetInter[indexInSource].IsUpButtonEnabled = true;
+
+                CollectionNetInter[indexInSource].IsDownButtonEnabled = true;
+            }
+        }
 
 
         private void SetFavorite(NetAdapterDataView elem)
@@ -182,8 +188,8 @@ namespace LanStatusCheck.ViewModels
 
                 var oldIndex = CollectionNetInter.IndexOf(elem);
 
+                CollectionNetInter.Move(oldIndex, newIndex);
 
-                UpDownElement(elem, newIndex - oldIndex);
                 elem.StatusItem = EnumStatusItem.Normal;
 
             }
@@ -193,10 +199,44 @@ namespace LanStatusCheck.ViewModels
 
                 var oldIndex = CollectionNetInter.IndexOf(elem);
 
-                UpDownElement(elem, newIndex - oldIndex);
+                CollectionNetInter.Move(oldIndex, newIndex);
 
                 elem.StatusItem=EnumStatusItem.Favorite;
             }
+
+            SetStateUpDownArrow();
+        }
+
+        private void SetPlayDelete(NetAdapterDataView elem)
+        {
+            if (elem == null) throw new NullReferenceException(elem.ToString());
+
+            if(elem.StatusItem==EnumStatusItem.Deleted)
+            {
+                var newIndex = GetNewIndex(elem, EnumStatusItem.Normal, CollectionNetInter, _model.CollectionDataInterface);
+
+                var oldIndex = CollectionNetInter.IndexOf(elem);
+
+                CollectionNetInter.Move(oldIndex, newIndex);
+
+                elem.StatusItem = EnumStatusItem.Normal;
+
+                _model.BlockListInterface.TryRemove(elem.DataInterfaceModel.Interface.Id.GetHashCode(), out string str);
+            }
+            else
+            {
+                var newIndex = GetNewIndex(elem, EnumStatusItem.Deleted, CollectionNetInter, _model.CollectionDataInterface);
+
+                var oldIndex = CollectionNetInter.IndexOf(elem);
+
+                CollectionNetInter.Move(oldIndex, newIndex);
+
+                elem.StatusItem = EnumStatusItem.Deleted;
+
+                _model.BlockListInterface.TryAdd(elem.DataInterfaceModel.Interface.Id.GetHashCode(), elem.DataInterfaceModel.Interface.Id);
+            }
+
+
         }
 
         private int GetNewIndex(NetAdapterDataView elem, EnumStatusItem status, IEnumerable<NetAdapterDataView> viewList, IEnumerable<NetworkInterfaceData> sourceList)
@@ -229,7 +269,7 @@ namespace LanStatusCheck.ViewModels
 
                         var downIndex = listFavorite.Count() == 0 ? 0 : viewList.ToList().IndexOf(listFavorite.Last());
 
-                        var upIndex = listDeleted.Count() == 0 ? 0 : viewList.ToList().IndexOf(listDeleted.First());
+                        var upIndex = listDeleted.Count() == 0 ? viewList.Count() - 1 : viewList.ToList().IndexOf(listDeleted.First());
 
                         var indexElemInSource = sourceList.ToList().IndexOf(elem.DataInterfaceModel);
 
@@ -248,14 +288,5 @@ namespace LanStatusCheck.ViewModels
 
 
         #endregion
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

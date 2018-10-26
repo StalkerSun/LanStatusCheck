@@ -19,8 +19,6 @@ namespace LanStatusCheck.Interfaces
 
         RelayCommand FavoritItemCommand { get; }
 
-        RelayCommand DeleteItemCommand { get; }
-
-        RelayCommand PlayItemCommand { get; }
+        RelayCommand PlayDelItemCommand { get; }
     }
 }

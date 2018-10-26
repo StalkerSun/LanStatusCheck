@@ -135,47 +135,6 @@
                             <RowDefinition Height="0.25*"/>
                         </Grid.RowDefinitions>
 
-                        <oxy:Plot Grid.Column="0" 
-                            Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.ColumnSpan="2"
-                            PlotAreaBorderThickness ="0" 
-                            IsLegendVisible="False" 
-                            Background="Transparent"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                          >
-                            <oxy:Plot.Axes>
-                                <oxy:LinearAxis Position="Left" 
-                                    TickStyle="None" 
-                                    MajorGridlineStyle="Solid"  
-                                    MinorGridlineStyle="None" 
-                                    IsAxisVisible="False" 
-                                    Minimum="0" 
-                                    Maximum="100"
-                                    />
-
-                                <oxy:DateTimeAxis Position="Bottom" 
-                                    TickStyle="None" 
-                                    MajorGridlineStyle="None" 
-                                    MinorGridlineStyle="None" 
-                                    IsAxisVisible="False" 
-                                    Minimum="{Binding MinTimeForChart}" 
-                                    Maximum="{Binding MaxTimeForChart}"
-                                      
-                                      />
-
-                            </oxy:Plot.Axes>
-                            <oxy:AreaSeries Title="Down" 
-                                DataFieldX="Time"
-                                DataFieldY="LoadPerInSec"
-                                ItemsSource="{Binding ActivityDataForChart}"
-                                StrokeThickness="1" 
-                                Color="Yellow"
-                                    />
-
-                        </oxy:Plot>
-
                         <TextBlock Text="L Down:" 
                                    Grid.Column="0" 
                                    Grid.Row="0" 

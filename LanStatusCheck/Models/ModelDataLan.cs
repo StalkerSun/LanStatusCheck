@@ -3,6 +3,7 @@ using LanStatusCheck.Contract;
 using mm;
 using msg;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -33,6 +34,8 @@ namespace LanStatusCheck.Models
 
         public readonly List<NetworkInterfaceData> CollectionDataInterface;
 
+        public readonly ConcurrentDictionary<int, string> BlockListInterface;
+
 
         #endregion
         
@@ -46,6 +49,8 @@ namespace LanStatusCheck.Models
             _collectionInterface = new List<NetworkInterface>(GetAllUpLanInterface());
 
             CollectionDataInterface = new List<NetworkInterfaceData>(_collectionInterface.Select(a => new NetworkInterfaceData(a)));
+
+            BlockListInterface = new ConcurrentDictionary<int, string>();
 
             _timerTestSpeed = new Timer();
 
@@ -77,7 +82,9 @@ namespace LanStatusCheck.Models
         {
             foreach (var inter in CollectionDataInterface)
             {
-                inter.CulculateParameters(_periondTestLanSpeed / 1000);
+                var res = BlockListInterface.TryGetValue(inter.Interface.Id.GetHashCode(), out string val);
+                if (!res)
+                    inter.CulculateParameters(_periondTestLanSpeed / 1000);
             }
 
             //CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.UpdateDataModelNetInter);

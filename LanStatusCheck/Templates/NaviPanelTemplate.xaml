@@ -12,14 +12,14 @@
     <ControlTemplate x:Key="TemplateNaviPanel">
         <ControlTemplate.Resources>
             <Storyboard x:Key="OpenPanelStorybord">
-                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="120" From="8" Duration="0:0:.3">
+                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" From="8" To="90"  Duration="0:0:.3">
                     <DoubleAnimation.EasingFunction>
                         <CircleEase EasingMode="EaseOut"/>
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
             </Storyboard>
             <Storyboard x:Key="ClosePanelStorybord">
-                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" To="8" From="120" Duration="0:0:.3">
+                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" From="90" To="8" Duration="0:0:.3">
                     <DoubleAnimation.EasingFunction>
                         <CircleEase EasingMode="EaseOut"/>
                     </DoubleAnimation.EasingFunction>
@@ -49,17 +49,25 @@
                             Padding="1"
                             Command="{Binding FavoritItemCommand}"/>
 
-                    <Button x:Name="ItemDeleteButton"
-                            Template="{DynamicResource ItemDeleteNaviPanelButtonTemplate}"
+                    <Button x:Name="ItemPlayDeleteButton"
                             Padding="1"
-                            Command="{Binding DeleteItemCommand}"/>
-
-                    <Button x:Name="ItemPlayButton"
-                            Template="{DynamicResource PlayNaviPanelButtonTemplate}"
-                            Padding="1"
-                            Command="{Binding PlayItemCommand}"/>
-
-
+                            Command="{Binding PlayDelItemCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Deleted">
+                                        <Setter Property="Template" Value="{DynamicResource PlayNaviPanelButtonTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Favorite">
+                                        <Setter Property="Template" Value="{DynamicResource ItemDeleteNaviPanelButtonTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Normal">
+                                        <Setter Property="Template" Value="{DynamicResource ItemDeleteNaviPanelButtonTemplate}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </StackPanel>
 
             </Border>
@@ -156,12 +164,16 @@
         </Viewbox>
 
         <ControlTemplate.Triggers>
-            
-            <DataTrigger Binding="{Binding IsElementFavorite, UpdateSourceTrigger=PropertyChanged}" Value="False">
+
+            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Deleted">
                 <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
             </DataTrigger>
 
-            <DataTrigger Binding="{Binding IsElementFavorite, UpdateSourceTrigger=PropertyChanged}" Value="True">
+            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Normal">
+                <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Favorite">
                 <Setter TargetName="Star" Property="Fill" Value="Yellow"/>
             </DataTrigger>
 
