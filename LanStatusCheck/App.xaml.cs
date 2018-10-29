@@ -31,6 +31,13 @@ namespace LanStatusCheck
     {
         public override void Load()
         {
+            //Properties.Settings.Default.SettingNetInters = new List<Classes.SettingsNodeNetInter>();
+
+            //Properties.Settings.Default.Save();
+
+            if (Properties.Settings.Default.SettingNetInters == null)
+                Properties.Settings.Default.SettingNetInters = new List<Classes.SettingsNodeNetInter>();
+
             // Подписываемся на обработку справочной информации 
             // при передаче сообщения между адресатами
             Configuration.OnLog = m =>

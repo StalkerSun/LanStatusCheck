@@ -29,8 +29,8 @@ namespace LanStatusCheck.ViewModels
         #endregion
 
         #region collections
-        public ObservableCollection<NetAdapterDataView> CollectionNetInter { get; set; }
 
+        public ObservableCollection<NetAdapterDataView> CollectionNetInter { get; set; }
 
         #endregion
 
@@ -98,6 +98,23 @@ namespace LanStatusCheck.ViewModels
                 data.ItemAction += VMDataLan_ItemAction;
 
                 CollectionNetInter.Add(data);
+
+                var tmp = Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == data.DataInterfaceModel.Interface.Id).ToList();
+
+                if (tmp.Count !=0)
+                {
+                    switch( tmp.First().Status)
+                    {
+                        case EnumStatusItem.Favorite:
+                            SetFavorite(data);
+                            break;
+
+                        case EnumStatusItem.Deleted:
+                            SetPlayDelete(data);
+                            break;
+                    }
+                }
+
             }
         }
 
@@ -148,36 +165,6 @@ namespace LanStatusCheck.ViewModels
 
         }
 
-        private void SetStateUpDownArrow()
-        {
-            var tmpCol = CollectionNetInter.Where(a => a.StatusItem == EnumStatusItem.Normal).ToList();
-
-            for (int i = 0; i < tmpCol.Count; i++)
-            {
-
-                var indexInSource = CollectionNetInter.IndexOf(tmpCol[i]);
-
-                if (i == 0)
-                {
-                    CollectionNetInter[indexInSource].IsUpButtonEnabled = true;
-                    CollectionNetInter[indexInSource].IsDownButtonEnabled = false;
-                    continue;
-                }
-
-                if (i == tmpCol.Count - 1)
-                {
-                    CollectionNetInter[indexInSource].IsUpButtonEnabled = false;
-                    CollectionNetInter[indexInSource].IsDownButtonEnabled = true;
-                    continue;
-                }
-
-                CollectionNetInter[indexInSource].IsUpButtonEnabled = true;
-
-                CollectionNetInter[indexInSource].IsDownButtonEnabled = true;
-            }
-        }
-
-
         private void SetFavorite(NetAdapterDataView elem)
         {
             if (elem == null) throw new NullReferenceException(elem.ToString());
@@ -192,6 +179,8 @@ namespace LanStatusCheck.ViewModels
 
                 elem.StatusItem = EnumStatusItem.Normal;
 
+                Properties.Settings.Default.SettingNetInters.Remove(Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == elem.DataInterfaceModel.Interface.Id).First());
+
             }
             else
             {
@@ -202,9 +191,22 @@ namespace LanStatusCheck.ViewModels
                 CollectionNetInter.Move(oldIndex, newIndex);
 
                 elem.StatusItem=EnumStatusItem.Favorite;
+
+                if(Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == elem.DataInterfaceModel.Interface.Id).Count()==0)
+                {
+                    Properties.Settings.Default.SettingNetInters.Add(new SettingsNodeNetInter
+                    {
+                        IdInterface = elem.DataInterfaceModel.Interface.Id,
+                        Status = EnumStatusItem.Favorite
+
+                    });
+                }
+                
             }
 
             SetStateUpDownArrow();
+
+            Properties.Settings.Default.Save();
         }
 
         private void SetPlayDelete(NetAdapterDataView elem)
@@ -222,6 +224,8 @@ namespace LanStatusCheck.ViewModels
                 elem.StatusItem = EnumStatusItem.Normal;
 
                 _model.BlockListInterface.TryRemove(elem.DataInterfaceModel.Interface.Id.GetHashCode(), out string str);
+
+                Properties.Settings.Default.SettingNetInters.Remove(Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == elem.DataInterfaceModel.Interface.Id).First());
             }
             else
             {
@@ -234,8 +238,19 @@ namespace LanStatusCheck.ViewModels
                 elem.StatusItem = EnumStatusItem.Deleted;
 
                 _model.BlockListInterface.TryAdd(elem.DataInterfaceModel.Interface.Id.GetHashCode(), elem.DataInterfaceModel.Interface.Id);
+
+                if (Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == elem.DataInterfaceModel.Interface.Id).Count() == 0)
+                {
+                    Properties.Settings.Default.SettingNetInters.Add(new SettingsNodeNetInter
+                    {
+                        IdInterface = elem.DataInterfaceModel.Interface.Id,
+                        Status = EnumStatusItem.Deleted
+
+                    });
+                }
             }
 
+            Properties.Settings.Default.Save();
 
         }
 
@@ -285,7 +300,34 @@ namespace LanStatusCheck.ViewModels
             }
         }
 
+        private void SetStateUpDownArrow()
+        {
+            var tmpCol = CollectionNetInter.Where(a => a.StatusItem == EnumStatusItem.Normal).ToList();
 
+            for (int i = 0; i < tmpCol.Count; i++)
+            {
+
+                var indexInSource = CollectionNetInter.IndexOf(tmpCol[i]);
+
+                if (i == 0)
+                {
+                    CollectionNetInter[indexInSource].IsUpButtonEnabled = true;
+                    CollectionNetInter[indexInSource].IsDownButtonEnabled = false;
+                    continue;
+                }
+
+                if (i == tmpCol.Count - 1)
+                {
+                    CollectionNetInter[indexInSource].IsUpButtonEnabled = false;
+                    CollectionNetInter[indexInSource].IsDownButtonEnabled = true;
+                    continue;
+                }
+
+                CollectionNetInter[indexInSource].IsUpButtonEnabled = true;
+
+                CollectionNetInter[indexInSource].IsDownButtonEnabled = true;
+            }
+        }
 
         #endregion
     }

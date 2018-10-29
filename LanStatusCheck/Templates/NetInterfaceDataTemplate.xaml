@@ -23,7 +23,8 @@
                 <ListBox ItemsSource="{Binding CollectionNetInter}" 
                          ItemTemplate="{DynamicResource ItemTemplateDataNetInterface}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         HorizontalContentAlignment="Stretch" Background="#FF858585"
+                         HorizontalContentAlignment="Stretch" 
+                         Background="#FF858585"
                          ScrollViewer.CanContentScroll="False"/>
                 
             </Border>
@@ -38,20 +39,16 @@
                 <Control.Style>
                     <Style TargetType="Control">
                         <Style.Triggers>
+                           
+                            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Deleted">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="False">
                                 <Setter Property="Template" Value="{DynamicResource MinTemplateDataInterface}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
                                 <Setter Property="Template" Value="{DynamicResource MaxTemplateDataInterface}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Deleted">
-                                <Setter Property="IsEnabled" Value="False"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Favorite">
-                                <Setter Property="IsEnabled" Value="True"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Normal">
-                                <Setter Property="IsEnabled" Value="True"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

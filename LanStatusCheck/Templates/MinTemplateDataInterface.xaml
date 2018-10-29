@@ -15,6 +15,16 @@
                 BorderThickness="0.5" 
                 Background="{DynamicResource BackgroundItemInterfaceList}">
             <Grid Margin="2">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding StatusItem}" Value="Deleted">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Setter Property="Background" Value="Red"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.05*"/>
                     <RowDefinition Height="0.1*"/>

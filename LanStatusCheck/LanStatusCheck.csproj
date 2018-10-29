@@ -73,6 +73,7 @@
     <Compile Include="Classes\NaviItemBase.cs" />
     <Compile Include="Classes\NodeActiveNetInterface.cs" />
     <Compile Include="Classes\RelayCommands.cs" />
+    <Compile Include="Classes\SettingsNodeNetInter.cs" />
     <Compile Include="Contract\IoC.cs" />
     <Compile Include="Classes\NetAdapterDataView.cs" />
     <Compile Include="Classes\NetworkInterfaceData.cs" />

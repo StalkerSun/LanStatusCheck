@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace LanStatusCheck.Classes
 {
-    public class NaviItemBase : NotifyPropertyBase, INaviItemInList, INotifyPropertyChanged
+    public class NaviItemBase : NotifyPropertyBase, INaviItemInList
     {
         private string _childId;
 
