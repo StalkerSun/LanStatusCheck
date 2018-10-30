@@ -11,6 +11,7 @@ namespace LanStatusCheck.Enums
         Favorite,
         Deleted,
         Normal
+
         
     }
 }

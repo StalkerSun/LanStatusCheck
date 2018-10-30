@@ -5,38 +5,41 @@
                     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Templates/DarkThemeResourсes.xaml"/>
+        <ResourceDictionary Source="/LanStatusCheck;component/TemplatesCustomElements.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <conv:ConverterAdaptivSpeedChannel x:Key="ConverterAdaptivSpeedChannel"/>
     
     <ControlTemplate x:Key="MinTemplateDataInterface" TargetType="Control">
+        <ControlTemplate.Triggers>
+            
+            <DataTrigger Binding="{Binding StatusItem}" Value="Deleted">
+                <Setter  TargetName="TextHeaderNetInterface" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
+                <Setter  TargetName="LoadOnInterDownTextBlock" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
+                <Setter  TargetName="LoadOnInterUpTextBlock" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
+                <Setter  TargetName="UpSpeedTextBlock" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
+                <Setter  TargetName="DownSpeedTextBlock" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
+            </DataTrigger>
+            
+        </ControlTemplate.Triggers>
         <Border CornerRadius="2" 
                 BorderBrush="{DynamicResource BorderBrushItemInterfaceList}" 
                 BorderThickness="0.5" 
                 Background="{DynamicResource BackgroundItemInterfaceList}">
             <Grid Margin="2">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding StatusItem}" Value="Deleted">
-                                <Setter Property="IsEnabled" Value="False"/>
-                                <Setter Property="Background" Value="Red"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.05*"/>
                     <RowDefinition Height="0.1*"/>
                     <RowDefinition Height="0.8*"/>
                     <RowDefinition Height="0.05*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding NameInter}" 
-                    Grid.Row="1" 
-                    Grid.Column="0" 
-                    Grid.ColumnSpan="2" 
-                    TextAlignment="Left" 
-                    Margin="1,1,1,1"
+                <TextBlock x:Name="TextHeaderNetInterface" 
+                           Text="{Binding NameInter}" 
+                        Grid.Row="1" 
+                        Grid.Column="0" 
+                        Grid.ColumnSpan="2" 
+                        TextAlignment="Left" 
+                        Margin="1,1,1,1"
                            Foreground="{DynamicResource ColorTextHeader}"/>
 
                 <Grid Grid.Row="2">
@@ -152,12 +155,14 @@
                                    Margin="1,1,1,1" 
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
 
-                        <TextBlock Grid.Column="1" 
+                        <TextBlock x:Name="LoadOnInterDownTextBlock" 
+                                   Grid.Column="1" 
                                    Grid.Row="0" 
                                    TextAlignment="Left" 
                                    Margin="1,1,1,1"
                                    Foreground="{DynamicResource ColorTextHeader}"
                                    Text="{Binding LoadOnInterDown ,StringFormat={}{0}%}"/>
+                        
 
                         <TextBlock Text="L Up:" 
                                    Grid.Column="0" 
@@ -166,7 +171,8 @@
                                    Margin="1,1,1,1" 
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="1" 
+                        <TextBlock x:Name="LoadOnInterUpTextBlock"
+                                   Grid.Column="1" Grid.Row="1" 
                                    TextAlignment="Left" 
                                    Margin="1,1,1,1"
                                    Foreground="{DynamicResource ColorTextHeader}"
@@ -180,8 +186,19 @@
                             Margin="1,1,1,1"
                             Foreground="{DynamicResource ColorTextSecondary}"
                             />
-                        
-                        <TextBlock Text="{Binding UpSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" 
+
+                        <Control Grid.Column="0" 
+                                 Grid.Row="2" 
+                                 HorizontalAlignment="Left" 
+                                 Template="{DynamicResource ArrowUpInRound}" 
+                                 Height="13">
+                            <Control.Background>
+                                <SolidColorBrush Color="{DynamicResource ColorSeriesDataUp}"/>
+                            </Control.Background>
+                        </Control>
+
+                        <TextBlock x:Name="UpSpeedTextBlock" 
+                                   Text="{Binding UpSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" 
                                    Grid.Column="1" 
                                    Grid.Row="2" 
                                    TextAlignment="Left" 
@@ -194,8 +211,19 @@
                                    TextAlignment="Right" 
                                    Margin="1,1,1,1"
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
-                        
-                        <TextBlock Text="{Binding DownSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" 
+
+                        <Control Grid.Column="0" 
+                                 Grid.Row="3" 
+                                 HorizontalAlignment="Left" 
+                                 Template="{DynamicResource ArrowDownInRound}" 
+                                 Height="13">
+                            <Control.Background>
+                                <SolidColorBrush Color="{DynamicResource ColorSeriesDataDown}"/>
+                            </Control.Background>
+                        </Control>
+
+                        <TextBlock x:Name="DownSpeedTextBlock" 
+                                   Text="{Binding DownSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" 
                                    Grid.Column="1" 
                                    Grid.Row="3" 
                                    TextAlignment="Left" 
