@@ -19,6 +19,9 @@
                 <Setter  TargetName="LoadOnInterUpTextBlock" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
                 <Setter  TargetName="UpSpeedTextBlock" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
                 <Setter  TargetName="DownSpeedTextBlock" Property="TextBlock.Foreground" Value="{DynamicResource DisabledColorTextHeader}"/>
+                <Setter TargetName="ArrowUpControl" Property="Control.Background" Value="{DynamicResource DisabledColorTextHeader}"/>
+                <Setter TargetName="ArrowDownControl" Property="Control.Background" Value="{DynamicResource DisabledColorTextHeader}"/>
+
             </DataTrigger>
             
         </ControlTemplate.Triggers>
@@ -187,11 +190,12 @@
                             Foreground="{DynamicResource ColorTextSecondary}"
                             />
 
-                        <Control Grid.Column="0" 
+                        <Control x:Name="ArrowUpControl" 
+                                 Grid.Column="0" 
                                  Grid.Row="2" 
                                  HorizontalAlignment="Left" 
-                                 Template="{DynamicResource ArrowUpInRound}" 
-                                 Height="13">
+                                 Template="{DynamicResource ArrowUpVersion2}" 
+                                 Height="14">
                             <Control.Background>
                                 <SolidColorBrush Color="{DynamicResource ColorSeriesDataUp}"/>
                             </Control.Background>
@@ -212,11 +216,12 @@
                                    Margin="1,1,1,1"
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
 
-                        <Control Grid.Column="0" 
+                        <Control x:Name="ArrowDownControl" 
+                                 Grid.Column="0" 
                                  Grid.Row="3" 
                                  HorizontalAlignment="Left" 
-                                 Template="{DynamicResource ArrowDownInRound}" 
-                                 Height="13">
+                                 Template="{DynamicResource ArrowDownVersion2}" 
+                                 Height="14">
                             <Control.Background>
                                 <SolidColorBrush Color="{DynamicResource ColorSeriesDataDown}"/>
                             </Control.Background>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LanStatusCheck"
         xmlns:vm ="clr-namespace:LanStatusCheck.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="850">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,6 +27,7 @@
                  VerticalAlignment="Stretch"
                  DataContext="{StaticResource vmDataTemplate}"
                  Template="{DynamicResource NetInterfaceDataTemplate}"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5"/>
 
 
     </Grid>

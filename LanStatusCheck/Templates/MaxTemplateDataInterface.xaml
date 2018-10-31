@@ -5,6 +5,7 @@
                     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="DarkThemeResourсes.xaml"/>
+        <ResourceDictionary Source="TemplatesCustomElements.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <conv:ConverterAdaptivSpeedChannel x:Key="ConverterAdaptivSpeedChannel"/>
@@ -147,6 +148,16 @@
                                    Margin="1,1,1,1"
                                    Foreground="{DynamicResource ColorTextSecondary}"
                                    />
+                        <Control x:Name="ArrowUpControl" 
+                                 Grid.Column="0" 
+                                 Grid.Row="0" 
+                                 HorizontalAlignment="Left" 
+                                 Template="{DynamicResource ArrowUpVersion2}" 
+                                 Height="14">
+                            <Control.Background>
+                                <SolidColorBrush Color="{DynamicResource ColorSeriesDataUp}"/>
+                            </Control.Background>
+                        </Control>
 
                         <TextBlock Text="{Binding UpSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" 
                                    Grid.Column="1" 
@@ -161,6 +172,17 @@
                                    TextAlignment="Right" 
                                    Margin="1,1,1,1"
                                    Foreground="{DynamicResource ColorTextSecondary}"/>
+                        
+                        <Control x:Name="ArrowDownControl" 
+                                 Grid.Column="0" 
+                                 Grid.Row="1" 
+                                 HorizontalAlignment="Left" 
+                                 Template="{DynamicResource ArrowDownVersion2}" 
+                                 Height="14">
+                            <Control.Background>
+                                <SolidColorBrush Color="{DynamicResource ColorSeriesDataDown}"/>
+                            </Control.Background>
+                        </Control>
 
                         <TextBlock Text="{Binding DownSpeed, Converter={StaticResource ConverterAdaptivSpeedChannel}}" 
                                    Grid.Column="1" 
