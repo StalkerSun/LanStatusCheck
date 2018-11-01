@@ -5,7 +5,7 @@
                     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Templates/DarkThemeResourсes.xaml"/>
-        <ResourceDictionary Source="/LanStatusCheck;component/TemplatesCustomElements.xaml"/>
+        <ResourceDictionary Source="TemplatesCustomElements.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <conv:ConverterAdaptivSpeedChannel x:Key="ConverterAdaptivSpeedChannel"/>

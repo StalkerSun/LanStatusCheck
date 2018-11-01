@@ -74,6 +74,9 @@
     <Compile Include="Classes\NodeActiveNetInterface.cs" />
     <Compile Include="Classes\RelayCommands.cs" />
     <Compile Include="Classes\SettingsNodeNetInter.cs" />
+    <Compile Include="Components\TimerIndicator.xaml.cs">
+      <DependentUpon>TimerIndicator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contract\IoC.cs" />
     <Compile Include="Classes\NetAdapterDataView.cs" />
     <Compile Include="Classes\NetworkInterfaceData.cs" />
@@ -85,6 +88,10 @@
     <Compile Include="Enums\MsgType.cs" />
     <Compile Include="Interfaces\INaviItemInList.cs" />
     <Compile Include="ViewModels\VMDataLan.cs" />
+    <Page Include="Components\TimerIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -97,7 +104,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="TemplatesCustomElements.xaml">
+    <Page Include="Templates\TemplatesCustomElements.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
