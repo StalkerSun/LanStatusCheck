@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace LanStatusCheck.Components
 {
@@ -24,81 +25,97 @@ namespace LanStatusCheck.Components
     /// </summary>
     public partial class TimerIndicator : UserControl
     {
-        #region Dep Property
+        #region local variable
 
-
-
-        public StateSegment[] ArrayStateSegments
-        {
-            get { return (StateSegment[])GetValue(ArrayStateSegmentsProperty); }
-            set { SetValue(ArrayStateSegmentsProperty, value); }
-        }
-
-        public static readonly DependencyProperty ArrayStateSegmentsProperty =
-            DependencyProperty.Register("ArrayStateSegments", typeof(StateSegment[]), typeof(TimerIndicator), new FrameworkPropertyMetadata(new StateSegment[18]));
-
-
-        private Timer _timer;
+        private DispatcherTimer _timer;
 
         private int _currentIndex = 0;
 
+        private bool _isDisp = false;
 
+
+        #endregion
+
+
+        #region Dep Property local
+
+        private static readonly DependencyPropertyKey ArrayStateSegmentsPropertyKey
+      = DependencyProperty.RegisterReadOnly("ArrayStateSegments", typeof(bool[]), typeof(UserControl),
+          new FrameworkPropertyMetadata(new bool[18],
+              FrameworkPropertyMetadataOptions.None));
+
+        public static readonly DependencyProperty ArrayStateSegmentsProperty
+            = ArrayStateSegmentsPropertyKey.DependencyProperty;
+
+        public bool[] ArrayStateSegments
+        {
+            get { return (bool[])GetValue(ArrayStateSegmentsProperty); }
+            protected set { SetValue(ArrayStateSegmentsPropertyKey, value); }
+        }
 
         #endregion
 
         public TimerIndicator()
         {
+
             InitializeComponent();
 
-            _timer = new Timer(1);
+            _timer = new DispatcherTimer();
 
-            _timer.Elapsed += _timer_Elapsed;
+            _timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+
+            _timer.Tick += _timer_Tick;
 
             _timer.Start();
+        }
 
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+                    bool[] tmp = new bool[18];
+                    ArrayStateSegments.CopyTo(tmp, 0);
 
+                    tmp[_currentIndex] = false;
+
+                    if (_currentIndex == tmp.Length - 1)
+                        _currentIndex = -1;
+
+                    _currentIndex++;
+
+                    tmp[_currentIndex] = true;
+
+                    ArrayStateSegments = tmp;
         }
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            Dispatcher.Invoke(() =>
+
+            if(!_isDisp)
             {
-                StateSegment[] tmp = new StateSegment[18];
-                ArrayStateSegments.CopyTo(tmp, 0);
+                Dispatcher.Invoke(() =>
+                {
+                    bool[] tmp = new bool[18];
+                    ArrayStateSegments.CopyTo(tmp, 0);
 
-                tmp[_currentIndex].State = false;
+                    tmp[_currentIndex] = false;
 
-                if (_currentIndex == tmp.Length - 1)
-                    _currentIndex = -1;
+                    if (_currentIndex == tmp.Length - 1)
+                        _currentIndex = -1;
 
-                _currentIndex++;
+                    _currentIndex++;
 
-                tmp[_currentIndex].State = true;
-                SetValue(ArrayStateSegmentsProperty, tmp);
+                    tmp[_currentIndex] = true;
+
+                    ArrayStateSegments = tmp;
+                });
             }
-            );
-
-
-            
-
-
         }
 
-        public override void BeginInit()
+        ~TimerIndicator()
         {
-            base.BeginInit();
-
-            for (int i = 0; i < ArrayStateSegments.Length; i++)
-            {
-                ArrayStateSegments[i] = new StateSegment() { State = false };
-            }
-
-
-            //ArrayStateSegments[0] = true;
-            //ArrayStateSegments[2] = true;
-            //ArrayStateSegments[4] = true;
-            //ArrayStateSegments[6] = true;
-            //ArrayStateSegments[8] = true;
+            _isDisp = true;
+            _timer.Stop();
+            _timer.Tick -= _timer_Tick;
+            _timer = null;
         }
     }
 
@@ -111,11 +128,11 @@ namespace LanStatusCheck.Components
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is StateSegment)) return Binding.DoNothing;
+            if (!(value is bool)) return Binding.DoNothing;
 
-            var val = (StateSegment)value;
+            var val = (bool)value;
 
-            return val.State ? ColorOn : ColorOff;
+            return val ? ColorOn : ColorOff;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -123,33 +140,5 @@ namespace LanStatusCheck.Components
             throw new NotImplementedException();
         }
     }
-
-    public class StateSegment : INotifyPropertyChanged
-    {
-        private bool _state;
-
-        public bool State
-        {
-            get { return _state; }
-            set
-            {
-                _state = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public override string ToString()
-        {
-            return State.ToString();
-        }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+    
 }

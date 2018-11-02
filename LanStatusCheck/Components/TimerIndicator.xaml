@@ -28,7 +28,7 @@
                     </LinearGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
-            <Ellipse Stretch="Fill" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FF90ABC6" Margin="56,57,0,0" Height="257" VerticalAlignment="Top" HorizontalAlignment="Left" Width="257"/>
+            <Ellipse Stretch="Fill" StrokeLineJoin="Round" Stroke="#FF000000" Fill="#FF34516E" Margin="56,57,0,0" Height="257" VerticalAlignment="Top" HorizontalAlignment="Left" Width="257"/>
             <Path x:Name="Segment_1" Stretch="Fill" Stroke="#FF5D98D4" Fill="{Binding ArrayStateSegments[0], Converter={StaticResource BoolToBrushConverter}, ElementName=userControl, UpdateSourceTrigger=PropertyChanged}" Data="F1 M 447.649,102.335L 467.345,105.808C 473.147,106.831 477.021,112.364 475.998,118.165L 475.998,118.165C 474.975,123.967 469.443,127.84 463.641,126.818L 443.945,123.345C 438.143,122.322 434.27,116.789 435.292,110.988L 435.292,110.988C 436.315,105.186 441.848,101.312 447.649,102.335 Z " Margin="189.048,27.253,0,0" Height="25.81" VerticalAlignment="Top" HorizontalAlignment="Left" Width="42.033"/>
             <Path x:Name="Segment_2" Stretch="Fill" Stroke="#FF5D98D4" Fill="{Binding ArrayStateSegments[1], Converter={StaticResource BoolToBrushConverter}, ElementName=userControl, UpdateSourceTrigger=PropertyChanged}" Data="F1 M 500.514,117.887L 517.835,127.887C 522.936,130.832 524.684,137.356 521.739,142.458L 521.739,142.458C 518.793,147.56 512.27,149.308 507.168,146.362L 489.847,136.362C 484.746,133.417 482.998,126.893 485.943,121.791L 485.943,121.791C 488.889,116.689 495.412,114.941 500.514,117.887 Z " Margin="238.431,41.537,0,0" HorizontalAlignment="Left" Width="39.657" Height="32.337" VerticalAlignment="Top"/>
             <Path x:Name="Segment_3" Stretch="Fill" Stroke="#FF5D98D4" Fill="{Binding ArrayStateSegments[2], Converter={StaticResource BoolToBrushConverter}, ElementName=userControl, UpdateSourceTrigger=PropertyChanged}" Data="F1 M 544.872,150.581L 557.728,165.902C 561.514,170.415 560.926,177.143 556.413,180.93L 556.413,180.93C 551.9,184.716 545.172,184.128 541.385,179.615L 528.53,164.294C 524.743,159.781 525.332,153.053 529.844,149.267L 529.844,149.267C 534.357,145.48 541.085,146.069 544.872,150.581 Z " Margin="279.953,71.852,0,0" HorizontalAlignment="Left" Width="35.19" Height="37.655" VerticalAlignment="Top"/>
@@ -73,26 +73,28 @@
                         <TranslateTransform X="320.317" Y="171.184"/>
                     </TransformGroup>
                 </TextBlock.RenderTransform><Run Text="00:25" Foreground="#FF000000"/></TextBlock>
-            <TextBlock x:Name="TargetValueText" TextAlignment="Left" FontFamily="Segoe UI" FontSize="38.667" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-246,-74,0,0">
+            <TextBlock x:Name="TargetValueText" TextAlignment="Left" FontFamily="Segoe UI" FontSize="38.667" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-253,-74,0,0">
                 <TextBlock.RenderTransform>
                     <TransformGroup>
                         <MatrixTransform Matrix="1.33333,0,0,1.33333,373.705,288.053"/>
                     </TransformGroup>
                 </TextBlock.RenderTransform><Run Text="01:00" Foreground="#FF000000"/></TextBlock>
-            <Ellipse x:Name="_12_points_" Stretch="Fill" Margin="59,91,0,0" HorizontalAlignment="Left" Width="249" Height="168" VerticalAlignment="Top">
-                <Ellipse.Fill>
-                    <LinearGradientBrush StartPoint="0.5,1.00195" EndPoint="0.5,-0.00195304">
-                        <GradientStop Color="#7FFFFFFF" Offset="0"/>
-                        <GradientStop Color="#00FFFFFF" Offset="1"/>
-                        <GradientStop Color="#45FFFFFF" Offset="0.297"/>
-                    </LinearGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
             <Ellipse x:Name="_12_points__19" Stretch="Fill" Margin="56,58,0,0" Height="255" VerticalAlignment="Top" HorizontalAlignment="Left" Width="256">
                 <Ellipse.Fill>
-                    <LinearGradientBrush StartPoint="0.5,1.00195" EndPoint="0.5,-0.00195294">
+                    <RadialGradientBrush>
+                        <GradientStop Offset="0"/>
+                        <GradientStop Color="Transparent" Offset="1"/>
+                        <GradientStop Color="#4CFFFFFF" Offset="0.895"/>
+                        <GradientStop Offset="0.623"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Ellipse x:Name="_12_points_" Stretch="Fill" Margin="88.873,74.996,0,0" HorizontalAlignment="Left" Width="189.187" Height="153" VerticalAlignment="Top">
+                <Ellipse.Fill>
+                    <LinearGradientBrush StartPoint="0.504,-0.002" EndPoint="0.496,1.002">
                         <GradientStop Color="#7FFFFFFF" Offset="0"/>
                         <GradientStop Color="#00FFFFFF" Offset="1"/>
+                        <GradientStop Color="#45FFFFFF" Offset="0.226"/>
                     </LinearGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
