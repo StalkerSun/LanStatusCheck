@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:LanStatusCheck.Components"
              mc:Ignorable="d" >
     <UserControl.Resources>
-        <local:BoolToBrushConverter x:Key="BoolToBrushConverter" ColorOff="Transparent" ColorOn="Blue"/>
+        <local:BoolToBrushConverter x:Key="BoolToBrushConverter"
+                                    ColorOff="{Binding Path= InactiveBrush, Source={x:Reference userControl}}" 
+                                    ColorOn="{Binding Path=ActiveBrush, Source={x:Reference userControl}}"/>
+        <local:DurationToTextConverter x:Key="DurationToTextConverter"/>
+
     </UserControl.Resources>
     <Viewbox HorizontalAlignment="Left" Width="368">
         <Grid Height="369.334" Width="368">
@@ -64,21 +68,27 @@
                     </LinearGradientBrush>
                 </Path.Stroke>
             </Path>
-            <TextBlock x:Name="MainValueText" TextAlignment="Left" FontFamily="Segoe UI" FontSize="70" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-257.339,-75.332,0,0" Height="87.107" FontWeight="Bold">
-                <TextBlock.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleY="1.333" ScaleX="1.333"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform X="320.317" Y="171.184"/>
-                    </TransformGroup>
-                </TextBlock.RenderTransform><Run Text="00:25" Foreground="#FF000000"/></TextBlock>
-            <TextBlock x:Name="TargetValueText" TextAlignment="Left" FontFamily="Segoe UI" FontSize="38.667" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-253,-74,0,0">
-                <TextBlock.RenderTransform>
-                    <TransformGroup>
-                        <MatrixTransform Matrix="1.33333,0,0,1.33333,373.705,288.053"/>
-                    </TransformGroup>
-                </TextBlock.RenderTransform><Run Text="01:00" Foreground="#FF000000"/></TextBlock>
+            <TextBlock x:Name="MainValueText"
+                       TextAlignment="Left" 
+                       FontFamily="Segoe UI" 
+                       FontSize="80" 
+                       VerticalAlignment="Top" 
+                       HorizontalAlignment="Left" 
+                       Height="88" 
+                       FontWeight="Bold" 
+                       Margin="83,107,0,0"
+                       Text="{Binding ElementName=userControl, Path=CurrentTimerValue, Converter={StaticResource DurationToTextConverter}}"
+                       />
+
+            <TextBlock x:Name="TargetValueText" 
+                       TextAlignment="Left" 
+                       FontFamily="Segoe UI" 
+                       FontSize="50" 
+                       VerticalAlignment="Top" 
+                       HorizontalAlignment="Left" 
+                       Margin="125,214,0,0"
+                       Text="{Binding ElementName=userControl, Path=Duration, Converter={StaticResource DurationToTextConverter}}"/>
+
             <Ellipse x:Name="_12_points__19" Stretch="Fill" Margin="56,58,0,0" Height="255" VerticalAlignment="Top" HorizontalAlignment="Left" Width="256">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
