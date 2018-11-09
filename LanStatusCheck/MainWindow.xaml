@@ -31,7 +31,7 @@
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5"/>
 
 
-        <Components:TimerIndicator Grid.Column="1" Margin="26.5,25.833,0,0" HorizontalAlignment="Center" Height="146.334" VerticalAlignment="Center" Width="149"/>
+        <Components:TimerIndicator Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
 
     </Grid>

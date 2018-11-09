@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Timers;
 using System.Windows;
@@ -30,17 +31,31 @@ namespace LanStatusCheck.Components
 
         #region Dep Property local
 
+      //  private static readonly DependencyPropertyKey ArrayStateSegmentsPropertyKey
+      //= DependencyProperty.RegisterReadOnly("ArrayStateSegments", typeof(bool[]), typeof(TimerIndicator),
+      //    new FrameworkPropertyMetadata(new bool[18],
+      //        FrameworkPropertyMetadataOptions.None));
+
+      //  public static readonly DependencyProperty ArrayStateSegmentsProperty
+      //      = ArrayStateSegmentsPropertyKey.DependencyProperty;
+
+      //  public bool[] ArrayStateSegments
+      //  {
+      //      get { return (bool[])GetValue(ArrayStateSegmentsProperty); }
+      //      protected set { SetValue(ArrayStateSegmentsPropertyKey, value); }
+      //  }
+
         private static readonly DependencyPropertyKey ArrayStateSegmentsPropertyKey
-      = DependencyProperty.RegisterReadOnly("ArrayStateSegments", typeof(bool[]), typeof(TimerIndicator),
-          new FrameworkPropertyMetadata(new bool[18],
+      = DependencyProperty.RegisterReadOnly("ArrayStateSegments", typeof(ActiveSegment[]), typeof(TimerIndicator),
+          new FrameworkPropertyMetadata(new ActiveSegment[18],
               FrameworkPropertyMetadataOptions.None));
 
         public static readonly DependencyProperty ArrayStateSegmentsProperty
             = ArrayStateSegmentsPropertyKey.DependencyProperty;
 
-        public bool[] ArrayStateSegments
+        public ActiveSegment[] ArrayStateSegments
         {
-            get { return (bool[])GetValue(ArrayStateSegmentsProperty); }
+            get { return (ActiveSegment[])GetValue(ArrayStateSegmentsProperty); }
             protected set { SetValue(ArrayStateSegmentsPropertyKey, value); }
         }
 
@@ -189,7 +204,7 @@ namespace LanStatusCheck.Components
 
             _timer.Tick += _timer_Tick;
 
-            Duration = new TimeSpan(0, 1, 0);
+            Duration = new TimeSpan(0, 3, 0);
 
             _timer.Start();
         }
@@ -222,21 +237,53 @@ namespace LanStatusCheck.Components
                 Stop();
         }
 
-        private bool[] GetNewArray(TimeSpan currentValue, TimeSpan duration, int countElem)
+        //private bool[] GetNewArray(TimeSpan currentValue, TimeSpan duration, int countElem)
+        //{
+        //    if (countElem == 0) throw new ArgumentException("Число эллементов не может быть равно 0");
+                 
+        //    bool[] resArray = new bool[countElem];
+
+        //    var valueOneElem = 100.0 / countElem;
+
+        //    var percent = ((int)currentValue.TotalSeconds * 100.0) / (int)duration.TotalSeconds;
+
+        //    var countFullElem = Math.Ceiling(percent / valueOneElem);
+
+        //    for (int i = 0; i < countFullElem; i++)
+        //    {
+        //        resArray[i] = true;
+        //    }
+
+        //    return resArray;
+        //}
+
+        private ActiveSegment[] GetNewArray(TimeSpan currentValue, TimeSpan duration, int countElem)
         {
             if (countElem == 0) throw new ArgumentException("Число эллементов не может быть равно 0");
-                 
-            bool[] resArray = new bool[countElem];
+
+            ActiveSegment[] resArray = new ActiveSegment[countElem];
+
+            //resArray = Enumerable.Repeat(new ActiveSegment(), countElem).ToArray();
+
+            for (int i = 0; i < countElem; i++)
+            {
+                resArray[i] = new ActiveSegment();
+            }
 
             var valueOneElem = 100.0 / countElem;
 
             var percent = ((int)currentValue.TotalSeconds * 100.0) / (int)duration.TotalSeconds;
 
-            var countFullElem = Math.Ceiling(percent / valueOneElem);
+            var countFullElem = percent / valueOneElem;
 
-            for (int i = 0; i < countFullElem; i++)
+            for (int i = 0; i < (int)countFullElem; i++)
             {
-                resArray[i] = true;
+                resArray[i] = new ActiveSegment() { Value = 1 };
+            }
+
+            if(countFullElem-(int)countFullElem!=0)
+            {
+                resArray[(int)countFullElem].Value = countFullElem - (int)countFullElem;
             }
 
             return resArray;
@@ -286,32 +333,61 @@ namespace LanStatusCheck.Components
 
     public class BoolToBrushConverter :FrameworkElement, IValueConverter
     {
-        public Brush ColorOff
+        public Color ColorOff
         {
-            get { return (Brush)GetValue(ColorOffProperty); }
+            get { return (Color)GetValue(ColorOffProperty); }
             set { SetValue(ColorOffProperty, value); }
         }
 
         public static readonly DependencyProperty ColorOffProperty =
-            DependencyProperty.Register("ColorOff", typeof(Brush), typeof(BoolToBrushConverter));
+            DependencyProperty.Register("ColorOff", typeof(Color), typeof(BoolToBrushConverter));
 
-        public Brush ColorOn
+        public Color ColorOn
         {
-            get { return (Brush)GetValue(ColorOnProperty); }
+            get { return (Color)GetValue(ColorOnProperty); }
             set { SetValue(ColorOnProperty, value); }
         }
 
         public static readonly DependencyProperty ColorOnProperty =
-            DependencyProperty.Register("ColorOn", typeof(Brush), typeof(BoolToBrushConverter));
+            DependencyProperty.Register("ColorOn", typeof(Color), typeof(BoolToBrushConverter));
 
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is bool)) return Binding.DoNothing;
+            //if (!(value is bool)) return Binding.DoNothing;
 
-            var val = (bool)value;
+            //var val = (bool)value;
 
-            return val ? ColorOn : ColorOff;
+
+            if (!(value is ActiveSegment)) return Binding.DoNothing;
+
+            var val = (ActiveSegment)value;
+
+            var strAngle = (string)parameter;
+
+            var angle = System.Convert.ToDouble(strAngle);
+
+            
+
+            if (val.Value == 0) return new SolidColorBrush(ColorOff);
+
+            if (val.Value == 1) return new SolidColorBrush( ColorOn);
+
+            LinearGradientBrush gb = new LinearGradientBrush
+            {
+                StartPoint = new Point(0.5, 0),
+
+                EndPoint = new Point(0.5, 1),
+            };
+
+            gb.RelativeTransform = new RotateTransform(angle-90, 0.5, 0.5);
+
+            gb.GradientStops.Add(new GradientStop(ColorOn, val.Value));
+            gb.GradientStops.Add(new GradientStop(ColorOff, val.Value));
+
+            
+
+            return gb;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -338,13 +414,9 @@ namespace LanStatusCheck.Components
         }
     }
 
-    public class ActiveSegment : INotifyPropertyChanged
+    public class ActiveSegment 
     {
-
-
-
-
-
+        public double Value { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
