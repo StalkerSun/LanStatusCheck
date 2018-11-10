@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -31,19 +32,19 @@ namespace LanStatusCheck.Components
 
         #region Dep Property local
 
-      //  private static readonly DependencyPropertyKey ArrayStateSegmentsPropertyKey
-      //= DependencyProperty.RegisterReadOnly("ArrayStateSegments", typeof(bool[]), typeof(TimerIndicator),
-      //    new FrameworkPropertyMetadata(new bool[18],
-      //        FrameworkPropertyMetadataOptions.None));
+        //  private static readonly DependencyPropertyKey ArrayStateSegmentsPropertyKey
+        //= DependencyProperty.RegisterReadOnly("ArrayStateSegments", typeof(bool[]), typeof(TimerIndicator),
+        //    new FrameworkPropertyMetadata(new bool[18],
+        //        FrameworkPropertyMetadataOptions.None));
 
-      //  public static readonly DependencyProperty ArrayStateSegmentsProperty
-      //      = ArrayStateSegmentsPropertyKey.DependencyProperty;
+        //  public static readonly DependencyProperty ArrayStateSegmentsProperty
+        //      = ArrayStateSegmentsPropertyKey.DependencyProperty;
 
-      //  public bool[] ArrayStateSegments
-      //  {
-      //      get { return (bool[])GetValue(ArrayStateSegmentsProperty); }
-      //      protected set { SetValue(ArrayStateSegmentsPropertyKey, value); }
-      //  }
+        //  public bool[] ArrayStateSegments
+        //  {
+        //      get { return (bool[])GetValue(ArrayStateSegmentsProperty); }
+        //      protected set { SetValue(ArrayStateSegmentsPropertyKey, value); }
+        //  }
 
         private static readonly DependencyPropertyKey ArrayStateSegmentsPropertyKey
       = DependencyProperty.RegisterReadOnly("ArrayStateSegments", typeof(ActiveSegment[]), typeof(TimerIndicator),
@@ -97,7 +98,7 @@ namespace LanStatusCheck.Components
 
         private static readonly DependencyPropertyKey CurrentTimerValuePropertyKey
       = DependencyProperty.RegisterReadOnly("CurrentTimerValue", typeof(TimeSpan), typeof(TimerIndicator),
-          new FrameworkPropertyMetadata(new TimeSpan(0,0,0),
+          new FrameworkPropertyMetadata(new TimeSpan(0, 0, 0),
               FrameworkPropertyMetadataOptions.None));
 
         public static readonly DependencyProperty CurrentTimerValueProperty
@@ -165,7 +166,7 @@ namespace LanStatusCheck.Components
         }
 
         public static readonly DependencyProperty DurationProperty =
-            DependencyProperty.Register("Duration", typeof(TimeSpan), typeof(TimerIndicator), new PropertyMetadata(new TimeSpan(0,0,0), DurationPropChangeCallback), DutationValidate);
+            DependencyProperty.Register("Duration", typeof(TimeSpan), typeof(TimerIndicator), new PropertyMetadata(new TimeSpan(0, 0, 0), DurationPropChangeCallback), DutationValidate);
 
         private static bool DutationValidate(object value)
         {
@@ -204,7 +205,7 @@ namespace LanStatusCheck.Components
 
             _timer.Tick += _timer_Tick;
 
-            Duration = new TimeSpan(0, 3, 0);
+            Duration = new TimeSpan(0, 1, 0);
 
             _timer.Start();
         }
@@ -233,14 +234,15 @@ namespace LanStatusCheck.Components
 
                 ArrayStateSegments = tmp;
 
-            } else
+            }
+            else
                 Stop();
         }
 
         //private bool[] GetNewArray(TimeSpan currentValue, TimeSpan duration, int countElem)
         //{
         //    if (countElem == 0) throw new ArgumentException("Число эллементов не может быть равно 0");
-                 
+
         //    bool[] resArray = new bool[countElem];
 
         //    var valueOneElem = 100.0 / countElem;
@@ -281,7 +283,7 @@ namespace LanStatusCheck.Components
                 resArray[i] = new ActiveSegment() { Value = 1 };
             }
 
-            if(countFullElem-(int)countFullElem!=0)
+            if (countFullElem - (int)countFullElem != 0)
             {
                 resArray[(int)countFullElem].Value = countFullElem - (int)countFullElem;
             }
@@ -331,8 +333,9 @@ namespace LanStatusCheck.Components
         }
     }
 
-    public class BoolToBrushConverter :FrameworkElement, IValueConverter
+    public class BoolToBrushConverter : FrameworkElement, IValueConverter
     {
+
         public Color ColorOff
         {
             get { return (Color)GetValue(ColorOffProperty); }
@@ -351,6 +354,29 @@ namespace LanStatusCheck.Components
         public static readonly DependencyProperty ColorOnProperty =
             DependencyProperty.Register("ColorOn", typeof(Color), typeof(BoolToBrushConverter));
 
+        private Dictionary<string, Point[]> _paramGradientForSegment = new Dictionary<string, Point[]>
+        {
+            {"1", new Point[]{  new Point(0.028, 0.363),    new Point(0.968, 0.636)     } },
+            {"2", new Point[]{  new Point(0.065, 0.175),    new Point(0.939, 0.819)     } },
+            {"3", new Point[]{ new Point(0.13, 0.104),      new Point(0.863, 0.905),         } },
+            {"4", new Point[]{ new Point(0.226, 0.058),     new Point(0.763, 0.95),          } },
+            {"5", new Point[]{ new Point(0.5, 0.0),         new Point(0.5, 1),               } },
+            {"6", new Point[]{ new Point(0.726, 0.036),     new Point(0.251, 0.952),         } },
+            {"7", new Point[]{ new Point(0.854, 0.083),     new Point(0.121, 0.893),         } },
+            {"8", new Point[]{ new Point(0.94, 0.166),      new Point(0.056, 0.822),         } },
+            {"9", new Point[]{ new Point(0.985, 0.35),  new Point(0.013, 0.631),         } },
+            {"10", new Point[]{new Point(0.992, 0.653), new Point(0.005, 0.364),         } },
+            {"11", new Point[]{new Point(0.939, 0.821), new Point(0.065, 0.173),         } },
+            {"12", new Point[]{new Point(0.877, 0.905), new Point(0.123, 0.082),         } },
+            {"13", new Point[]{new Point(0.77, 0.962),  new Point(0.254, 0.026),         } },
+            {"14", new Point[]{new Point(0.5, 1),       new Point(0.5, 0),               } },
+            {"15", new Point[]{new Point(0.246, 0.973), new Point(0.734, 0.033),         } },
+            {"16", new Point[]{new Point(0.115, 0.909), new Point(0.891, 0.092),         } },
+            {"17", new Point[]{new Point(0.05, 0.803),  new Point(0.944, 0.169),         } },
+            {"18", new Point[]{ new Point(0.03, 0.641),  new Point(0.979, 0.360),         } }
+
+        };
+
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -363,29 +389,22 @@ namespace LanStatusCheck.Components
 
             var val = (ActiveSegment)value;
 
-            var strAngle = (string)parameter;
-
-            var angle = System.Convert.ToDouble(strAngle);
-
-            
-
             if (val.Value == 0) return new SolidColorBrush(ColorOff);
 
-            if (val.Value == 1) return new SolidColorBrush( ColorOn);
+            if (val.Value == 1) return new SolidColorBrush(ColorOn);
+
+            var numberSegment = (string)parameter;
+
+            var points = _paramGradientForSegment[numberSegment];
 
             LinearGradientBrush gb = new LinearGradientBrush
             {
-                StartPoint = new Point(0.5, 0),
+                StartPoint = points[0],
 
-                EndPoint = new Point(0.5, 1),
+                EndPoint = points[1]
             };
-
-            gb.RelativeTransform = new RotateTransform(angle-90, 0.5, 0.5);
-
             gb.GradientStops.Add(new GradientStop(ColorOn, val.Value));
             gb.GradientStops.Add(new GradientStop(ColorOff, val.Value));
-
-            
 
             return gb;
         }
@@ -414,7 +433,7 @@ namespace LanStatusCheck.Components
         }
     }
 
-    public class ActiveSegment 
+    public class ActiveSegment
     {
         public double Value { get; set; }
 
