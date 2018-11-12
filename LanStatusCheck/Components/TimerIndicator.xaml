@@ -57,6 +57,7 @@
                        Height="88" 
                        FontWeight="Bold" 
                        Text="{Binding ElementName=userControl, Path=CurrentTimerValue, Converter={StaticResource DurationToTextConverter}}"
+                               Foreground="{TemplateBinding Foreground}"
                        />
 
                     <TextBlock x:Name="TargetValueText" 
@@ -66,7 +67,8 @@
                        FontSize="50" 
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center" 
-                       Text="{Binding ElementName=userControl, Path=Duration, Converter={StaticResource DurationToTextConverter}}"/>
+                       Text="{Binding ElementName=userControl, Path=Duration, Converter={StaticResource DurationToTextConverter}}"
+                               Foreground="{TemplateBinding Foreground}"/>
 
                 </Grid>
             </Viewbox>
@@ -113,43 +115,12 @@
             <Path x:Name="Segment_16" Stretch="Fill" Stroke="#FF000000" Fill="{Binding ArrayStateSegments[15], Converter={StaticResource BoolToBrushConverter},ConverterParameter=16, ElementName=userControl, UpdateSourceTrigger=PropertyChanged}" Data="F1 M 302.26,165.877L 315.116,150.556C 318.902,146.043 325.631,145.455 330.143,149.241L 330.143,149.241C 334.656,153.028 335.245,159.756 331.458,164.269L 318.602,179.59C 314.816,184.103 308.088,184.691 303.575,180.905L 303.575,180.905C 299.062,177.118 298.473,170.39 302.26,165.877 Z " Margin="53.683,71.827,0,0" HorizontalAlignment="Left" Width="35.19" Height="37.655" VerticalAlignment="Top"/>
             <Path x:Name="Segment_17" Stretch="Fill" Stroke="#FF000000" Fill="{Binding ArrayStateSegments[16], Converter={StaticResource BoolToBrushConverter},ConverterParameter=17, ElementName=userControl, UpdateSourceTrigger=PropertyChanged}" Data="F1 M 342.16,127.871L 359.481,117.871C 364.582,114.925 371.106,116.673 374.052,121.775L 374.052,121.775C 376.997,126.877 375.249,133.401 370.147,136.346L 352.827,146.346C 347.725,149.292 341.201,147.544 338.256,142.442L 338.256,142.442C 335.31,137.34 337.058,130.816 342.16,127.871 Z " Margin="90.744,41.521,0,0" HorizontalAlignment="Left" Width="39.657" Height="32.337" VerticalAlignment="Top"/>
             <Path x:Name="Segment_18" Stretch="Fill" Stroke="#FF000000" Fill="{Binding ArrayStateSegments[17], Converter={StaticResource BoolToBrushConverter},ConverterParameter=18, ElementName=userControl, UpdateSourceTrigger=PropertyChanged}" Data="F1 M 392.654,105.807L 412.35,102.334C 418.152,101.311 423.684,105.185 424.707,110.986L 424.707,110.986C 425.73,116.788 421.856,122.32 416.055,123.343L 396.359,126.816C 390.557,127.839 385.025,123.965 384.002,118.164L 384.002,118.164C 382.979,112.362 386.853,106.83 392.654,105.807 Z " Margin="137.757,27.251,0,0" HorizontalAlignment="Left" Width="42.033" Height="25.81" VerticalAlignment="Top"/>
-            <Path Stretch="Fill" Data="M 320.118,288.464L 536.784,288.464" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Margin="73.037,207.209,0,0" Height="3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="219.667">
-                <Path.Stroke>
-                    <LinearGradientBrush StartPoint="-0.0140759,0.303955" EndPoint="1.04614,0.303955">
-                        <LinearGradientBrush.RelativeTransform>
-                            <TransformGroup>
-                                <SkewTransform CenterX="-0.0140759" CenterY="0.303955" AngleX="-9.0416" AngleY="0"/>
-                                <RotateTransform CenterX="-0.0140759" CenterY="0.303955" Angle="-9.04331"/>
-                            </TransformGroup>
-                        </LinearGradientBrush.RelativeTransform>
-                        <GradientStop Color="#00454545" Offset="0"/>
-                        <GradientStop Color="#FF2A2A2A" Offset="0.376744"/>
-                        <GradientStop Color="#FF000000" Offset="0.655814"/>
-                        <GradientStop Color="#FF3B3B3B" Offset="0.776744"/>
-                        <GradientStop Color="#006B6B6B" Offset="1"/>
-                    </LinearGradientBrush>
-                </Path.Stroke>
-            </Path>
-            <TextBlock x:Name="MainValueText"
-                       TextAlignment="Left" 
-                       FontFamily="Segoe UI" 
-                       FontSize="80" 
-                       VerticalAlignment="Top" 
-                       HorizontalAlignment="Left" 
-                       Height="88" 
-                       FontWeight="Bold" 
-                       Margin="83,107,0,0"
-                       Text="{Binding ElementName=userControl, Path=CurrentTimerValue, Converter={StaticResource DurationToTextConverter}}"
-                       />
-
-            <TextBlock x:Name="TargetValueText" 
-                       TextAlignment="Left" 
-                       FontFamily="Segoe UI" 
-                       FontSize="50" 
-                       VerticalAlignment="Top" 
-                       HorizontalAlignment="Left" 
-                       Margin="125,214,0,0"
-                       Text="{Binding ElementName=userControl, Path=Duration, Converter={StaticResource DurationToTextConverter}}"/>
+            <Control x:Name="ViewInfoControl"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Width="240"
+                     Height="240"
+                     Template="{StaticResource ValueTimeTemplate}"/>
 
             <Ellipse x:Name="_12_points__19" Stretch="Fill" Margin="56,58,0,0" Height="255" VerticalAlignment="Top" HorizontalAlignment="Left" Width="256">
                 <Ellipse.Fill>

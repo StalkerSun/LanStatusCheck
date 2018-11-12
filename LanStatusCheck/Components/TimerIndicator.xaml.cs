@@ -150,7 +150,7 @@ namespace LanStatusCheck.Components
         }
 
         public static readonly DependencyProperty TypeViewDataIndicatorProperty =
-            DependencyProperty.Register("TypeViewDataIndicator", typeof(TypeViewDataIndicator), typeof(TimerIndicator), new PropertyMetadata(0));
+            DependencyProperty.Register("TypeViewDataIndicator", typeof(TypeViewDataIndicator), typeof(TimerIndicator), new PropertyMetadata(TypeViewDataIndicator.Timer));
 
         #endregion
 
@@ -214,8 +214,6 @@ namespace LanStatusCheck.Components
             InactiveBrush = new SolidColorBrush(IndicatorInactiveColor);
 
             InitializeComponent();
-
-
 
             _timer = new DispatcherTimer
             {
