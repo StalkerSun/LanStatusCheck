@@ -11,6 +11,68 @@
                                     ColorOn="{Binding Path=IndicatorActiveColor, Source={x:Reference userControl}}"/>
         <local:DurationToTextConverter x:Key="DurationToTextConverter"/>
 
+        <ControlTemplate x:Key="ValueTimeTemplate" TargetType="Control">
+            <Viewbox>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="0.05*"/>
+                        <RowDefinition Height="0.35*"/>
+                    </Grid.RowDefinitions>
+
+                    <Path Grid.Row="1" 
+                          Stretch="Fill" 
+                          Data="M 320.118,288.464L 536.784,288.464" 
+                          StrokeThickness="3" 
+                          StrokeStartLineCap="Round" 
+                          StrokeEndLineCap="Round" 
+                          StrokeLineJoin="Round" 
+                          Height="3" 
+                          VerticalAlignment="Stretch" 
+                          HorizontalAlignment="Stretch" 
+                          Width="219.667">
+                        <Path.Stroke>
+                            <LinearGradientBrush StartPoint="-0.0140759,0.303955" EndPoint="1.04614,0.303955">
+                                <LinearGradientBrush.RelativeTransform>
+                                    <TransformGroup>
+                                        <SkewTransform CenterX="-0.0140759" CenterY="0.303955" AngleX="-9.0416" AngleY="0"/>
+                                        <RotateTransform CenterX="-0.0140759" CenterY="0.303955" Angle="-9.04331"/>
+                                    </TransformGroup>
+                                </LinearGradientBrush.RelativeTransform>
+                                <GradientStop Color="#00454545" Offset="0"/>
+                                <GradientStop Color="#FF2A2A2A" Offset="0.376744"/>
+                                <GradientStop Color="#FF000000" Offset="0.655814"/>
+                                <GradientStop Color="#FF3B3B3B" Offset="0.776744"/>
+                                <GradientStop Color="#006B6B6B" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Path.Stroke>
+                    </Path>
+                    <TextBlock x:Name="MainValueText"
+                               Grid.Row="0"
+                       TextAlignment="Left" 
+                       FontFamily="Segoe UI" 
+                       FontSize="80" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       Height="88" 
+                       FontWeight="Bold" 
+                       Text="{Binding ElementName=userControl, Path=CurrentTimerValue, Converter={StaticResource DurationToTextConverter}}"
+                       />
+
+                    <TextBlock x:Name="TargetValueText" 
+                               Grid.Row="2"
+                       TextAlignment="Left" 
+                       FontFamily="Segoe UI" 
+                       FontSize="50" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       Text="{Binding ElementName=userControl, Path=Duration, Converter={StaticResource DurationToTextConverter}}"/>
+
+                </Grid>
+            </Viewbox>
+            
+        </ControlTemplate>
+
     </UserControl.Resources>
     <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
         <Grid Height="369.334" Width="368">
