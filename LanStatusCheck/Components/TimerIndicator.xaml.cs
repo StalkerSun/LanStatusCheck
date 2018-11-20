@@ -190,9 +190,8 @@ namespace LanStatusCheck.Components
             set { SetValue(PercentValueProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Percent.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PercentValueProperty =
-            DependencyProperty.Register("PercentValue", typeof(double), typeof(TimerIndicator), new PropertyMetadata(0.0), PercentValueValidate);
+            DependencyProperty.Register("PercentValue", typeof(double), typeof(TimerIndicator), new PropertyMetadata(100.0), PercentValueValidate);
 
         private static bool PercentValueValidate(object value)
         {

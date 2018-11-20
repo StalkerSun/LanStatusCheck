@@ -50,7 +50,7 @@
                     <TextBlock x:Name="MainValueText"
                                Grid.Row="0"
                        TextAlignment="Left" 
-                       FontFamily="Segoe UI" 
+                       FontFamily="{TemplateBinding FontFamily}"
                        FontSize="80" 
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center" 
@@ -63,7 +63,7 @@
                     <TextBlock x:Name="TargetValueText" 
                                Grid.Row="2"
                        TextAlignment="Left" 
-                       FontFamily="Segoe UI" 
+                       FontFamily="{TemplateBinding FontFamily}" 
                        FontSize="50" 
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center" 
@@ -73,6 +73,20 @@
                 </Grid>
             </Viewbox>
             
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="PercentValueTemplate" TargetType="Control">
+            <Viewbox>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="95"
+                               FontWeight="Bold"
+                               Foreground="{TemplateBinding Foreground}"
+                               FontFamily="{TemplateBinding FontFamily}"
+                               Text="{Binding ElementName=userControl, Path=PercentValue, StringFormat={}{0:0.0}%}"/>
+                </Grid>
+            </Viewbox>
         </ControlTemplate>
 
     </UserControl.Resources>
@@ -120,7 +134,7 @@
                      VerticalAlignment="Center"
                      Width="240"
                      Height="240"
-                     Template="{StaticResource ValueTimeTemplate}"/>
+                     Template="{StaticResource PercentValueTemplate}"/>
 
             <Ellipse x:Name="_12_points__19" Stretch="Fill" Margin="56,58,0,0" Height="255" VerticalAlignment="Top" HorizontalAlignment="Left" Width="256">
                 <Ellipse.Fill>
