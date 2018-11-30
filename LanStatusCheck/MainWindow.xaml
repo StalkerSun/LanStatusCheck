@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LanStatusCheck"
         xmlns:vm ="clr-namespace:LanStatusCheck.ViewModels"
-        xmlns:Components="clr-namespace:LanStatusCheck.Components" x:Class="LanStatusCheck.MainWindow"
+        x:Class="LanStatusCheck.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="850">
     <Window.Resources>
@@ -29,10 +29,6 @@
                  DataContext="{StaticResource vmDataTemplate}"
                  Template="{DynamicResource NetInterfaceDataTemplate}"/>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5"/>
-
-
-        <Components:TimerIndicator Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-
 
     </Grid>
 </Window>

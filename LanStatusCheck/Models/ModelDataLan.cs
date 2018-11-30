@@ -9,8 +9,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 
@@ -18,6 +16,10 @@ namespace LanStatusCheck.Models
 {
     public class ModelDataLan
     {
+
+        private static ModelDataLan _instance;
+
+
         #region local variable
 
         List<NetworkInterface> _collectionInterface;
@@ -38,13 +40,15 @@ namespace LanStatusCheck.Models
 
 
         #endregion
-        
+
         #region ctor
 
-        public ModelDataLan()
+        private ModelDataLan()
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()) == false)
+            {
                 _messenger = IoC.Get<IMessenger>().Abonent(Abonent.ModelNetworkAdapters).AddHandler(HandleMessage);
+            }
 
             _collectionInterface = new List<NetworkInterface>(GetAllUpLanInterface());
 
@@ -75,6 +79,20 @@ namespace LanStatusCheck.Models
 
         #endregion
 
+        #region public region
+
+        public static ModelDataLan GetInstanceModel()
+        {
+            if (_instance == null)
+            {
+                _instance = new ModelDataLan();
+            }
+
+            return _instance;
+        }
+
+        #endregion
+
 
         #region Local Methods
 
@@ -84,7 +102,9 @@ namespace LanStatusCheck.Models
             {
                 var res = BlockListInterface.TryGetValue(inter.Interface.Id.GetHashCode(), out string val);
                 if (!res)
+                {
                     inter.CulculateParameters(_periondTestLanSpeed / 1000);
+                }
             }
 
             //CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.UpdateDataModelNetInter);
@@ -94,7 +114,7 @@ namespace LanStatusCheck.Models
         {
             var listInterface = NetworkInterface.GetAllNetworkInterfaces().ToList();
 
-            var onlyUpInterface = listInterface.Where(a => (a.OperationalStatus == OperationalStatus.Up)).ToList();
+            var onlyUpInterface = listInterface.Where(a => ( a.OperationalStatus == OperationalStatus.Up )).ToList();
 
             foreach (var node in onlyUpInterface)
             {
@@ -142,10 +162,12 @@ namespace LanStatusCheck.Models
             var msg = IoC.Get<IMessage>().To(abonent).IsType(type);
 
             if (args != null)
+            {
                 foreach (var argument in args)
                 {
                     msg.Add(argument);
                 }
+            }
 
             _messenger.Add(msg);
         }

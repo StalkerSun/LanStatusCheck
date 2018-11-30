@@ -1,18 +1,14 @@
-﻿using LanStatusCheck.Enums;
+﻿using LanStatusCheck.Helpers;
 using OxyPlot.Axes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LanStatusCheck.Classes
 {
-    public class NetAdapterDataView :NaviItemBase
+    public class NetAdapterDataView : NaviItemBase
     {
         #region local variable
 
@@ -248,7 +244,7 @@ namespace LanStatusCheck.Classes
 
         #region collections
 
-        public ObservableCollection<NodeActiveNetInterface> ActivityDataForChart{ get; set; }
+        public ObservableCollection<NodeActiveNetInterface> ActivityDataForChart { get; set; }
 
 
         #endregion
@@ -277,7 +273,7 @@ namespace LanStatusCheck.Classes
 
             SetIdInterface(data.DataInterfaceModel.Interface.Id);
 
-            
+
         }
 
         #endregion
@@ -303,7 +299,9 @@ namespace LanStatusCheck.Classes
             TotalTransmiteData = currentData.TotalTransmiteBytes;
 
             if (ActivityDataForChart.Count > _maxCountNodeInChartMin)
+            {
                 ActivityDataForChart.RemoveAt(0);
+            }
 
             ActivityDataForChart.Add(currentData);
 
@@ -311,7 +309,7 @@ namespace LanStatusCheck.Classes
 
             if (ActivityDataForChart.Count < _maxCountNodeInChartMin)
             {
-                var tmpMinTime = ActivityDataForChart[0].Time.Add(-(new TimeSpan(0, 0, _maxCountNodeInChartMin - ActivityDataForChart.Count)));
+                var tmpMinTime = ActivityDataForChart[0].Time.Add(-( new TimeSpan(0, 0, _maxCountNodeInChartMin - ActivityDataForChart.Count) ));
 
                 MinTimeForChart = DateTimeAxis.ToDouble(tmpMinTime);
             }
@@ -327,14 +325,17 @@ namespace LanStatusCheck.Classes
 
             TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 3);
 
-            if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence) return;
+            if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence)
+            {
+                return;
+            }
 
             MaxSpeedInterfaceDelEmission = GetMaxSpeedForChartDelEmissions(ActivityDataForChart);
 
-            IsUpTextOnAnatation = ((MaxSpeedForChart - MaxSpeedInterfaceDelEmission) > ((MaxSpeedForChart * 25) / 100));
+            IsUpTextOnAnatation = ( ( MaxSpeedForChart - MaxSpeedInterfaceDelEmission ) > ( ( MaxSpeedForChart * 25 ) / 100 ) );
         }
 
-        
+
 
 
         #endregion
@@ -348,7 +349,7 @@ namespace LanStatusCheck.Classes
             return gbS < 1 ? String.Format("{0} Kb\\s", val) : String.Format("{0:F2} Mb\\s", gbS);
         }
 
-        
+
 
         private double GetMaxSpeedForChartDelEmissions(IEnumerable<NodeActiveNetInterface> interActivity)
         {
@@ -369,7 +370,7 @@ namespace LanStatusCheck.Classes
 
             var max = Math.Max(maxDownSpeed, maxUpSpeed);
 
-            var maxWith10Per = (max * 15) / 100 + max;
+            var maxWith10Per = ( max * 15 ) / 100 + max;
 
             //eturn max > _minSpeed ? max : _minSpeed;
             return maxWith10Per > _minSpeed ? maxWith10Per : _minSpeed;

@@ -8,10 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace LanStatusCheck.ViewModels
@@ -44,10 +41,10 @@ namespace LanStatusCheck.ViewModels
             {
                 _messenger = IoC.Get<IMessenger>().Abonent(Abonent.VModelNetworkAdapters).AddHandler(HandleMessage);
 
-                _model = new ModelDataLan();
+                _model = ModelDataLan.GetInstanceModel();
             }
 
-            
+
 
         }
 
@@ -57,7 +54,7 @@ namespace LanStatusCheck.ViewModels
 
         private void HandleMessage(IMessage obj)
         {
-            switch ((MsgType)obj.Type)
+            switch (( MsgType ) obj.Type)
             {
                 case MsgType.UpdateDataModelNetInter:
 
@@ -81,7 +78,7 @@ namespace LanStatusCheck.ViewModels
 
         private void InitInterface()
         {
-            foreach(var inter in _model.CollectionDataInterface)
+            foreach (var inter in _model.CollectionDataInterface)
             {
                 var data = new NetAdapterDataView
                 {
@@ -101,9 +98,9 @@ namespace LanStatusCheck.ViewModels
 
                 var tmp = Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == data.DataInterfaceModel.Interface.Id).ToList();
 
-                if (tmp.Count !=0)
+                if (tmp.Count != 0)
                 {
-                    switch( tmp.First().Status)
+                    switch (tmp.First().Status)
                     {
                         case EnumStatusItem.Favorite:
                             SetFavorite(data);
@@ -125,7 +122,7 @@ namespace LanStatusCheck.ViewModels
             switch (operation)
             {
                 case EnumTypeOperationNaviPanel.Up:
-                    UpDownElement(element,1);
+                    UpDownElement(element, 1);
                     break;
                 case EnumTypeOperationNaviPanel.Down:
                     UpDownElement(element, -1);
@@ -148,13 +145,16 @@ namespace LanStatusCheck.ViewModels
         private void UpDownElement(NetAdapterDataView elem, int offset)
         {
 
-            if (elem == null) throw new NullReferenceException(elem.ToString());
+            if (elem == null)
+            {
+                throw new NullReferenceException(elem.ToString());
+            }
 
             var positionElement = CollectionNetInter.IndexOf(elem);
 
             var newPositionElement = positionElement + offset;
 
-            if(newPositionElement<0 || newPositionElement>=CollectionNetInter.Count)
+            if (newPositionElement < 0 || newPositionElement >= CollectionNetInter.Count)
             {
                 throw new IndexOutOfRangeException("Индекс за пределами диапозона. Проверьте правильность смещения");
             }
@@ -167,9 +167,12 @@ namespace LanStatusCheck.ViewModels
 
         private void SetFavorite(NetAdapterDataView elem)
         {
-            if (elem == null) throw new NullReferenceException(elem.ToString());
+            if (elem == null)
+            {
+                throw new NullReferenceException(elem.ToString());
+            }
 
-            if(elem.StatusItem==EnumStatusItem.Favorite)
+            if (elem.StatusItem == EnumStatusItem.Favorite)
             {
                 var newIndex = GetNewIndex(elem, EnumStatusItem.Normal, CollectionNetInter, _model.CollectionDataInterface);
 
@@ -190,9 +193,9 @@ namespace LanStatusCheck.ViewModels
 
                 CollectionNetInter.Move(oldIndex, newIndex);
 
-                elem.StatusItem=EnumStatusItem.Favorite;
+                elem.StatusItem = EnumStatusItem.Favorite;
 
-                if(Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == elem.DataInterfaceModel.Interface.Id).Count()==0)
+                if (Properties.Settings.Default.SettingNetInters.Where(a => a.IdInterface == elem.DataInterfaceModel.Interface.Id).Count() == 0)
                 {
                     Properties.Settings.Default.SettingNetInters.Add(new SettingsNodeNetInter
                     {
@@ -201,7 +204,7 @@ namespace LanStatusCheck.ViewModels
 
                     });
                 }
-                
+
             }
 
             SetStateUpDownArrow();
@@ -211,9 +214,12 @@ namespace LanStatusCheck.ViewModels
 
         private void SetPlayDelete(NetAdapterDataView elem)
         {
-            if (elem == null) throw new NullReferenceException(elem.ToString());
+            if (elem == null)
+            {
+                throw new NullReferenceException(elem.ToString());
+            }
 
-            if(elem.StatusItem==EnumStatusItem.Deleted)
+            if (elem.StatusItem == EnumStatusItem.Deleted)
             {
                 var newIndex = GetNewIndex(elem, EnumStatusItem.Normal, CollectionNetInter, _model.CollectionDataInterface);
 
@@ -264,16 +270,19 @@ namespace LanStatusCheck.ViewModels
                 case EnumStatusItem.Favorite:
                     {
 
-                        if (list.Count == 0) return 0;
+                        if (list.Count == 0)
+                        {
+                            return 0;
+                        }
 
                         var newIndex = viewList.ToList().IndexOf(list.Last()) + 1;
 
                         return newIndex;
                     }
-                    
+
                 case EnumStatusItem.Deleted:
                     {
-                        return viewList.Count()-1;
+                        return viewList.Count() - 1;
                     }
 
                 case EnumStatusItem.Normal:
@@ -289,9 +298,13 @@ namespace LanStatusCheck.ViewModels
                         var indexElemInSource = sourceList.ToList().IndexOf(elem.DataInterfaceModel);
 
                         if (indexElemInSource > downIndex && indexElemInSource < upIndex)
+                        {
                             return indexElemInSource;
+                        }
                         else
+                        {
                             return upIndex - 1;
+                        }
                     }
 
                 default:

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LanStatusCheck.Classes
+namespace LanStatusCheck.Helpers
 {
     public static class HelpersDataTransform
     {
