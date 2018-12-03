@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\IpSegment.cs" />
+    <Compile Include="Classes\PingUnitData.cs" />
     <Compile Include="Helpers\HelpersDataTransform.cs" />
     <Compile Include="Classes\NotifyPropertyBase.cs" />
     <Compile Include="Classes\NaviItemBase.cs" />
