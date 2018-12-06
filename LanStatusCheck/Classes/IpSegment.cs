@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Net;
 
 namespace LanStatusCheck.Classes
 {
@@ -52,7 +51,7 @@ namespace LanStatusCheck.Classes
             var parts = new string[4];
             for (var i = 0; i < 4; i++)
             {
-                var masked = (value & bitmask) >> ((3 - i) * 8);
+                var masked = ( value & bitmask ) >> ( ( 3 - i ) * 8 );
                 bitmask >>= 8;
                 parts[i] = masked.ToString(CultureInfo.InvariantCulture);
             }
@@ -65,9 +64,34 @@ namespace LanStatusCheck.Classes
             UInt32 ip = 0;
             for (var i = 0; i < 4; i++)
             {
-                ip = (ip << 8) + UInt32.Parse(splitted[i]);
+                ip = ( ip << 8 ) + UInt32.Parse(splitted[i]);
             }
             return ip;
+        }
+
+        public static bool ParseIp(string ipStr, out IPAddress ipAddress, out string error)
+        {
+            ipAddress = null;
+
+            error = String.Empty;
+
+            if (String.IsNullOrEmpty(ipStr))
+            {
+                return false;
+            }
+
+            try
+            {
+                ipAddress = IPAddress.Parse(ipStr);
+
+                return true;
+            }
+            catch (Exception exp)
+            {
+                error = exp.Message;
+
+                return false;
+            }
         }
     }
 }

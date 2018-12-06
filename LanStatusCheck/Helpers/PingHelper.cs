@@ -239,6 +239,7 @@ namespace LanStatusCheck.Helpers
         {
             public IPStatus _pingStatus;    // if  (pingStatus == IPStatus.Success)   => Пинг удачно прошел
             public long _timeDelay_ms;  // Время, затраченное на прохождение сигнала  туда+обратно.
+
         }
 
         /// <summary>Обработка результатов Ping-а.</summary>

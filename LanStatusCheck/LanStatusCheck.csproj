@@ -69,7 +69,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\IpSegment.cs" />
+    <Compile Include="Classes\NodePingInfo.cs" />
     <Compile Include="Classes\PingUnitData.cs" />
+    <Compile Include="Classes\SettingPingUnit.cs" />
     <Compile Include="Helpers\HelpersDataTransform.cs" />
     <Compile Include="Classes\NotifyPropertyBase.cs" />
     <Compile Include="Classes\NaviItemBase.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Interfaces\INaviItemInList.cs" />
     <Compile Include="Models\ModelPingData.cs" />
     <Compile Include="ViewModels\VMDataLan.cs" />
+    <Compile Include="ViewModels\VMDataPing.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

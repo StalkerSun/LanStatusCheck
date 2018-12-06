@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace LanStatusCheck.Classes
 {
@@ -43,9 +40,9 @@ namespace LanStatusCheck.Classes
         private int _countPointInHistory = 600;
 
         private SynchronizationContext _context;
-        
+
         #endregion
-        
+
         #region ctor
         public NetworkInterfaceData(NetworkInterface inter)
         {
@@ -60,13 +57,13 @@ namespace LanStatusCheck.Classes
 
         #endregion
 
-        public void CulculateParameters( int interval)
+        public void CulculateParameters(int interval)
         {
             var totalReceived = Interface.GetIPv4Statistics().BytesReceived;
 
             var totalSent = Interface.GetIPv4Statistics().BytesSent;
 
-            if(_oldReceivedBytes == int.MinValue || _oldSentBytes == int.MinValue)
+            if (_oldReceivedBytes == int.MinValue || _oldSentBytes == int.MinValue)
             {
                 _oldReceivedBytes = totalReceived;
 
@@ -88,7 +85,9 @@ namespace LanStatusCheck.Classes
             var loadDown = GetPercentLoadOnInterface(speedDownKBitS, Interface.Speed / 1000);
 
             if (HistoryDataActivity.Count > _countPointInHistory)
+            {
                 HistoryDataActivity.RemoveAt(0);
+            }
 
             HistoryDataActivity.Add(new NodeActiveNetInterface()
             {
@@ -103,12 +102,12 @@ namespace LanStatusCheck.Classes
 
             });
 
-            Debug.WriteLineIf(Interface.Name.Contains("Интернет"), String.Format("Rx-{0}, Tx-{1}", totalReceived, totalSent), "Интерфейс Интернет");
+            //Debug.WriteLineIf(Interface.Name.Contains("Интернет"), String.Format("Rx-{0}, Tx-{1}", totalReceived, totalSent), "Интерфейс Интернет");
 
-            if(Interface.Name.Contains("Интернет"))
-            { }
+            //if(Interface.Name.Contains("Интернет"))
+            //{ }
 
-            _context.Post(d=>UpdateData(), null);
+            _context.Post(d => UpdateData(), null);
         }
 
         /// <summary>
@@ -121,7 +120,7 @@ namespace LanStatusCheck.Classes
 
             long totalSentB = Interface.GetIPv4Statistics().BytesSent;
 
-            if(_oldReceivedBytes == -1 ||_oldSentBytes == -1 )
+            if (_oldReceivedBytes == -1 || _oldSentBytes == -1)
             {
                 _oldReceivedBytes = totalReceivedB;
 
@@ -134,9 +133,9 @@ namespace LanStatusCheck.Classes
 
             var currentSentB = totalSentB - _oldSentBytes;
 
-            DownloadSpeedKBitS = ((currentReceivedB * 8) / 1000) / interval;
+            DownloadSpeedKBitS = ( ( currentReceivedB * 8 ) / 1000 ) / interval;
 
-            UploadSpeedKBitS = ((currentSentB * 8) / 1000) / interval;
+            UploadSpeedKBitS = ( ( currentSentB * 8 ) / 1000 ) / interval;
 
             _oldReceivedBytes = totalReceivedB;
 
@@ -147,13 +146,13 @@ namespace LanStatusCheck.Classes
         {
             var delta = newTotalBytes - oldTotalBytes;
 
-            return ((delta * 8) / 1000) / interval;
+            return ( ( delta * 8 ) / 1000 ) / interval;
         }
 
 
         private List<string> GetIpAddresses(NetworkInterface inter)
         {
-            var ipCollection = inter.GetIPProperties().UnicastAddresses.Where(a=>a.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
+            var ipCollection = inter.GetIPProperties().UnicastAddresses.Where(a => a.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToList();
 
             var listStr = ipCollection.Select(a => a.Address.ToString()).ToList();
 
@@ -162,7 +161,7 @@ namespace LanStatusCheck.Classes
 
         private int GetPercentLoadOnInterface(double speedkbS, double maxSpeedInterfaceKbS)
         {
-            var currentLoad = (speedkbS * 100.0) / maxSpeedInterfaceKbS;
+            var currentLoad = ( speedkbS * 100.0 ) / maxSpeedInterfaceKbS;
 
             return Convert.ToInt32(currentLoad);
         }

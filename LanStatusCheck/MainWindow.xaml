@@ -14,6 +14,8 @@
                 <ResourceDictionary Source="Templates/NetInterfaceDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <vm:VMDataLan x:Key="vmDataTemplate"/>
+            <vm:VMDataPing x:Key="vmPings"/>
+            
         </ResourceDictionary>
     </Window.Resources>
 
@@ -29,6 +31,11 @@
                  DataContext="{StaticResource vmDataTemplate}"
                  Template="{DynamicResource NetInterfaceDataTemplate}"/>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5"/>
+        <Control x:Name="PingersData"
+                 Grid.Column="1"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 DataContext="{StaticResource vmPings}"/>
 
     </Grid>
 </Window>
