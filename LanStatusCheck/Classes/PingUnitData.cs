@@ -96,16 +96,13 @@ namespace LanStatusCheck.Classes
 
         #region public methods
 
-        public bool StartPing()
+        public bool CheckPingData()
         {
             if (!IpHelpers.ParseIp(IpAddress, out var address, out var error))
             {
                 return false;
             }
 
-            _timerPing.Interval = PingPeriod_ms;
-
-            _timerPing.Start();
 
             return true;
 
@@ -114,6 +111,11 @@ namespace LanStatusCheck.Classes
         public void StopPing()
         {
             _timerPing.Stop();
+        }
+
+        public void StartPing()
+        {
+            _timerPing.Start();
         }
 
         public SettingPingUnit GetSetting()

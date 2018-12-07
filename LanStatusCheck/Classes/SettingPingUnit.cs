@@ -1,5 +1,8 @@
-﻿namespace LanStatusCheck.Classes
+﻿using System;
+
+namespace LanStatusCheck.Classes
 {
+    [Serializable]
     public class SettingPingUnit
     {
         public string IpAddress;

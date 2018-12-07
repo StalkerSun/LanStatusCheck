@@ -18,31 +18,51 @@ namespace LanStatusCheck.Models
         {
             PingUnits = new List<PingUnitData>();
 
-            var a = new PingUnitData(new SettingPingUnit { IpAddress = "10.10.7.1", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 1000, TimeOut_ms = 250 });
+            PingUnitData a;
 
-            a.PingSend += A_PingSend;
-            a.PingComplite += A_PingComplite;
-            a.UpdateData += A_UpdateData;
+            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.7.1", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 100, TimeOut_ms = 250 }, out a))
+            {
+                a.PingSend += A_PingSend;
+                a.PingComplite += A_PingComplite;
+                a.UpdateData += A_UpdateData;
+                a.StartPing();
+            }
 
-            a.StartPing();
+            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.0.1", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 100, TimeOut_ms = 250 }, out a))
+            {
+                a.PingSend += A_PingSend;
+                a.PingComplite += A_PingComplite;
+                a.UpdateData += A_UpdateData;
+                a.StartPing();
+            }
 
-            PingUnits.Add(a);
+            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.0.25", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 100, TimeOut_ms = 250 }, out a))
+            {
+                a.PingSend += A_PingSend;
+                a.PingComplite += A_PingComplite;
+                a.UpdateData += A_UpdateData;
+                a.StartPing();
+            }
+
+
+
+
         }
 
         private void A_UpdateData(PingUnitData obj)
         {
-            Debug.WriteLine(obj.PingInfoHistory.Last().ToString());
+            Debug.WriteLine(obj.IpAddress + ": "+ obj.PingInfoHistory.Last().ToString() +" " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff"));
 
         }
 
         private void A_PingComplite(PingUnitData obj)
         {
-            Debug.WriteLine("Пинг начат " + DateTime.Now.);
+            //Debug.WriteLine("Пинг закончен " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff"));
         }
 
         private void A_PingSend(PingUnitData obj)
         {
-            Debug.WriteLine("Пинг закончен " + DateTime.Now.ToString());
+            //Debug.WriteLine("Пинг начат " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff"));
         }
 
 
@@ -63,6 +83,26 @@ namespace LanStatusCheck.Models
         #endregion
 
         #region public methods
+
+        public bool AddPingerUnit(SettingPingUnit setting, out PingUnitData refPinger)
+        {
+            refPinger = new PingUnitData(setting);
+
+            var res = refPinger.CheckPingData();
+
+            if (res)
+            {
+                PingUnits.Add(refPinger);
+
+                return true;
+            }
+            else
+            {
+                refPinger = null;
+
+                return false;
+            }
+        }
 
 
         #endregion

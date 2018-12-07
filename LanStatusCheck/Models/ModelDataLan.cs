@@ -24,7 +24,7 @@ namespace LanStatusCheck.Models
 
         List<NetworkInterface> _collectionInterface;
 
-        int _periondTestLanSpeed = 1000; //Интервал подсчёта скорости обмена по сети
+        readonly int _periondTestLanSpeed = 1000; //Интервал подсчёта скорости обмена по сети
 
         Timer _timerTestSpeed;
 
