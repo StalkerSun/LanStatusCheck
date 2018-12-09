@@ -70,8 +70,10 @@
     </ApplicationDefinition>
     <Compile Include="Classes\IpSegment.cs" />
     <Compile Include="Classes\NodePingInfo.cs" />
+    <Compile Include="Classes\PingerUnitDataView.cs" />
     <Compile Include="Classes\PingUnitData.cs" />
     <Compile Include="Classes\SettingPingUnit.cs" />
+    <Compile Include="Enums\EnumPingerWindowState.cs" />
     <Compile Include="Helpers\HelpersDataTransform.cs" />
     <Compile Include="Classes\NotifyPropertyBase.cs" />
     <Compile Include="Classes\NaviItemBase.cs" />

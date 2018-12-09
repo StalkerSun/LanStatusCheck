@@ -33,5 +33,19 @@ namespace LanStatusCheck.Properties {
                 this["SettingNetInters"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Generic.List<LanStatusCheck.Classes.SettingPingUnit> SettingPingUnitsList
+        {
+            get
+            {
+                return ( ( global::System.Collections.Generic.List<LanStatusCheck.Classes.SettingPingUnit> ) ( this["SettingPingUnitsList"] ) );
+            }
+            set
+            {
+                this["SettingPingUnitsList"] = value;
+            }
+        }
     }
 }

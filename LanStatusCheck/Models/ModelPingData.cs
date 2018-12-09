@@ -20,7 +20,15 @@ namespace LanStatusCheck.Models
 
             PingUnitData a;
 
-            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.7.1", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 100, TimeOut_ms = 250 }, out a))
+            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.7.1", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 500, TimeOut_ms = 250 }, out a))
+            {
+                a.PingSend += A_PingSend;
+                a.PingComplite += A_PingComplite;
+                a.UpdateData += A_UpdateData;
+                //a.StartPing();
+            }
+
+            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.0.1", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 500, TimeOut_ms = 250 }, out a))
             {
                 a.PingSend += A_PingSend;
                 a.PingComplite += A_PingComplite;
@@ -28,20 +36,12 @@ namespace LanStatusCheck.Models
                 a.StartPing();
             }
 
-            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.0.1", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 100, TimeOut_ms = 250 }, out a))
+            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.0.25", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 500, TimeOut_ms = 250 }, out a))
             {
                 a.PingSend += A_PingSend;
                 a.PingComplite += A_PingComplite;
                 a.UpdateData += A_UpdateData;
-                a.StartPing();
-            }
-
-            if (AddPingerUnit(new SettingPingUnit() { IpAddress = "10.10.0.25", CountTrySentPing = 3, Description = "123`132", PingPeriod_ms = 100, TimeOut_ms = 250 }, out a))
-            {
-                a.PingSend += A_PingSend;
-                a.PingComplite += A_PingComplite;
-                a.UpdateData += A_UpdateData;
-                a.StartPing();
+                //a.StartPing();
             }
 
 
@@ -57,12 +57,12 @@ namespace LanStatusCheck.Models
 
         private void A_PingComplite(PingUnitData obj)
         {
-            //Debug.WriteLine("Пинг закончен " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff"));
+            Debug.WriteLine(obj.IpAddress + ": " + "Пинг закончен " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff"));
         }
 
         private void A_PingSend(PingUnitData obj)
         {
-            //Debug.WriteLine("Пинг начат " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff"));
+            Debug.WriteLine(obj.IpAddress + ": " + "Пинг начат " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff"));
         }
 
 
