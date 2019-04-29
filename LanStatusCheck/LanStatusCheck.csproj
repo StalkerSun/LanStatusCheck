@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\Microsoft.Expression.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\dll\Ninject.dll</HintPath>
     </Reference>
@@ -64,14 +68,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Classes\HelpersDataTransform.cs" />
+    <Compile Include="Classes\IpSegment.cs" />
+    <Compile Include="Classes\NodePingInfo.cs" />
+    <Compile Include="Classes\PingerUnitDataView.cs" />
+    <Compile Include="Classes\PingUnitData.cs" />
+    <Compile Include="Classes\SettingPingUnit.cs" />
+    <Compile Include="Enums\EnumPingerWindowState.cs" />
+    <Compile Include="Helpers\HelpersDataTransform.cs" />
+    <Compile Include="Classes\NotifyPropertyBase.cs" />
+    <Compile Include="Classes\NaviItemBase.cs" />
+    <Compile Include="Classes\NodeActiveNetInterface.cs" />
+    <Compile Include="Classes\RelayCommands.cs" />
+    <Compile Include="Classes\SettingsNodeNetInter.cs" />
     <Compile Include="Contract\IoC.cs" />
     <Compile Include="Classes\NetAdapterDataView.cs" />
     <Compile Include="Classes\NetworkInterfaceData.cs" />
     <Compile Include="Converters\ConverterAdaptivSpeedChannel.cs" />
+    <Compile Include="Converters\ConverterLevelDataSize.cs" />
     <Compile Include="Enums\Abonent.cs" />
+    <Compile Include="Enums\EnumStatusItem.cs" />
+    <Compile Include="Enums\EnumTypeOperationNaviPanel.cs" />
     <Compile Include="Enums\MsgType.cs" />
+    <Compile Include="Helpers\PingHelper.cs" />
+    <Compile Include="Interfaces\INaviItemInList.cs" />
+    <Compile Include="Models\ModelPingData.cs" />
     <Compile Include="ViewModels\VMDataLan.cs" />
+    <Compile Include="ViewModels\VMDataPing.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -84,7 +106,31 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Templates\TemplatesCustomElements.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\MaxTemplateDataInterface.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\MinTemplateDataInterface.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\NaviPanelTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Templates\NetInterfaceDataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\DarkThemeResourсes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\ViewPingersListTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

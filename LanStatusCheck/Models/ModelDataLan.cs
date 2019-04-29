@@ -3,23 +3,28 @@ using LanStatusCheck.Contract;
 using mm;
 using msg;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 
 namespace LanStatusCheck.Models
 {
     public class ModelDataLan
     {
+
+        private static ModelDataLan _instance;
+
+
         #region local variable
 
         List<NetworkInterface> _collectionInterface;
 
-        int _periondTestLanSpeed = 1000; //Интервал подсчёта скорости обмена по сети
+        readonly int _periondTestLanSpeed = 1000; //Интервал подсчёта скорости обмена по сети
 
         Timer _timerTestSpeed;
 
@@ -29,20 +34,27 @@ namespace LanStatusCheck.Models
 
         #region public
 
-        public List<NetworkInterfaceData> CollectionDataInterface;
+        public readonly List<NetworkInterfaceData> CollectionDataInterface;
+
+        public readonly ConcurrentDictionary<int, string> BlockListInterface;
+
 
         #endregion
-        
+
         #region ctor
 
-        public ModelDataLan()
+        private ModelDataLan()
         {
-
-            _messenger = IoC.Get<IMessenger>().Abonent(Abonent.ModelNetworkAdapters).AddHandler(HandleMessage);
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()) == false)
+            {
+                _messenger = IoC.Get<IMessenger>().Abonent(Abonent.ModelNetworkAdapters).AddHandler(HandleMessage);
+            }
 
             _collectionInterface = new List<NetworkInterface>(GetAllUpLanInterface());
 
             CollectionDataInterface = new List<NetworkInterfaceData>(_collectionInterface.Select(a => new NetworkInterfaceData(a)));
+
+            BlockListInterface = new ConcurrentDictionary<int, string>();
 
             _timerTestSpeed = new Timer();
 
@@ -67,6 +79,20 @@ namespace LanStatusCheck.Models
 
         #endregion
 
+        #region public region
+
+        public static ModelDataLan GetInstanceModel()
+        {
+            if (_instance == null)
+            {
+                _instance = new ModelDataLan();
+            }
+
+            return _instance;
+        }
+
+        #endregion
+
 
         #region Local Methods
 
@@ -74,17 +100,21 @@ namespace LanStatusCheck.Models
         {
             foreach (var inter in CollectionDataInterface)
             {
-                inter.CulcCurrentSpeed(_periondTestLanSpeed / 1000);
+                var res = BlockListInterface.TryGetValue(inter.Interface.Id.GetHashCode(), out string val);
+                if (!res)
+                {
+                    inter.CulculateParameters(_periondTestLanSpeed / 1000);
+                }
             }
 
-            CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.UpdateDataModelNetInter);
+            //CreateAndSendMessage(Abonent.VModelNetworkAdapters, MsgType.UpdateDataModelNetInter);
         }
 
         private List<NetworkInterface> GetAllUpLanInterface()
         {
             var listInterface = NetworkInterface.GetAllNetworkInterfaces().ToList();
 
-            var onlyUpInterface = listInterface.Where(a => (a.OperationalStatus == OperationalStatus.Up)).ToList();
+            var onlyUpInterface = listInterface.Where(a => ( a.OperationalStatus == OperationalStatus.Up )).ToList();
 
             foreach (var node in onlyUpInterface)
             {
@@ -132,10 +162,12 @@ namespace LanStatusCheck.Models
             var msg = IoC.Get<IMessage>().To(abonent).IsType(type);
 
             if (args != null)
+            {
                 foreach (var argument in args)
                 {
                     msg.Add(argument);
                 }
+            }
 
             _messenger.Add(msg);
         }

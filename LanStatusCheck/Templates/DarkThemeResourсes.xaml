@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:LanStatusCheck.Templates">
+
+    <!--Ресурсы для активного состояния IsEnabled = true-->
+    
+    <SolidColorBrush x:Key="BorderBrushItemInterfaceList" Color="#FFA2A2A2"/>
+    
+    <LinearGradientBrush x:Key="BackgroundItemInterfaceList" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FF1C1C1C" Offset="0"/>
+        <GradientStop Color="#FF1C1C1C" Offset="1"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="ColorTextSecondary" Color="#FF666666"/>
+    
+    <SolidColorBrush x:Key="ColorTextHeader" Color="#FFCFD1D1"/>
+
+    <SolidColorBrush x:Key="ColorTextPrimary" Color="#FFCFD1D1"/>
+
+    <!--Ресурсы для выключенного состояния IsEnabled = false-->
+    
+    <SolidColorBrush x:Key="DisabledColorTextSecondary" Color="#FF666666"/>
+
+    <SolidColorBrush x:Key="DisabledColorTextHeader" Color="#FF7A7A7A"/>
+
+    <SolidColorBrush x:Key="DisabledColorTextPrimary" Color="#FFCFD1D1"/>
+    
+    <!--Ресурсы для Chart-->
+
+    <SolidColorBrush x:Key="BorderBrushforPlotAreaChart" Color="#758F8F8F"/>
+
+    <Color x:Key="ColorTextPlotArea">#FF8D8D8D</Color>
+
+    <Color x:Key="ColorMajorTickLinePlotArea" >#FF3C3C3C</Color>
+
+    <Color x:Key="ColorLineLoadPlotArea">#FF8D9393</Color>
+
+    <Color x:Key="ColorSeriesDataUp">#FF0099FF</Color>
+
+    <Color x:Key="ColorSeriesDataDown">Red</Color>
+
+    <Color x:Key="ColorSeriesLoadInterface">Yellow</Color>
+
+    <Color x:Key="BorderBrushforPlotAreaChartColor">#758F8F8F</Color>
+    
+    
+    <!--Colors for navi panel-->
+
+    <SolidColorBrush x:Key="NaviPanelBackgroundColor" Color="#A5424242"/>
+    
+    <SolidColorBrush x:Key="ChangeStateNaviPanelButtonBackground" Color="#FF575757"/>
+
+    <SolidColorBrush x:Key="MouseOverColor" Color="#FF424242"/>
+
+    <SolidColorBrush x:Key="MouseNotOverColor" Color="#FFACACAC"/>
+
+
+
+</ResourceDictionary>

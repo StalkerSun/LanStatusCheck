@@ -1,23 +1,18 @@
-﻿using OxyPlot.Axes;
+﻿using LanStatusCheck.Helpers;
+using OxyPlot.Axes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LanStatusCheck.Classes
 {
-    public class NetAdapterDataView : INotifyPropertyChanged
+    public class NetAdapterDataView : NaviItemBase
     {
         #region local variable
 
-        private int _minSpeed = 60;
-
-        private string _nameNetInter;
+        private readonly int _minSpeed = 60;
 
         private double _upSpeed;
 
@@ -27,12 +22,27 @@ namespace LanStatusCheck.Classes
 
         private double _maxTimeForChart;
 
+        private bool _isUpTextOnAnatation = false;
+
         private double _maxSpeedForChart = 60;
+
+        private int _tickMajorStepGridLineChart = 30;
+
+        private double _maxSpeedInterfaceDelEmission = 30;
 
         private Func<double, string> _formatter = (a) => ConvertData(a);
 
+        private int _loadOnInterUp;
 
         private int _maxCountNodeInChartMin = 50;
+
+        private int _loadOnInterDown;
+
+        private long _totalTransmiteData;
+
+        private long _totalRecivedData;
+
+        private NetworkInterfaceData _dataInterfaceModel;
 
 
 
@@ -40,11 +50,24 @@ namespace LanStatusCheck.Classes
 
         #region Property
 
-        public string NameInter { get { return DataInterface.Interface.Name; } }
+        #region Prop data interface
 
-        public string DescInter { get { return DataInterface.Interface.Description; } }
+        public string NameInter { get { return DataInterfaceModel.Interface.Name; } }
 
-        public NetworkInterfaceData DataInterface { get; set; }
+        public string DescInter { get { return DataInterfaceModel.Interface.Description; } }
+
+        public NetworkInterfaceData DataInterfaceModel
+        {
+            get { return _dataInterfaceModel; }
+            set
+            {
+                _dataInterfaceModel = value;
+
+                _dataInterfaceModel.UpdateData += () => SetParamData();
+
+                SetIdInterface(_dataInterfaceModel.Interface.Id);
+            }
+        }
 
         public double UpSpeed
         {
@@ -68,22 +91,57 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        private int _loadOnInterface;
 
-        public int LoadOnInterface
+
+        public int LoadOnInterUp
         {
-            get { return _loadOnInterface; }
+            get { return _loadOnInterUp; }
             set
             {
-                _loadOnInterface = value;
+                _loadOnInterUp = value;
 
                 OnPropertyChanged();
             }
         }
 
 
-        //public int LoadOnInterface { get; set; }
 
+        public int LoadOnInterDown
+        {
+            get { return _loadOnInterDown; }
+            set
+            {
+                _loadOnInterDown = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public long TotalRecivedData
+        {
+            get { return _totalRecivedData; }
+            set
+            {
+                _totalRecivedData = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public long TotalTransmiteData
+        {
+            get { return _totalTransmiteData; }
+            set
+            {
+                _totalTransmiteData = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Prop For Charts
 
         public double MinTimeForChart
         {
@@ -96,7 +154,7 @@ namespace LanStatusCheck.Classes
             }
         }
 
-        public double  MaxTimeForChart
+        public double MaxTimeForChart
         {
             get { return _maxTimeForChart; }
             set
@@ -129,54 +187,129 @@ namespace LanStatusCheck.Classes
             }
         }
 
+        public int TickMajorStepGridLineChart
+        {
+            get { return _tickMajorStepGridLineChart; }
+            set
+            {
+                _tickMajorStepGridLineChart = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public double MaxSpeedInterfaceDelEmission
+        {
+            get { return _maxSpeedInterfaceDelEmission; }
+            set
+            {
+                _maxSpeedInterfaceDelEmission = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsUpTextOnAnatation
+        {
+            get { return _isUpTextOnAnatation; }
+            set
+            {
+                _isUpTextOnAnatation = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region prop from navi panel
+
+        private bool _isOpen = false;
+
+        public bool IsOpen
+        {
+            get { return _isOpen; }
+            set
+            {
+                _isOpen = value;
+
+                Debug.WriteLine(value);
+            }
+        }
+
+
+        #endregion
 
         #endregion
 
         #region collections
 
-        public ObservableCollection<NodeActiveNetInterface> ActivityDataForChart{ get; set; }
+        public ObservableCollection<NodeActiveNetInterface> ActivityDataForChart { get; set; }
 
 
         #endregion
 
-        #region ctor
+        #region ctors
 
-        public NetAdapterDataView()
+        public NetAdapterDataView() : base()
         {
+
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
-
-
         }
 
-        public NetAdapterDataView(NetAdapterDataView data)
+        public NetAdapterDataView(NetAdapterDataView data) : base()
         {
             ActivityDataForChart = new ObservableCollection<NodeActiveNetInterface>();
+
+            DataInterfaceModel = data.DataInterfaceModel;
 
             UpSpeed = data.UpSpeed;
 
             DownSpeed = data.DownSpeed;
 
-            DataInterface = data.DataInterface;
+            TotalRecivedData = data.TotalRecivedData;
+
+            TotalTransmiteData = data.TotalTransmiteData;
+
+            SetIdInterface(data.DataInterfaceModel.Interface.Id);
+
+
         }
 
         #endregion
 
         #region public methods 
 
-        public void SetParamData(double upSpeed, double downSpeed)
+        public void SetParamData()
         {
-            UpSpeed = upSpeed;
+            var currentData = _dataInterfaceModel.HistoryDataActivity.Last();
 
-            DownSpeed = downSpeed;
-            
+            //Debug.WriteLineIf(NameInter.IndexOf("Локалка") != -1, currentData.ToString());
+
+            LoadOnInterUp = currentData.LoadPerSecUp;
+
+            LoadOnInterDown = currentData.LoadPerSecDown;
+
+            UpSpeed = currentData.UpSpeedKBitSec;
+
+            DownSpeed = currentData.DownSpeedKBitSec;
+
+            TotalRecivedData = currentData.TotalRecivedBytes;
+
+            TotalTransmiteData = currentData.TotalTransmiteBytes;
+
             if (ActivityDataForChart.Count > _maxCountNodeInChartMin)
-                ActivityDataForChart.RemoveAt(0);
-
-            ActivityDataForChart.Add(new NodeActiveNetInterface { DownSpeed = downSpeed, UpSpeed = upSpeed, Time = DateTime.Now });
-
-            if(ActivityDataForChart.Count< _maxCountNodeInChartMin)
             {
-                var tmpMinTime = ActivityDataForChart[0].Time.Add(-(new TimeSpan(0, 0, _maxCountNodeInChartMin - ActivityDataForChart.Count)));
+                ActivityDataForChart.RemoveAt(0);
+            }
+
+            ActivityDataForChart.Add(currentData);
+
+            //Создание эффекта заполнения справо налево
+
+            if (ActivityDataForChart.Count < _maxCountNodeInChartMin)
+            {
+                var tmpMinTime = ActivityDataForChart[0].Time.Add(-( new TimeSpan(0, 0, _maxCountNodeInChartMin - ActivityDataForChart.Count) ));
 
                 MinTimeForChart = DateTimeAxis.ToDouble(tmpMinTime);
             }
@@ -188,19 +321,21 @@ namespace LanStatusCheck.Classes
 
             MaxTimeForChart = DateTimeAxis.ToDouble(ActivityDataForChart.Last().Time);
 
-            if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence) return;
+            MaxSpeedForChart = GetMaxSpeedForChart(ActivityDataForChart);
 
-            var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.DownSpeed).ToList()).Max();
+            TickMajorStepGridLineChart = Convert.ToInt32(MaxSpeedForChart / 3);
 
-            var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(ActivityDataForChart.Select(a => a.UpSpeed).ToList()).Max();
+            if (ActivityDataForChart.Count < HelpersDataTransform.MinNodeInSequence)
+            {
+                return;
+            }
 
-            var max = Math.Max(maxDownSpeed, maxUpSpeed);
+            MaxSpeedInterfaceDelEmission = GetMaxSpeedForChartDelEmissions(ActivityDataForChart);
 
-            MaxSpeedForChart = max > _minSpeed ? max : _minSpeed;
-
-            LoadOnInterface = GetPercentLoadOnInterface(upSpeed, downSpeed, DataInterface.Interface.Speed / 1024.0);
-
+            IsUpTextOnAnatation = ( ( MaxSpeedForChart - MaxSpeedInterfaceDelEmission ) > ( ( MaxSpeedForChart * 25 ) / 100 ) );
         }
+
+
 
 
         #endregion
@@ -211,43 +346,38 @@ namespace LanStatusCheck.Classes
         {
             var gbS = val / 1024;
 
-            return gbS < 1 ? String.Format("{0} Kbit\\s", val) : String.Format("{0:F2} Mbit\\s", gbS);
+            return gbS < 1 ? String.Format("{0} Kb\\s", val) : String.Format("{0:F2} Mb\\s", gbS);
         }
 
-        private int GetPercentLoadOnInterface(double upSpeedkbS, double downSpeedKbS, double maxSpeedInterfaceKbS)
+
+
+        private double GetMaxSpeedForChartDelEmissions(IEnumerable<NodeActiveNetInterface> interActivity)
         {
-            var totalLoad = upSpeedkbS + downSpeedKbS;
+            var maxDownSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.DownSpeedKBitSec).ToList()).Max();
 
-            var currentLoad = (totalLoad * 100.0) / maxSpeedInterfaceKbS;
+            var maxUpSpeed = HelpersDataTransform.DeleteEmissinsFromSequence(interActivity.Select(a => a.UpSpeedKBitSec).ToList()).Max();
 
-            Debug.WriteLine(currentLoad);
+            var max = Math.Max(maxDownSpeed, maxUpSpeed);
 
-            return Convert.ToInt32(currentLoad);
+            return max;
+        }
+
+        private double GetMaxSpeedForChart(IEnumerable<NodeActiveNetInterface> interActivity)
+        {
+            var maxDownSpeed = interActivity.Select(a => a.DownSpeedKBitSec).ToList().Max();
+
+            var maxUpSpeed = interActivity.Select(a => a.UpSpeedKBitSec).ToList().Max();
+
+            var max = Math.Max(maxDownSpeed, maxUpSpeed);
+
+            var maxWith10Per = ( max * 15 ) / 100 + max;
+
+            //eturn max > _minSpeed ? max : _minSpeed;
+            return maxWith10Per > _minSpeed ? maxWith10Per : _minSpeed;
+
         }
 
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-    }
-
-    public class NodeActiveNetInterface
-    {
-        public double UpSpeed { get; set; }
-
-        public double DownSpeed { get; set; }
-
-        public DateTime Time { get; set; }
-
-        public NodeActiveNetInterface()
-        {
-
-        }
     }
 }

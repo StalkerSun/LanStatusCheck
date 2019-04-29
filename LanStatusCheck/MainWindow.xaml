@@ -1,33 +1,41 @@
-﻿<Window x:Class="LanStatusCheck.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LanStatusCheck"
         xmlns:vm ="clr-namespace:LanStatusCheck.ViewModels"
+        x:Class="LanStatusCheck.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="850">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Templates/NetInterfaceDataTemplate.xaml" />
+                <ResourceDictionary Source="Templates/NetInterfaceDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <vm:VMDataLan x:Key="vmDataTemplate"/>
+            <vm:VMDataPing x:Key="vmPings"/>
+            
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Control Name="NetInterfaceData"
+        <Control x:Name="NetInterfaceData"
                  Grid.Column="0" 
                  HorizontalAlignment="Stretch" 
                  VerticalAlignment="Stretch"
                  DataContext="{StaticResource vmDataTemplate}"
                  Template="{DynamicResource NetInterfaceDataTemplate}"/>
-
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5"/>
+        <Control x:Name="PingersData"
+                 Grid.Column="1"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 DataContext="{StaticResource vmPings}"/>
 
     </Grid>
 </Window>

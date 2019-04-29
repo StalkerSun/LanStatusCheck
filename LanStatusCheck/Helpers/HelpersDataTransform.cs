@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LanStatusCheck.Classes
+namespace LanStatusCheck.Helpers
 {
     public static class HelpersDataTransform
     {
@@ -66,7 +66,6 @@ namespace LanStatusCheck.Classes
 
             maxVal = q3 + (deltaQ * 1.5);
 
-            Debug.WriteLine("Min: {0}  Max: {1}", minVal, maxVal);
 
             return true;
         }
@@ -83,8 +82,6 @@ namespace LanStatusCheck.Classes
             var localList = new List<double>(sequens);
 
             var resSeq = localList.RemoveAll(a => (a < min || a > max));
-
-            Debug.WriteLineIf(resSeq > 0, "Delete: "+ resSeq);
 
             return localList;
         }

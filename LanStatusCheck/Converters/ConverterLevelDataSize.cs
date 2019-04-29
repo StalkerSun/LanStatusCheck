@@ -8,17 +8,27 @@ using System.Windows.Data;
 
 namespace LanStatusCheck.Converters
 {
-    public class ConverterAdaptivSpeedChannel : IValueConverter
+    public class ConverterLevelDataSize : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return Binding.DoNothing;
 
-            if (value is double val)
+            if (value is long val)
             {
-                var gbS = val / 1000;
+                var kbytes = val / 1000.0;
 
-                return gbS < 1 ? String.Format("{0} Kbit\\s", val) : String.Format("{0:F2} Mbit\\s", gbS);
+                if (kbytes < 1000.0)
+                    return String.Format("{0:F1} Kb", kbytes);
+
+                var mbytes = kbytes / 1000;
+
+                if (mbytes < 1000.0)
+                    return String.Format("{0:F1} Mb", mbytes);
+
+                var gbytes = mbytes / 1000.0;
+
+                return String.Format("{0:F2} Gb", gbytes);
             }
 
             throw new NotImplementedException();

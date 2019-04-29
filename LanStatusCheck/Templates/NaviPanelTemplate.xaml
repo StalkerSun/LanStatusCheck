@@ -1,0 +1,265 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:LanStatusCheck.Templates" 
+                    xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="DarkThemeResourсes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+
+    <ControlTemplate x:Key="TemplateNaviPanel">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="OpenPanelStorybord">
+                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" From="8" To="90"  Duration="0:0:.3">
+                    <DoubleAnimation.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="ClosePanelStorybord">
+                <DoubleAnimation Storyboard.TargetName="BodyGrid" Storyboard.TargetProperty="Width" From="90" To="8" Duration="0:0:.3">
+                    <DoubleAnimation.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+
+        </ControlTemplate.Resources>
+
+        <Grid x:Name="BodyGrid" Width="8" Height="20" >
+            <Border CornerRadius="3,0,0,3" Background="{DynamicResource NaviPanelBackgroundColor}">
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton x:Name="ButtonOpenClose"
+                                  Template="{DynamicResource ChangeStateNaviPanelButtonTemplate}"/>
+
+                    <Button x:Name="ItemUpButton"
+                            Template="{DynamicResource ItemUpNaviPanelButtonTemplate}"
+                            Padding="1"
+                            Command="{Binding DownItemCommand}"/>
+
+                    <Button x:Name="ItemDownButton"
+                            Template="{DynamicResource ItemDownNaviPanelButtonTemplate}"
+                            Padding="1"
+                            Command="{Binding UpItemCommand}"/>
+
+                    <Button x:Name="ItemFavoritButton"
+                            Template="{DynamicResource ItemFavoriteNaviPanelButtonTemplate}"
+                            Padding="1"
+                            Command="{Binding FavoritItemCommand}"/>
+
+                    <Button x:Name="ItemPlayDeleteButton"
+                            Padding="1"
+                            Command="{Binding PlayDelItemCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Deleted">
+                                        <Setter Property="Template" Value="{DynamicResource PlayNaviPanelButtonTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Favorite">
+                                        <Setter Property="Template" Value="{DynamicResource ItemDeleteNaviPanelButtonTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Normal">
+                                        <Setter Property="Template" Value="{DynamicResource ItemDeleteNaviPanelButtonTemplate}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+
+            </Border>
+
+        </Grid>
+        <ControlTemplate.Triggers>
+            <EventTrigger SourceName="ButtonOpenClose" RoutedEvent="ToggleButton.Checked" >
+                <BeginStoryboard Storyboard="{StaticResource OpenPanelStorybord}"/>
+            </EventTrigger>
+            <EventTrigger SourceName="ButtonOpenClose" RoutedEvent="ToggleButton.Unchecked">
+                <BeginStoryboard Storyboard="{StaticResource ClosePanelStorybord}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ChangeStateNaviPanelButtonTemplate" TargetType="{x:Type ToggleButton}">
+        <Viewbox>
+            <Border CornerRadius="4,0,0,4" Background="{DynamicResource ChangeStateNaviPanelButtonBackground}">
+                <Grid x:Name="mainGrid" Width="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Ellipse x:Name="Point1" Height="8" Width="8" Margin="0,3" Grid.Row="0"/>
+                    <Ellipse x:Name="Point2" Height="8" Width="8" Margin="0,3" Grid.Row="1"/>
+                    <Ellipse x:Name="Point3" Height="8" Width="8" Margin="0,3" Grid.Row="2"/>
+                </Grid>
+            </Border>
+
+        </Viewbox>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Point1" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Point2" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Point3" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="Point1" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+                <Setter TargetName="Point2" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+                <Setter TargetName="Point3" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ItemUpNaviPanelButtonTemplate" TargetType="{x:Type Button}">
+        <Viewbox>
+            <Grid x:Name="mainGrid" Width="16" Height="16">
+                <ed:BlockArrow x:Name="Arrow" Height="Auto" Margin="2,3" Orientation="Up" Width="Auto"/>
+
+            </Grid>
+        </Viewbox>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource MouseNotOverColor}"/>
+                <Setter TargetName="Arrow" Property="StrokeThickness" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ItemDownNaviPanelButtonTemplate" TargetType="{x:Type Button}">
+        <Viewbox>
+            <Grid x:Name="mainGrid" Width="16" Height="16">
+                <ed:BlockArrow x:Name="Arrow" Height="Auto" Margin="2,3" Orientation="Down" Width="Auto"/>
+            </Grid>
+        </Viewbox>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Arrow" Property="Stroke" Value="{DynamicResource MouseNotOverColor}"/>
+                <Setter TargetName="Arrow" Property="StrokeThickness" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="Arrow" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ItemFavoriteNaviPanelButtonTemplate" TargetType="{x:Type Button}">
+        <Viewbox>
+            <Grid x:Name="mainGrid" Width="16" Height="16">
+                <ed:RegularPolygon x:Name="Star" Height="Auto" InnerRadius="0.65" PointCount="5" Stretch="Fill" Width="Auto" Margin="2,3"/>
+            </Grid>
+        </Viewbox>
+
+        <ControlTemplate.Triggers>
+
+            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Deleted">
+                <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Normal">
+                <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding StatusItem, UpdateSourceTrigger=PropertyChanged}" Value="Favorite">
+                <Setter TargetName="Star" Property="Fill" Value="Yellow"/>
+            </DataTrigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Star" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Star" Property="Stroke" Value="{DynamicResource MouseNotOverColor}"/>
+                <Setter TargetName="Star" Property="StrokeThickness" Value="1"/>
+            </Trigger>
+
+        </ControlTemplate.Triggers>
+
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ItemDeleteNaviPanelButtonTemplate" TargetType="{x:Type Button}">
+        <Viewbox>
+            <Grid x:Name="mainGrid" Width="16" Height="16" Margin="2,3">
+                <Path x:Name="Path1" 
+                      Width="Auto" 
+                      Height="2.601" 
+                      Stretch="Fill" 
+                      Data="M 0,22L 102.969,22.0156L 103,7.01563L 77.0208,6.98438L 69.875,0L 33.0104,0.00518799L 26.0104,7.00519L 0.015625,7.03125L 0,22 Z " 
+                      Margin="1.66,0,2.169,0" 
+                      VerticalAlignment="Top"/>
+                <Path x:Name="Path2" 
+                      Width="Auto" 
+                      Height="Auto" 
+                      Stretch="Fill" 
+                      Data="F1 M 7.14587,29.0781L 7.04171,118.911L 8.10417,121.911L 8.97917,123.786L 9.91667,125.911L 11.0417,127.036L 12.0417,128.099L 12.9375,129.036L 13.9375,129.911L 15.1042,130.995L 16.0625,131.953L 18.0208,132.995L 84.875,132.995L 86.0938,132.193L 88,130.995L 89.0625,130.057L 89.9375,128.995L 91.0625,127.995L 92.0625,126.995L 92.9896,125.974L 94.0625,123.995L 95.0208,122.036L 94.9792,121.057L 94.9792,120.057L 95,29.0364L 7.14587,29.0781 Z " 
+                      Margin="2.492,4.405,3.111,0.284"/>
+                <Path x:Name="Path3" 
+                      Width="Auto" 
+                      Stretch="Fill" 
+                      Data="F1 M 35.9271,54.3802L 51.4271,69.0052L 66.8021,54.1302L 78.5521,65.1302L 62.5521,81.2552L 78.9271,97.0052L 67.6771,108.13L 51.5521,92.5052L 35.8021,108.255L 24.5521,97.1302L 40.5521,81.7552L 25.0521,65.6302L 35.9271,54.3802 Z " 
+                      Margin="4.562,7.231,5.013,2.372"/>
+            </Grid>
+        </Viewbox>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Path1" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Path2" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Path3" Property="Fill" Value="Red"/>
+                <Setter TargetName="Path1" Property="Stroke" Value="Red"/>
+                <Setter TargetName="Path1" Property="StrokeThickness" Value="1"/>
+                <Setter TargetName="Path2" Property="Stroke" Value="Red"/>
+                <Setter TargetName="Path2" Property="StrokeThickness" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="Path1" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+                <Setter TargetName="Path2" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+                <Setter TargetName="Path3" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="PlayNaviPanelButtonTemplate" TargetType="{x:Type Button}">
+        <Viewbox>
+            <Grid x:Name="mainGrid" Width="16" Height="16" Margin="2,3">
+                <ed:RegularPolygon x:Name="Triangle" 
+                                   PointCount="3" 
+                                   HorizontalAlignment="Stretch" 
+                                   VerticalAlignment="Stretch" 
+                                   Width="Auto" 
+                                   RenderTransformOrigin="0.5,0.5" 
+                                   Margin="0,2">
+                    <ed:RegularPolygon.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="90"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </ed:RegularPolygon.RenderTransform>
+                </ed:RegularPolygon>
+            </Grid>
+        </Viewbox>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Triangle" Property="Fill" Value="{DynamicResource MouseOverColor}"/>
+                <Setter TargetName="Triangle" Property="Stroke" Value="#FF00A400"/>
+                <Setter TargetName="Triangle" Property="StrokeThickness" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="Triangle" Property="Fill" Value="{DynamicResource MouseNotOverColor}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+
+</ResourceDictionary>
